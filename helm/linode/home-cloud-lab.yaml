@@ -19,7 +19,7 @@ metadata:
 #caKey: "../ca.key" # valid local file relative path
 
 settings:
-  kubeContext: "home-cloud-lab" # will try connect to this context first, if it does not exist, it will be created using the details below
+  kubeContext: "lke55605-ctx" # will try connect to this context first, if it does not exist, it will be created using the details below
   #username: "admin"
   #password: "$K8S_PASSWORD" # the name of an environment variable containing the k8s password
   #clusterURI: "$SET_URI" # the name of an environment variable containing the cluster API
