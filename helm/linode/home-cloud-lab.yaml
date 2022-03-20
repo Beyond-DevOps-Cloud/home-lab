@@ -58,7 +58,7 @@ apps:
     namespace: "default" # maps to the namespace as defined in namespaces above
     enabled: true # change to false if you want to delete this app release empty: false:
     chart: "home-lab-charts/example" # changing the chart name means delete and recreate this chart
-    version: "0.1.0" # chart version
+    version: "0.1.1" # chart version
     ### Optional values below
     valuesFile: "" # leaving it empty uses the default chart values
     test: false
@@ -68,7 +68,7 @@ apps:
     namespace: "default" # maps to the namespace as defined in namespaces above
     enabled: true # change to false if you want to delete this app release empty: false:
     chart: "home-lab-charts/example" # changing the chart name means delete and recreate this chart
-    version: "0.1.0" # chart version
+    version: "0.1.1" # chart version
     ### Optional values below
     valuesFile: "./values/grocy.yaml" # leaving it empty uses the default chart values
     test: false
