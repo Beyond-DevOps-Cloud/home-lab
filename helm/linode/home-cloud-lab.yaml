@@ -71,6 +71,6 @@ apps:
     ### Optional values below
     valuesFile: "./values/grocy.yaml" # leaving it empty uses the default chart values
     test: false
-    priority: 1
+    priority: -1
 
 # See https://github.com/Praqma/helmsman/blob/master/docs/desired_state_specification.md#apps for more apps options
