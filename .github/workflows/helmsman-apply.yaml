@@ -1,4 +1,4 @@
-name: Helm Chart Deployments
+name: Helm Chart Apply
 on: 
   workflow_dispatch:
     inputs:

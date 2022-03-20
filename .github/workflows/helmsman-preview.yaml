@@ -1,4 +1,4 @@
-name: Helm Chart Deployments
+name: Helm Chart Preview
 on: [push]
 jobs:
   preview-linode-helm:
