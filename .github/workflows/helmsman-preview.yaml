@@ -1,0 +1,12 @@
+name: Helm Chart Deployments
+on: [push]
+jobs:
+  preview-linode-helm:
+    runs-on: praqma/helmsman:latest
+    steps:
+      - uses: azure/k8s-set-context@v2
+        with:
+          method: kubeconfig
+          kubeconfig: ${{ secrets.KUBECONFIG }}
+          context: home-cloud-lab
+      - run: helmsman -f helm/linode/home-cloud-lab.yaml
