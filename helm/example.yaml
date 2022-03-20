@@ -7,7 +7,6 @@ context: example # defaults to "default" if not provided
 
 # metadata -- add as many key/value pairs as you want
 metadata:
-  org: "example.com/$ORG_PATH/"
   maintainer: "lordmuffin (dorkmeisterx69@gmail.com)"
   description: "example Desired State File for demo purposes."
 

@@ -7,7 +7,6 @@ context: home-cloud-lab # defaults to "default" if not provided
 
 # metadata -- add as many key/value pairs as you want
 metadata:
-  org: "example.com/$ORG_PATH/"
   maintainer: "lordmuffin (dorkmeisterx69@gmail.com)"
   description: "This is used for my home-cloud-lab"
 
