@@ -10,7 +10,7 @@ jobs:
       - uses: azure/k8s-set-context@v2
         with:
           method: kubeconfig
-          kubeconfig: ${{ secrets.KUBECONFIG }}
+          kubeconfig: "${{ secrets.KUBECONFIG }}"
           context: home-cloud-lab
       - run: pwd
       - run: ls -la
