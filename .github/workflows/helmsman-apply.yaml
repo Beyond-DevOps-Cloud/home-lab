@@ -10,7 +10,8 @@ on:
         description: 'Apply helm charts'  
 jobs:
   apply-helm:
-    runs-on: praqma/helmsman:latest
+    runs-on: ubuntu-latest
+    container: praqma/helmsman:latest
     steps:
       - uses: azure/k8s-set-context@v2
         with:
