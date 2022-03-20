@@ -14,5 +14,4 @@ jobs:
           context: home-cloud-lab
       - run: pwd
       - run: ls -la
-      - run: cat $HOME/.kube/config
       - run: helmsman -f helm/linode/home-cloud-lab.yaml
