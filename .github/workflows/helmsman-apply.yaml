@@ -19,7 +19,7 @@ jobs:
         with:
           method: kubeconfig
           kubeconfig: "${{ secrets.KUBECONFIG }}"
-          context: home-cloud-lab
+          context: "${{ secrets.KUBE_CONTEXT }}"
       - run: |
           helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
           helm repo update

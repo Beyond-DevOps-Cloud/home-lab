@@ -11,7 +11,7 @@ jobs:
         with:
           method: kubeconfig
           kubeconfig: "${{ secrets.KUBECONFIG }}"
-          context: home-cloud-lab
+          context: "${{ secrets.KUBE_CONTEXT }}"
       - run: pwd
       - run: ls -la
       - run: helmsman -f helm/linode/home-cloud-lab.yaml
