@@ -39,7 +39,7 @@ settings:
 # define your environments and their k8s namespaces
 namespaces:
   default:
-    protected: true
+    protected: false
 
 # define any private/public helm charts repos you would like to get charts from
 # syntax: repo_name: "repo_url"
