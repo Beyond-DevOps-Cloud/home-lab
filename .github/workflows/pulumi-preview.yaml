@@ -1,5 +1,8 @@
 name: Pulumi Preview
 on: [push]
+env:
+  PULUMI_ACCESS_TOKEN: ${{ secrets.PULUMI_ACCESS_TOKEN }}
+  LINODE_TOKEN: ${{ secrets.LINODE_TOKEN }}
 jobs:
   pulumi-preview:
     runs-on: ubuntu-latest
