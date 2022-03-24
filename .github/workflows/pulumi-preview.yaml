@@ -1,7 +1,7 @@
 name: Pulumi Preview
 on: [push]
 jobs:
-  preview-linode-helm:
+  pulumi-preview:
     runs-on: ubuntu-latest
     container: pulumi/pulumi:latest
     steps:
