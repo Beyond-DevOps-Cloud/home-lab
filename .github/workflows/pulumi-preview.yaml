@@ -10,6 +10,5 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      - run: cd pulumi/linode
-      - run: pip install -r requirements.txt
-      - run: pulumi preview
+      - run: pip install -r pulumi/linode/requirements.txt
+      - run: pulumi preview -C pulumi/linode
