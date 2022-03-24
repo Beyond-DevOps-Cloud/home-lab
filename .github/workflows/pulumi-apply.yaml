@@ -1,4 +1,4 @@
-name: Pulumi Apply
+name: Pulumi Up
 on: 
   workflow_dispatch:
     inputs:
@@ -7,16 +7,16 @@ on:
         required: true
         default: 'apply'
       tags:
-        description: 'Pulumi Apply'
+        description: 'Pulumi Up'
 env:
   PULUMI_ACCESS_TOKEN: ${{ secrets.PULUMI_ACCESS_TOKEN }}
   LINODE_TOKEN: ${{ secrets.LINODE_TOKEN }}
 jobs:
-  pulumi-apply:
+  pulumi-up:
     runs-on: ubuntu-latest
     container: pulumi/pulumi:latest
     steps:
       - name: Checkout
         uses: actions/checkout@v2
       - run: pip install -r pulumi/linode/requirements.txt
-      - run: pulumi apply -s ${{ secrets.PULUMI_STACK }} -C pulumi/linode
+      - run: pulumi up -s ${{ secrets.PULUMI_STACK }} -C pulumi/linode
