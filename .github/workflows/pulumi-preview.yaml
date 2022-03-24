@@ -10,4 +10,4 @@ jobs:
       - run: pwd
       - run: ls -la
       - run: pip install -r pulumi/linode/requirements.txt
-      - run: pulumi preview pulumi/linode/main.py
+      - run: pulumi preview -c pulumi/linode/main.py
