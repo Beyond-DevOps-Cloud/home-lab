@@ -11,4 +11,4 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
       - run: pip install -r pulumi/linode/requirements.txt
-      - run: pulumi preview -C pulumi/linode
+      - run: pulumi preview -s ${{ secrets.PULUMI_STACK }} -C pulumi/linode
