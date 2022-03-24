@@ -19,4 +19,4 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
       - run: pip install -r pulumi/linode/requirements.txt
-      - run: pulumi up -s ${{ secrets.PULUMI_STACK }} -C pulumi/linode
+      - run: pulumi up -s ${{ secrets.PULUMI_STACK }} -C pulumi/linode --yes
