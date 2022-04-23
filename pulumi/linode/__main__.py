@@ -21,7 +21,7 @@ cluster = linode.LkeCluster(label,
     )],
     region=region,
     tags=tags)
-os.environ["KUBECONFIG"] = cluster.kubeconfig
+os.environ["KUBECONFIG"] = str(cluster.kubeconfig)
 
 # Export the Instance label of the instance
 pulumi.export('cluster_label', cluster.label)
