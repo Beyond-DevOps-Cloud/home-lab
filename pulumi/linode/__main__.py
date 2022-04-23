@@ -2,7 +2,7 @@
 
 import pulumi
 import pulumi_linode as linode
-import whatsfordinner-helm
+import whatsfordinner_helm
 
 version = "1.22"
 label = "home-lab"
