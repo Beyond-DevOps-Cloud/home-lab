@@ -11,6 +11,7 @@ on:
 env:
   PULUMI_ACCESS_TOKEN: ${{ secrets.PULUMI_ACCESS_TOKEN }}
   LINODE_TOKEN: ${{ secrets.LINODE_TOKEN }}
+  KUBECONFIG: ${{ secrets.KUBECONFIG }}
 jobs:
   pulumi-up:
     runs-on: ubuntu-latest
@@ -18,6 +19,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      - run: pulumi config set --secret kubernetes:kubeconfig ${{ secrets.KUBECONFIG }}
+      - run: |
+          echo $KUBECONFIG > ~/config
+          pulumi config set --secret kubernetes:kubeconfig < ~/config
       - run: pip install -r pulumi/linode/requirements.txt
       - run: pulumi up -s ${{ secrets.PULUMI_STACK }} -C pulumi/linode --yes
