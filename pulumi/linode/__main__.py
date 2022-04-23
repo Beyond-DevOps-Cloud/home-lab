@@ -1,5 +1,6 @@
 """A Linode Python Pulumi program"""
 
+import os
 import pulumi
 import pulumi_linode as linode
 import whatsfordinner_helm
@@ -20,6 +21,7 @@ cluster = linode.LkeCluster(label,
     )],
     region=region,
     tags=tags)
+os.environ["KUBECONFIG"] = cluster.kubeconfig
 
 # Export the Instance label of the instance
 pulumi.export('cluster_label', cluster.label)
