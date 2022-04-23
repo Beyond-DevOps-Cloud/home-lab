@@ -19,9 +19,7 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      - run: |
-          echo $KUBECONFIG > ~/config
-          cd pulumi
-          pulumi config set --secret kubernetes:kubeconfig < ~/config
+      - run: echo $KUBECONFIG > ~/config
+      - run: pulumi config set --secret kubernetes:kubeconfig -C pulumi/linode< ~/config
       - run: pip install -r pulumi/linode/requirements.txt
       - run: pulumi up -s ${{ secrets.PULUMI_STACK }} -C pulumi/linode --yes
