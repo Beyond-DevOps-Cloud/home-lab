@@ -21,6 +21,6 @@ jobs:
         uses: actions/checkout@v2
       - run: echo $KUBECONFIG > ~/config
       - run: pulumi stack select dev -C pulumi/linode< ~/config
-      - run: pulumi config set --secret kubernetes:kubeconfig -C pulumi/linode< ~/config
+      - run: pulumi config set --secret kubernetes:kubeconfig -C pulumi/linode < ~/config
       - run: pip install -r pulumi/linode/requirements.txt
       - run: pulumi up -s ${{ secrets.PULUMI_STACK }} -C pulumi/linode --yes
