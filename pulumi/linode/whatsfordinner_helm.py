@@ -9,7 +9,7 @@ namespace = Namespace("whatsfordinner")
 db_password = RandomPassword("pass", length=10)
 
 release_args = ReleaseArgs(
-    chart="SQL Express Database",
+    chart="SQLExpressDatabase",
     repository_opts=RepositoryOptsArgs(
         repo="https://raw.githubusercontent.com/lordmuffin/whatsfordinner-helm-charts/repo/"
     ),
