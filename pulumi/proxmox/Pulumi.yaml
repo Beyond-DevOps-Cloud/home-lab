@@ -1,0 +1,4 @@
+name: home-lab
+runtime:
+  name: nodejs
+description: A minimal Proxmox Python Pulumi program
