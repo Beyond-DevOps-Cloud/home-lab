@@ -44,13 +44,19 @@ namespaces:
     protected: false
   cert-manager:
     protected: false
-  nginx-ingress:
+  ingress-nginx:
+    protected: false
+  authentik:
     protected: false
   tekton:
     protected: false
-  cattle-system:
-    protected: false
   onedev:
+    protected: false
+  searxng:
+    protected: false
+  uptime-kuma:
+    protected: false
+  ocis:
     protected: false
     
 # define any private/public helm charts repos you would like to get charts from
@@ -58,11 +64,16 @@ namespaces:
 # only private repos hosted in s3 buckets are now supported
 helmRepos:
   csi-driver-nfs: "https://raw.githubusercontent.com/kubernetes-csi/csi-driver-nfs/master/charts"
+  emberstack: "https://emberstack.github.io/helm-charts"
   metallb: "https://metallb.github.io/metallb"
   jetstack: "https://charts.jetstack.io"
-  nginx-stable: "https://helm.nginx.com/stable"
+  ingress-nginx: "https://kubernetes.github.io/ingress-nginx"
+  kedacore: "https://kedacore.github.io/charts"
+
+  authentik: "https://charts.goauthentik.io"
   home-lab-charts: "https://raw.githubusercontent.com/lordmuffin/home-lab-charts/repo"
   onedev: "https://dl.cloudsmith.io/public/onedev/onedev/helm/charts"
+  searxng: "https://charts.searxng.org"
 
   #myS3repo: "s3://my-S3-private-repo/charts"
   #myGCSrepo: "gs://my-GCS-private-repo/charts"
@@ -77,6 +88,16 @@ apps:
     chart: csi-driver-nfs/csi-driver-nfs
     namespace: kube-system
     version: "4.1.0"
+    ### Optional values below
+    valuesFile: "" # leaving it empty uses the default chart values
+    test: false
+    protected: false
+    priority: -11
+  reflector:
+    enabled: true
+    chart: emberstack/reflector
+    namespace: kube-system
+    version: "6.1.47"
     ### Optional values below
     valuesFile: "" # leaving it empty uses the default chart values
     test: false
@@ -113,21 +134,29 @@ apps:
     protected: false
     wait: true
     priority: -9
-  nginx-ingress:
+  ingress-nginx:
     enabled: true # change to false if you want to delete this app release empty: false:
-    namespace: nginx-ingress # maps to the namespace as defined in namespaces above
-    chart: "nginx-stable/nginx-ingress" # changing the chart name means delete and recreate this chart
-    version: "0.15.2" # chart version
+    namespace: ingress-nginx # maps to the namespace as defined in namespaces above
+    chart: "ingress-nginx/ingress-nginx" # changing the chart name means delete and recreate this chart
+    version: "4.4.0" # chart version
     ### Optional values below
-    valuesFile: "" # leaving it empty uses the default chart values
-    setString: 
-      "controller.kind": "daemonset"
+    valuesFile: "values/nginx.yaml" # leaving it empty uses the default chart values
       # "controller.nginxDebug": "true"
     # setFile: "./files/nginx-setfile.yaml"
     test: false
     protected: false
     wait: true
     priority: -9
+  kedacore:
+    enabled: true
+    chart: kedacore/keda
+    namespace: kube-system
+    version: "2.9.0"
+    ### Optional values below
+    valuesFile: "" # leaving it empty uses the default chart values
+    test: false
+    protected: false
+    priority: -11
   cert-manager:
     enabled: true
     chart: jetstack/cert-manager
@@ -141,6 +170,26 @@ apps:
     hooks:
       preInstall: "https://github.com/cert-manager/cert-manager/releases/download/v1.10.1/cert-manager.crds.yaml"
       postInstall: "https://github.com/cert-manager/cert-manager/releases/download/v1.10.1/cert-manager.crds.yaml"
+  general-config:
+    enabled: true
+    chart: "home-lab-charts/general-config"
+    namespace: cert-manager
+    version: "0.0.7"
+    ### Optional values below
+    valuesFile: "" # leaving it empty uses the default chart values
+    test: false
+    protected: false
+    priority: -9
+  authentik:
+    namespace: "authentik" # maps to the namespace as defined in namespaces above
+    enabled: true # change to false if you want to delete this app release empty: false:
+    chart: "authentik/authentik" # changing the chart name means delete and recreate this chart
+    version: "2022.11.3" # chart version
+    ### Optional values below
+    valuesFile: "values/authentik.yaml" # leaving it empty uses the default chart values
+    test: false
+    protected: false
+    priority: -9
   tekton-pipelines:
     namespace: "tekton" # maps to the namespace as defined in namespaces above
     enabled: false # change to false if you want to delete this app release empty: false:
@@ -171,6 +220,37 @@ apps:
     test: false
     protected: false
     priority: 0
+  searxng:
+    namespace: "searxng" # maps to the namespace as defined in namespaces above
+    enabled: true # change to false if you want to delete this app release empty: false:
+    chart: "searxng/searxng" # changing the chart name means delete and recreate this chart
+    version: "1.0.0" # chart version
+    ### Optional values below
+    valuesFile: "values/searxng.yaml" # leaving it empty uses the default chart values
+    test: false
+    protected: false
+    priority: -11
+  ocis:
+    namespace: "ocis" # maps to the namespace as defined in namespaces above
+    enabled: true # change to false if you want to delete this app release empty: false:
+    chart: "home-lab-charts/ocis" # changing the chart name means delete and recreate this chart
+    version: "0.1.0" # chart version
+    ### Optional values below
+    valuesFile: "values/ocis.yaml" # leaving it empty uses the default chart values
+    test: false
+    protected: false
+    priority: 0
+    hooks:
+      postInstall: "files/ocis-secrets.yaml"
+      postInstall: "files/ocis-config.yaml"
+      postInstall: "files/ocis-external-user-mgmt-secrets.yaml"
+      postUpgrade: "files/ocis-secrets.yaml"
+      postUpgrade: "files/ocis-config.yaml"
+      postUpgrade: "files/ocis-external-user-mgmt-secrets.yaml"
+      postDelete: "files/ocis-secrets.yaml"
+      postDelete: "files/ocis-config.yaml"
+      postDelete: "files/ocis-external-user-mgmt-secrets.yaml"
+
   # grocy:
   #   namespace: "default" # maps to the namespace as defined in namespaces above
   #   enabled: true # change to false if you want to delete this app release empty: false:

@@ -1,3 +1,6 @@
+# This is due to secrets
+authentik.yaml
+
 .helmsman-tmp
 .kube
 node_modules

@@ -58,13 +58,13 @@ const k3s_server_list = [
         hostname: "k3s-server-001",
         node: node_names[0],
         ip: "192.168.1.20",
-        memory: 2048
+        memory: 4096
     },
     {
         hostname: "k3s-server-002",
         node: node_names[1],
         ip: "192.168.1.21",
-        memory: 2048
+        memory: 4096
     },
 ]
 const k3s_agent_list = [
@@ -105,7 +105,7 @@ for(let server in k3s_server_list){
         },
         bios: 'seabios',
         cpu: {
-            cores: 1,
+            cores: 4,
             sockets: 1,
         },
         clone: {
@@ -192,7 +192,7 @@ for(let agent in k3s_agent_list){
         },
         bios: 'seabios',
         cpu: {
-            cores: 1,
+            cores: 2,
             sockets: 1,
         },
         clone: {
