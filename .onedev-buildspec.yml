@@ -1,5 +1,6 @@
 version: 18
 jobs:
+CONTAINERD_ADDRESS: /run/k3s/containerd/containerd.sock
 - name: SYNC
   steps:
   - !PushRepository
