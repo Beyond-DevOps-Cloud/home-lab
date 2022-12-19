@@ -1,0 +1,28 @@
+version: 18
+jobs:
+- name: SYNC
+  steps:
+  - !PushRepository
+    name: pull
+    remoteUrl: https://github.com/Beyond-DevOps-Cloud/home-lab.git
+    passwordSecret: access-token
+    withLfs: false
+    force: false
+    condition: ALL_PREVIOUS_STEPS_WERE_SUCCESSFUL
+  - !PushRepository
+    name: push
+    remoteUrl: https://github.com/Beyond-DevOps-Cloud/home-lab.git
+    passwordSecret: access-token
+    withLfs: false
+    force: false
+    condition: ALL_PREVIOUS_STEPS_WERE_SUCCESSFUL
+  triggers:
+  - !ScheduleTrigger
+    cronExpression: 0 0 23 * * ?
+    projects: home-lab
+  retryCondition: never
+  maxRetries: 3
+  retryDelay: 30
+  cpuRequirement: 250
+  memoryRequirement: 256
+  timeout: 3600
