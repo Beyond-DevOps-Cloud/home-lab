@@ -27,3 +27,17 @@ jobs:
   cpuRequirement: 250
   memoryRequirement: 256
   timeout: 3600
+- name: Helmsan Apply
+  steps:
+  - !RunContainerStep
+    name: Helmsman
+    image: praqma/helmsman
+    args: -c "./install.sh"
+    useTTY: false
+    condition: ALL_PREVIOUS_STEPS_WERE_SUCCESSFUL
+  retryCondition: never
+  maxRetries: 3
+  retryDelay: 30
+  cpuRequirement: 250
+  memoryRequirement: 256
+  timeout: 3600
