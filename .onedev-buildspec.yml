@@ -35,6 +35,13 @@ jobs:
     args: -c "./install.sh"
     useTTY: false
     condition: ALL_PREVIOUS_STEPS_WERE_SUCCESSFUL
+  paramSpecs:
+  - !TextParam
+    name: CONTAINERD_ADDRESS
+    allowEmpty: false
+    multiline: false
+    defaultValueProvider: !SpecifiedDefaultValue
+      value: /run/k3s/containerd/containerd.sock
   retryCondition: never
   maxRetries: 3
   retryDelay: 30
