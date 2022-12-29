@@ -1,0 +1,123 @@
+{{- $_ := set . "appName" "thumbnails" -}}
+{{- $_ := set . "resources" (default (default (dict) .Values.resources) .Values.services.thumbnails.resources) -}}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .appName }}
+  namespace: {{ template "ocis.namespace" . }}
+  labels:
+    {{- include "ocis.labels" . | nindent 4 }}
+spec:
+  selector:
+    matchLabels:
+      app: {{ .appName }}
+  {{- if and (not .Values.autoscaling.enabled) (.Values.replicas) }}
+  replicas: {{ .Values.replicas }}
+  {{- end }}
+  {{- if .Values.deploymentStrategy }}
+  strategy: {{ toYaml .Values.deploymentStrategy | nindent 4 }}
+  {{ end }}
+  template:
+    metadata:
+      labels:
+        app: {{ .appName }}
+        {{- include "ocis.labels" . | nindent 8 }}
+    spec:
+      securityContext:
+          fsGroup: {{ .Values.securityContext.fsGroup }}
+          fsGroupChangePolicy: {{ .Values.securityContext.fsGroupChangePolicy }}
+      {{- with .Values.topologySpreadConstraints }}
+      topologySpreadConstraints:
+        {{- tpl . $ | nindent 8 }}
+      {{- end }}
+      {{- if and $.Values.services.thumbnails.persistence.enabled $.Values.services.thumbnails.persistence.chownInitContainer }}
+      initContainers:
+        - name: init-chown-data
+          image: busybox
+          securityContext:
+            runAsNonRoot: false
+            runAsUser: 0
+          command: ["chown", "-R", "{{ .Values.securityContext.runAsUser }}:{{ .Values.securityContext.runAsGroup }}", "/var/lib/ocis"]
+          volumeMounts:
+          - name: thumbnails-data
+            mountPath: /var/lib/ocis
+      {{ end }}
+      containers:
+        - name: {{ .appName }}
+          image: {{ template "ocis.image" $ }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command: ["ocis"]
+          args: ["thumbnails", "server"]
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: {{ .Values.securityContext.runAsUser }}
+            runAsGroup: {{ .Values.securityContext.runAsGroup }}
+            readOnlyRootFilesystem: true
+          env:
+            - name: MICRO_REGISTRY
+              value: kubernetes
+
+            - name: THUMBNAILS_LOG_COLOR
+              value: "{{ .Values.logging.color }}"
+            - name: THUMBNAILS_LOG_LEVEL
+              value: "{{ .Values.logging.level }}"
+            - name: THUMBNAILS_LOG_PRETTY
+              value: "{{ .Values.logging.pretty }}"
+
+            - name: THUMBNAILS_DEBUG_PPROF
+              value: "{{ .Values.debug.profiling }}"
+
+            - name: THUMBNAILS_GRPC_ADDR
+              value: 0.0.0.0:9185
+            - name: THUMBNAILS_HTTP_ADDR
+              value: 0.0.0.0:9186
+            - name: THUMBNAILS_DEBUG_ADDR
+              value: 0.0.0.0:9189
+
+            - name: THUMBNAILS_DATA_ENDPOINT
+              value: http://thumbnails:9186/thumbnails/data
+
+            - name: THUMBNAILS_WEBDAVSOURCE_INSECURE
+              value: "{{ .Values.insecure.ocisHttpApiInsecure }}"
+
+            - name: THUMBNAILS_CS3SOURCE_INSECURE
+              value: "{{ .Values.insecure.ocisHttpApiInsecure }}"
+
+            - name: REVA_GATEWAY
+              value: gateway:9142
+
+            - name: THUMBNAILS_TRANSFER_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.secretRefs.thumbnailsSecretRef }}
+                  key: thumbnails-transfer-secret
+
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: metrics-debug
+            timeoutSeconds: 10
+            initialDelaySeconds: 60
+            periodSeconds: 20
+            failureThreshold: 3
+
+          resources: {{ toYaml .resources | nindent 12 }}
+          ports:
+            - name: grpc
+              containerPort: 9185
+            - name: http
+              containerPort: 9186
+            - name: metrics-debug
+              containerPort: 9189
+          volumeMounts:
+            - name: thumbnails-data
+              mountPath: /var/lib/ocis
+      volumes:
+      {{- if .Values.services.thumbnails.persistence.enabled }}
+        - name: thumbnails-data
+          persistentVolumeClaim:
+            claimName: thumbnails-data
+      {{ else }}
+        - name: thumbnails-data
+          emptyDir: {}
+      {{ end }}

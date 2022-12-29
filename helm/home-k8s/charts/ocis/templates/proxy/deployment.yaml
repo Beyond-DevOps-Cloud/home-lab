@@ -1,0 +1,127 @@
+{{- $_ := set . "appName" "proxy" -}}
+{{- $_ := set . "resources" (default (default (dict) .Values.resources) .Values.services.proxy.resources) -}}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .appName }}
+  namespace: {{ template "ocis.namespace" . }}
+  labels:
+    {{- include "ocis.labels" . | nindent 4 }}
+spec:
+  selector:
+    matchLabels:
+      app: {{ .appName }}
+  {{- if and (not .Values.autoscaling.enabled) (.Values.replicas) }}
+  replicas: {{ .Values.replicas }}
+  {{- end }}
+  {{- if .Values.deploymentStrategy }}
+  strategy: {{ toYaml .Values.deploymentStrategy | nindent 4 }}
+  {{ end }}
+  template:
+    metadata:
+      labels:
+        app: {{ .appName }}
+        {{- include "ocis.labels" . | nindent 8 }}
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/proxy/config.yaml") . | sha256sum }}
+    spec:
+      securityContext:
+          fsGroup: {{ .Values.securityContext.fsGroup }}
+          fsGroupChangePolicy: {{ .Values.securityContext.fsGroupChangePolicy }}
+      {{- with .Values.topologySpreadConstraints }}
+      topologySpreadConstraints:
+        {{- tpl . $ | nindent 8 }}
+      {{- end }}
+      containers:
+        - name: {{ .appName }}
+          image: {{ template "ocis.image" $ }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command: ["ocis"]
+          args: ["proxy", "server"]
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: {{ .Values.securityContext.runAsUser }}
+            runAsGroup: {{ .Values.securityContext.runAsGroup }}
+            readOnlyRootFilesystem: true
+          env:
+            - name: MICRO_REGISTRY
+              value: kubernetes
+
+            - name: PROXY_LOG_COLOR
+              value: "{{ .Values.logging.color }}"
+            - name: PROXY_LOG_LEVEL
+              value: "{{ .Values.logging.level }}"
+            - name: PROXY_LOG_PRETTY
+              value: "{{ .Values.logging.pretty }}"
+
+            - name: PROXY_DEBUG_PPROF
+              value: "{{ .Values.debug.profiling }}"
+
+            - name: PROXY_HTTP_ADDR
+              value: 0.0.0.0:9200
+            - name: PROXY_DEBUG_ADDR
+              value: 0.0.0.0:9205
+
+            - name: PROXY_ENABLE_BASIC_AUTH
+              value: "{{ .Values.features.basicAuthentication }}"
+
+            - name: PROXY_OIDC_ISSUER
+            {{- if not .Values.features.externalUserManagement.enabled }}
+              value: https://{{ .Values.externalDomain }}
+            {{- else }}
+              value: {{ .Values.features.externalUserManagement.oidc.issuerURI }}
+            {{- end }}
+
+            {{- if .Values.features.externalUserManagement.enabled }}
+            - name: PROXY_OIDC_REWRITE_WELLKNOWN
+              value: "true"
+
+            - name: PROXY_USER_OIDC_CLAIM
+              value: {{ .Values.features.externalUserManagement.oidc.userIDClaim }}
+            - name: PROXY_USER_CS3_CLAIM
+              value: {{ .Values.features.externalUserManagement.oidc.userIDClaimAttributeMapping }}
+            {{- end }}
+
+            - name: PROXY_TLS
+              value: "false"
+
+            - name: REVA_GATEWAY
+              value: gateway:9142
+
+            - name: PROXY_OIDC_INSECURE
+              value: "{{ .Values.insecure.oidcIdpInsecure }}"
+
+            - name: PROXY_JWT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.secretRefs.jwtSecretRef }}
+                  key: jwt-secret
+
+            - name: PROXY_MACHINE_AUTH_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.secretRefs.machineAuthApiKeySecretRef }}
+                  key: machine-auth-api-key
+
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: metrics-debug
+            timeoutSeconds: 10
+            initialDelaySeconds: 60
+            periodSeconds: 20
+            failureThreshold: 3
+
+          resources: {{ toYaml .resources | nindent 12 }}
+          ports:
+            - name: http
+              containerPort: 9200
+            - name: metrics-debug
+              containerPort: 9205
+          volumeMounts:
+            - name: configs
+              mountPath: /etc/ocis
+      volumes:
+        - name: configs
+          configMap:
+            name: proxy-config

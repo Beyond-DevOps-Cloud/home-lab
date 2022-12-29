@@ -1,0 +1,99 @@
+{{- $_ := set . "appName" "store" -}}
+{{- $_ := set . "resources" (default (default (dict) .Values.resources) .Values.services.store.resources) -}}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .appName }}
+  namespace: {{ template "ocis.namespace" . }}
+  labels:
+    {{- include "ocis.labels" . | nindent 4 }}
+spec:
+  selector:
+    matchLabels:
+      app: {{ .appName }}
+  replicas: 1 #TODO: https://github.com/owncloud/ocis-charts/issues/113
+  {{- if .Values.deploymentStrategy }}
+  strategy: {{ toYaml .Values.deploymentStrategy | nindent 4 }}
+  {{ end }}
+  template:
+    metadata:
+      labels:
+        app: {{ .appName }}
+        {{- include "ocis.labels" . | nindent 8 }}
+    spec:
+      securityContext:
+          fsGroup: {{ .Values.securityContext.fsGroup }}
+          fsGroupChangePolicy: {{ .Values.securityContext.fsGroupChangePolicy }}
+      {{- with .Values.topologySpreadConstraints }}
+      topologySpreadConstraints:
+        {{- tpl . $ | nindent 8 }}
+      {{- end }}
+      {{- if and $.Values.services.store.persistence.enabled $.Values.services.store.persistence.chownInitContainer }}
+      initContainers:
+        - name: init-chown-data
+          image: busybox
+          securityContext:
+            runAsNonRoot: false
+            runAsUser: 0
+          command: ["chown", "-R", "{{ .Values.securityContext.runAsUser }}:{{ .Values.securityContext.runAsGroup }}", "/var/lib/ocis"]
+          volumeMounts:
+          - name: store-data
+            mountPath: /var/lib/ocis
+      {{ end }}
+      containers:
+        - name: {{ .appName }}
+          image: {{ template "ocis.image" $ }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command: ["ocis"]
+          args: ["store", "server"]
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: {{ .Values.securityContext.runAsUser }}
+            runAsGroup: {{ .Values.securityContext.runAsGroup }}
+            readOnlyRootFilesystem: true
+          env:
+            - name: MICRO_REGISTRY
+              value: kubernetes
+
+            - name: STORE_LOG_COLOR
+              value: "{{ .Values.logging.color }}"
+            - name: STORE_LOG_LEVEL
+              value: "{{ .Values.logging.level }}"
+            - name: STORE_LOG_PRETTY
+              value: "{{ .Values.logging.pretty }}"
+
+            - name: STORE_DEBUG_PPROF
+              value: "{{ .Values.debug.profiling }}"
+
+            - name: STORE_GRPC_ADDR
+              value: 0.0.0.0:9460
+            - name: STORE_DEBUG_ADDR
+              value: 0.0.0.0:9464
+
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: metrics-debug
+            timeoutSeconds: 10
+            initialDelaySeconds: 60
+            periodSeconds: 20
+            failureThreshold: 3
+
+          resources: {{ toYaml .resources | nindent 12 }}
+          ports:
+            - name: grpc
+              containerPort: 9460
+            - name: metrics-debug
+              containerPort: 9464
+          volumeMounts:
+            - name: store-data
+              mountPath: /var/lib/ocis
+      volumes:
+      {{- if .Values.services.store.persistence.enabled }}
+        - name: store-data
+          persistentVolumeClaim:
+            claimName: store-data
+      {{ else }}
+        - name: store-data
+          emptyDir: {}
+      {{ end }}

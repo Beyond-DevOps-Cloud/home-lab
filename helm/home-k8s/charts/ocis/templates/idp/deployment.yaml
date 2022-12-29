@@ -1,0 +1,123 @@
+{{- $_ := set . "appName" "idp" -}}
+{{- if not .Values.features.externalUserManagement.enabled }}
+{{- $_ := set . "resources" (default (default (dict) .Values.resources) .Values.services.idp.resources) -}}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .appName }}
+  namespace: {{ template "ocis.namespace" . }}
+  labels:
+    {{- include "ocis.labels" . | nindent 4 }}
+  annotations:
+    ignore-check.kube-linter.io/env-var-secret : "IDP_ENCRYPTION_SECRET_FILE is no secret, it's the file path to the secret"
+spec:
+  selector:
+    matchLabels:
+      app: {{ .appName }}
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: {{ .appName }}
+        {{- include "ocis.labels" . | nindent 8 }}
+    spec:
+      securityContext:
+          fsGroup: {{ .Values.securityContext.fsGroup }}
+          fsGroupChangePolicy: {{ .Values.securityContext.fsGroupChangePolicy }}
+      {{- with .Values.topologySpreadConstraints }}
+      topologySpreadConstraints:
+        {{- tpl . $ | nindent 8 }}
+      {{- end }}
+      containers:
+        - name: {{ .appName }}
+          image: {{ template "ocis.image" $ }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command: ["ocis"]
+          args: ["idp", "server"]
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: {{ .Values.securityContext.runAsUser }}
+            runAsGroup: {{ .Values.securityContext.runAsGroup }}
+            readOnlyRootFilesystem: true
+          env:
+            - name: MICRO_REGISTRY
+              value: kubernetes
+
+            - name: IDP_LOG_COLOR
+              value: "{{ .Values.logging.color }}"
+            - name: IDP_LOG_LEVEL
+              value: "{{ .Values.logging.level }}"
+            - name: IDP_LOG_PRETTY
+              value: "{{ .Values.logging.pretty }}"
+
+            - name: IDP_DEBUG_PPROF
+              value: "{{ .Values.debug.profiling }}"
+
+            - name: IDP_HTTP_ADDR
+              value: 0.0.0.0:9130
+            - name: IDP_DEBUG_ADDR
+              value: 0.0.0.0:9134
+
+            - name: IDP_ISS
+              value: "https://{{ .Values.externalDomain }}"
+
+            - name: IDP_LDAP_URI
+              value: ldaps://idm:9235
+
+            - name: IDP_LDAP_TLS_CACERT
+              value: /etc/ocis/ldap-ca/ldap-ca.crt
+
+            - name: IDP_LDAP_BIND_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.secretRefs.ldapSecretRef }}
+                  key: idp-ldap-bind-password
+
+            - name: IDP_SIGNING_PRIVATE_KEY_FILES
+              value: /etc/ocis/idp/private-key.pem
+
+            - name: IDP_ENCRYPTION_SECRET_FILE
+              value: /etc/ocis/idp/encryption.key
+
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: metrics-debug
+            timeoutSeconds: 10
+            initialDelaySeconds: 60
+            periodSeconds: 20
+            failureThreshold: 3
+
+          resources: {{ toYaml .resources | nindent 12 }}
+          ports:
+            - name: http
+              containerPort: 9130
+            - name: metrics-debug
+              containerPort: 9134
+          volumeMounts:
+            - name: ocis-config-tmp
+              mountPath: /etc/ocis # we mount that volume only to apply fsGroup to that path
+            - name: ldap-ca
+              mountPath: /etc/ocis/ldap-ca
+              readOnly: true
+            - name: idp-secrets
+              mountPath: /etc/ocis/idp
+              readOnly: true
+            - name: ocis-data-tmp
+              mountPath: /var/lib/ocis # we mount that volume to apply fsGroup to that path, so that the idp can write the temporary idp/tmp/identifier-registration.yaml file
+      volumes:
+        - name: ocis-config-tmp
+          emptyDir:
+            medium: Memory
+            sizeLimit: 6Mi
+        - name: ldap-ca
+          secret:
+            secretName: {{ .Values.secretRefs.ldapCaRef }}
+        - name: idp-secrets
+          secret:
+            secretName: {{ .Values.secretRefs.idpSecretRef }}
+        - name: ocis-data-tmp
+          emptyDir:
+            medium: Memory
+            sizeLimit: 6Mi
+{{- end }}

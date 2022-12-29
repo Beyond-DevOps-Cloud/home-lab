@@ -1,0 +1,61 @@
+{{- $_ := set . "resources" (default (default (dict) .Values.resources) .Values.services.audit.resources) -}}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: audit
+  namespace: {{ template "ocis.namespace" . }}
+  labels:
+    {{- include "ocis.labels" . | nindent 4 }}
+spec:
+  selector:
+    matchLabels:
+      app: audit
+  {{- if and (not .Values.autoscaling.enabled) (.Values.replicas) }}
+  replicas: {{ .Values.replicas }}
+  {{- end }}
+  {{- $_ := set . "appName" "audit" -}}
+  {{- if .Values.deploymentStrategy }}
+  strategy: {{ toYaml .Values.deploymentStrategy | nindent 4 }}
+  {{ end }}
+  template:
+    metadata:
+      labels:
+        app: {{ .appName }}
+        {{- include "ocis.labels" . | nindent 8 }}
+    spec:
+      securityContext:
+          fsGroup: {{ .Values.securityContext.fsGroup }}
+          fsGroupChangePolicy: {{ .Values.securityContext.fsGroupChangePolicy }}
+      {{- with .Values.topologySpreadConstraints }}
+      topologySpreadConstraints:
+        {{- tpl . $ | nindent 8 }}
+      {{- end }}
+      containers:
+        - name: {{ .appName }}
+          image: {{ template "ocis.image" $ }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command: ["ocis"]
+          args: ["audit", "server"]
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: {{ .Values.securityContext.runAsUser }}
+            runAsGroup: {{ .Values.securityContext.runAsGroup }}
+            readOnlyRootFilesystem: true
+          env:
+            - name: MICRO_REGISTRY
+              value: kubernetes
+
+            - name: AUDIT_LOG_COLOR
+              value: "{{ .Values.logging.color }}"
+            - name: AUDIT_LOG_LEVEL
+              value: "{{ .Values.logging.level }}"
+            - name: AUDIT_LOG_PRETTY
+              value: "{{ .Values.logging.pretty }}"
+
+            - name: AUDIT_EVENTS_ENDPOINT
+              value: nats:9233
+
+            - name: AUDIT_LOG_TO_CONSOLE
+              value: "true"
+
+          resources: {{ toYaml .resources | nindent 12 }}

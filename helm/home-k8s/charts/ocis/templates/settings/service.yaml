@@ -1,0 +1,23 @@
+{{- $_ := set . "appName" "settings" -}}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .appName }}
+  namespace: {{ template "ocis.namespace" . }}
+  labels:
+    app: {{ .appName }}
+    ocis-metrics: enabled
+    {{- include "ocis.labels" . | nindent 4 }}
+spec:
+  selector:
+    app: {{ .appName }}
+  ports:
+    - name: grpc
+      port: 9191
+      protocol: TCP
+    - name: http
+      port: 9190
+      protocol: TCP
+    - name: metrics-debug
+      port: 9194
+      protocol: TCP

@@ -1,0 +1,12 @@
+[caption=]
+Supported Kubernetes versions
+[width="100%",cols="~",options="header"]
+|===
+| Version
+a| [subs=-attributes]
++~1.25.0+
+a| [subs=-attributes]
++~1.24.0+
+a| [subs=-attributes]
++~1.23.0+
+|===

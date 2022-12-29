@@ -35,4 +35,4 @@ wget https://github.com/muhlba91/pulumi-proxmoxve/releases/download/v2.1.0/pulum
 pulumi plugin install resource proxmoxve v2.1.0 -f ./pulumi-resource-proxmoxve-v2.1.0-linux-arm64.tar.gz
 
 
-docker run -it --rm --entrypoint /bin/sh -v "$(pwd):/app" -v "/mnt/c/Users/andre/.kube/config:/home/root/.kube/config" -w "/app" praqma/helmsman -c "helmsman --apply -f ./home-k3s-lab.yaml"
+docker run -it --rm --entrypoint /bin/sh -v "$(pwd):/app" -v "/home/lordmuffin/.kube/config:/home/root/.kube/config" -e KUBECONFIG=/home/root/.kube/config -w "/app" praqma/helmsman -c "./install.sh"

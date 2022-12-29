@@ -1,0 +1,112 @@
+{{- $_ := set . "appName" "search" -}}
+{{- $_ := set . "resources" (default (default (dict) .Values.resources) .Values.services.search.resources) -}}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .appName }}
+  namespace: {{ template "ocis.namespace" . }}
+  labels:
+    {{- include "ocis.labels" . | nindent 4 }}
+spec:
+  selector:
+    matchLabels:
+      app: {{ .appName }}
+  {{- if and (not .Values.autoscaling.enabled) (.Values.replicas) }}
+  replicas: {{ .Values.replicas }}
+  {{- end }}
+  {{- if .Values.deploymentStrategy }}
+  strategy: {{ toYaml .Values.deploymentStrategy | nindent 4 }}
+  {{ end }}
+  template:
+    metadata:
+      labels:
+        app: {{ .appName }}
+        {{- include "ocis.labels" . | nindent 8 }}
+    spec:
+      securityContext:
+          fsGroup: {{ .Values.securityContext.fsGroup }}
+          fsGroupChangePolicy: {{ .Values.securityContext.fsGroupChangePolicy }}
+      {{- if and $.Values.services.search.persistence.enabled $.Values.services.search.persistence.chownInitContainer }}
+      initContainers:
+        - name: init-chown-data
+          image: busybox
+          securityContext:
+            runAsNonRoot: false
+            runAsUser: 0
+          command: ["chown", "-R", "{{ .Values.securityContext.runAsUser }}:{{ .Values.securityContext.runAsGroup }}", "/var/lib/ocis"]
+          volumeMounts:
+          - name: search-data
+            mountPath: /var/lib/ocis
+      {{ end }}
+      {{- with .Values.topologySpreadConstraints }}
+      topologySpreadConstraints:
+        {{- tpl . $ | nindent 8 }}
+      {{- end }}
+      containers:
+        - name: {{ .appName }}
+          image: {{ template "ocis.image" $ }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command: ["ocis"]
+          args: ["search", "server"]
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: {{ .Values.securityContext.runAsUser }}
+            runAsGroup: {{ .Values.securityContext.runAsGroup }}
+            readOnlyRootFilesystem: true
+          env:
+            - name: MICRO_REGISTRY
+              value: kubernetes
+
+            - name: SEARCH_LOG_COLOR
+              value: "{{ .Values.logging.color }}"
+            - name: SEARCH_LOG_LEVEL
+              value: "{{ .Values.logging.level }}"
+            - name: SEARCH_LOG_PRETTY
+              value: "{{ .Values.logging.pretty }}"
+
+            - name: SEARCH_DEBUG_PPROF
+              value: "{{ .Values.debug.profiling }}"
+
+            - name: SEARCH_GRPC_ADDR
+              value: 0.0.0.0:9220
+            - name: SEARCH_DEBUG_ADDR
+              value: 0.0.0.0:9224
+
+            - name: REVA_GATEWAY
+              value: gateway:9142
+            - name: SEARCH_EVENTS_ENDPOINT
+              value: nats:9233
+
+            - name: SEARCH_MACHINE_AUTH_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.secretRefs.machineAuthApiKeySecretRef }}
+                  key: machine-auth-api-key
+
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: metrics-debug
+            timeoutSeconds: 10
+            initialDelaySeconds: 60
+            periodSeconds: 20
+            failureThreshold: 3
+
+          resources: {{ toYaml .resources | nindent 12 }}
+          ports:
+            - name: grpc
+              containerPort: 9220
+            - name: metrics-debug
+              containerPort: 9224
+          volumeMounts:
+            - name: search-data
+              mountPath: /var/lib/ocis
+      volumes:
+      {{- if .Values.services.search.persistence.enabled }}
+        - name: search-data
+          persistentVolumeClaim:
+            claimName: search-data
+      {{ else }}
+        - name: search-data
+          emptyDir: {}
+      {{ end }}

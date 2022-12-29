@@ -1,0 +1,82 @@
+{{- $_ := set . "appName" "webdav" -}}
+{{- $_ := set . "resources" (default (default (dict) .Values.resources) .Values.services.webdav.resources) -}}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .appName }}
+  namespace: {{ template "ocis.namespace" . }}
+  labels:
+    {{- include "ocis.labels" . | nindent 4 }}
+spec:
+  selector:
+    matchLabels:
+      app: {{ .appName }}
+  {{- if and (not .Values.autoscaling.enabled) (.Values.replicas) }}
+  replicas: {{ .Values.replicas }}
+  {{- end }}
+  {{- if .Values.deploymentStrategy }}
+  strategy: {{ toYaml .Values.deploymentStrategy | nindent 4 }}
+  {{ end }}
+  template:
+    metadata:
+      labels:
+        app: {{ .appName }}
+        {{- include "ocis.labels" . | nindent 8 }}
+    spec:
+      securityContext:
+          fsGroup: {{ .Values.securityContext.fsGroup }}
+          fsGroupChangePolicy: {{ .Values.securityContext.fsGroupChangePolicy }}
+      {{- with .Values.topologySpreadConstraints }}
+      topologySpreadConstraints:
+        {{- tpl . $ | nindent 8 }}
+      {{- end }}
+      containers:
+        - name: {{ .appName }}
+          image: {{ template "ocis.image" $ }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command: ["ocis"]
+          args: ["webdav", "server"]
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: {{ .Values.securityContext.runAsUser }}
+            runAsGroup: {{ .Values.securityContext.runAsGroup }}
+            readOnlyRootFilesystem: true
+          env:
+            - name: MICRO_REGISTRY
+              value: kubernetes
+
+            - name: WEBDAV_LOG_COLOR
+              value: "{{ .Values.logging.color }}"
+            - name: WEBDAV_LOG_LEVEL
+              value: "{{ .Values.logging.level }}"
+            - name: WEBDAV_LOG_PRETTY
+              value: "{{ .Values.logging.pretty }}"
+
+            - name: WEBDAV_DEBUG_PPROF
+              value: "{{ .Values.debug.profiling }}"
+
+            - name: WEBDAV_HTTP_ADDR
+              value: 0.0.0.0:9115
+            - name: WEBDAV_DEBUG_ADDR
+              value: 0.0.0.0:9119
+
+            - name: OCIS_PUBLIC_URL
+              value: "https://{{ .Values.externalDomain }}"
+            - name: REVA_GATEWAY
+              value: gateway:9142
+
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: metrics-debug
+            timeoutSeconds: 10
+            initialDelaySeconds: 60
+            periodSeconds: 20
+            failureThreshold: 3
+
+          resources: {{ toYaml .resources | nindent 12 }}
+          ports:
+            - name: http
+              containerPort: 9115
+            - name: metrics-debug
+              containerPort: 9119

@@ -1,0 +1,23 @@
+{{- $_ := set . "appName" "idp" -}}
+{{- if not .Values.features.externalUserManagement.enabled }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .appName }}
+  namespace: {{ template "ocis.namespace" . }}
+  labels:
+    app: {{ .appName }}
+    ocis-metrics: enabled
+    {{- include "ocis.labels" . | nindent 4 }}
+spec:
+  selector:
+    app: {{ .appName }}
+  ports:
+    - name: http
+      port: 9130
+      protocol: TCP
+    - name: metrics-debug
+      port: 9134
+      protocol: TCP
+
+{{- end }}

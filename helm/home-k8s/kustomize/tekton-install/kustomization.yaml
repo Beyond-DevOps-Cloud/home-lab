@@ -1,0 +1,5 @@
+# namespace: tekton-pipelines
+resources:
+- pipelines-release.yaml
+- triggers-release.yaml
+- triggers-interceptors.yaml

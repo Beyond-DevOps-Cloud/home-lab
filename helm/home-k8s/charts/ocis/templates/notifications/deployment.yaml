@@ -1,0 +1,116 @@
+{{- $_ := set . "appName" "notifications" -}}
+{{- if .Values.features.emailNotifications.enabled }}
+{{- $_ := set . "resources" (default (default (dict) .Values.resources) .Values.services.notifications.resources) -}}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .appName }}
+  namespace: {{ template "ocis.namespace" . }}
+  labels:
+    {{- include "ocis.labels" . | nindent 4 }}
+spec:
+  selector:
+    matchLabels:
+      app: {{ .appName }}
+  {{- if and (not .Values.autoscaling.enabled) (.Values.replicas) }}
+  replicas: {{ .Values.replicas }}
+  {{- end }}
+  {{- if .Values.deploymentStrategy }}
+  strategy: {{ toYaml .Values.deploymentStrategy | nindent 4 }}
+  {{ end }}
+  template:
+    metadata:
+      labels:
+        app: {{ .appName }}
+        {{- include "ocis.labels" . | nindent 8 }}
+    spec:
+      securityContext:
+          fsGroup: {{ .Values.securityContext.fsGroup }}
+          fsGroupChangePolicy: {{ .Values.securityContext.fsGroupChangePolicy }}
+      {{- with .Values.topologySpreadConstraints }}
+      topologySpreadConstraints:
+        {{- tpl . $ | nindent 8 }}
+      {{- end }}
+      containers:
+        - name: {{ .appName }}
+          image: {{ template "ocis.image" $ }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command: ["ocis"]
+          args: ["notifications", "server"]
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: {{ .Values.securityContext.runAsUser }}
+            runAsGroup: {{ .Values.securityContext.runAsGroup }}
+            readOnlyRootFilesystem: true
+          env:
+            - name: NOTIFICATIONS_LOG_COLOR
+              value: "{{ .Values.logging.color }}"
+            - name: NOTIFICATIONS_LOG_LEVEL
+              value: "{{ .Values.logging.level }}"
+            - name: NOTIFICATIONS_LOG_PRETTY
+              value: "{{ .Values.logging.pretty }}"
+
+            # - name: NOTIFICATIONS_DEBUG_PPROF
+            #   value: "{{ .Values.debug.profiling }}"
+
+            # - name: NOTIFICATIONS_DEBUG_ADDR
+            #   value: 0.0.0.0:9174
+
+            - name: NOTIFICATIONS_SMTP_HOST
+              value: "{{ .Values.features.emailNotifications.smtp.host }}"
+            - name: NOTIFICATIONS_SMTP_PORT
+              value: "{{ .Values.features.emailNotifications.smtp.port }}"
+            - name: NOTIFICATIONS_SMTP_SENDER
+              value: "{{ .Values.features.emailNotifications.smtp.sender }}"
+            - name: NOTIFICATIONS_SMTP_AUTHENTICATION
+              value: "{{ .Values.features.emailNotifications.smtp.authentication }}"
+            - name: NOTIFICATIONS_SMTP_ENCRYPTION
+              value: "{{ .Values.features.emailNotifications.smtp.encryption }}"
+
+            - name: NOTIFICATIONS_SMTP_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.secretRefs.notificationsSmtpSecretRef }}
+                  key: smtp-username
+
+            - name: NOTIFICATIONS_SMTP_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.secretRefs.notificationsSmtpSecretRef }}
+                  key: smtp-password
+
+            #TODO: remove OCIS_URL in favor of NOTIFICATIONS_WEB_UI_URL
+            # after https://github.com/owncloud/ocis/pull/4998 was released
+            - name: OCIS_URL
+              value: https://{{ .Values.externalDomain }}
+            - name: NOTIFICATIONS_WEB_UI_URL
+              value: https://{{ .Values.externalDomain }}
+
+            - name: REVA_GATEWAY
+              value: gateway:9142
+            - name: NOTIFICATIONS_EVENTS_ENDPOINT
+              value: nats:9233
+
+            - name: NOTIFICATIONS_MACHINE_AUTH_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.secretRefs.machineAuthApiKeySecretRef }}
+                  key: machine-auth-api-key
+
+          # TODO: This service does not currently provide a debug port, re-enable this once that is implemented
+          # See: https://github.com/owncloud/ocis-charts/issues/111
+          # livenessProbe:
+          #   httpGet:
+          #     path: /healthz
+          #     port: metrics-debug
+          #   timeoutSeconds: 10
+          #   initialDelaySeconds: 60
+          #   periodSeconds: 20
+          #   failureThreshold: 3
+
+          resources: {{ toYaml .resources | nindent 12 }}
+          # TODO: This service does not currently provide a debug port, re-enable this once that is implemented
+          # ports:
+          #   - name: metrics-debug
+          #     containerPort: 9174
+{{- end }}

@@ -1,0 +1,37 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  annotations:
+    tekton.dev/pipelines.minVersion: 0.12.1
+    tekton.dev/tags: git
+  name: git-clone
+  labels:
+    app.kubernetes.io/version: '0.2'
+    operator.tekton.dev/provider-type: community
+spec:
+  description: >-
+    This Task can be used to update image digest in a Git repo using kustomize and push changes into a feature branch.
+    It requires a secret with credentials for accessing the git repo.
+  params:
+    - name: GIT_REPOSITORY
+      type: string
+    - name: pathInRepo
+      value: task/git-clone/0.6/git-clone.yaml
+
+  results:
+    - description: The commit SHA
+      name: commit
+  steps:
+    - image: 'docker.io/alpine/git:v2.26.2'
+      name: git-clone
+      resources: {}
+      script: >
+        rm -rf git-update-digest-workdir
+
+        git clone $(params.GIT_REPOSITORY)
+        git-update-digest-workdir
+      workingDir: $(workspaces.workspace.path)
+
+  workspaces:
+    - description: The workspace.
+      name: workspace

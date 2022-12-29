@@ -1,0 +1,167 @@
+{{- $_ := set . "appName" "idm" -}}
+{{- if not .Values.features.externalUserManagement.enabled }}
+{{- $_ := set . "resources" (default (default (dict) .Values.resources) .Values.services.idm.resources) -}}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .appName }}
+  namespace: {{ template "ocis.namespace" . }}
+  labels:
+    {{- include "ocis.labels" . | nindent 4 }}
+spec:
+  selector:
+    matchLabels:
+      app: {{ .appName }}
+  replicas: 1
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: {{ .appName }}
+        {{- include "ocis.labels" . | nindent 8 }}
+    spec:
+      securityContext:
+          fsGroup: {{ .Values.securityContext.fsGroup }}
+          fsGroupChangePolicy: {{ .Values.securityContext.fsGroupChangePolicy }}
+      initContainers:
+      {{- if and $.Values.services.idm.persistence.enabled $.Values.services.idm.persistence.chownInitContainer }}
+        - name: init-chown-data
+          image: busybox
+          securityContext:
+            runAsNonRoot: false
+            runAsUser: 0
+          command: ["chown", "-R", "{{ .Values.securityContext.runAsUser }}:{{ .Values.securityContext.runAsGroup }}", "/var/lib/ocis"]
+          volumeMounts:
+          - name: idm-data
+            mountPath: /var/lib/ocis
+      {{ end }}
+        - name: init-dir #TODO: that should not be needed, needs fix in the idm service
+          image: busybox:stable
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: {{ .Values.securityContext.runAsUser }}
+            runAsGroup: {{ .Values.securityContext.runAsGroup }}
+            readOnlyRootFilesystem: true
+          command: ["mkdir", "-p", "/var/lib/ocis/idm"]
+          resources: {{ toYaml .resources | nindent 12 }}
+          volumeMounts:
+          - name: idm-data
+            mountPath: /var/lib/ocis
+      {{- with .Values.topologySpreadConstraints }}
+      topologySpreadConstraints:
+        {{- tpl . $ | nindent 8 }}
+      {{- end }}
+      containers:
+        - name: {{ .appName }}
+          image: {{ template "ocis.image" $ }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command: ["ocis"]
+          args: ["idm", "server"]
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: {{ .Values.securityContext.runAsUser }}
+            runAsGroup: {{ .Values.securityContext.runAsGroup }}
+            readOnlyRootFilesystem: true
+          env:
+            - name: MICRO_REGISTRY
+              value: kubernetes
+
+            - name: IDM_LOG_COLOR
+              value: "{{ .Values.logging.color }}"
+            - name: IDM_LOG_LEVEL
+              value: "{{ .Values.logging.level }}"
+            - name: IDM_LOG_PRETTY
+              value: "{{ .Values.logging.pretty }}"
+
+            # - name: IDM_DEBUG_PPROF
+            #   value: "{{ .Values.debug.profiling }}"
+
+            - name: IDM_LDAPS_ADDR
+              value: 0.0.0.0:9235
+            # - name: IDM_DEBUG_ADDR
+            #   value: 0.0.0.0:9239
+
+            - name: IDM_CREATE_DEMO_USERS
+              value: "{{ .Values.features.demoUsers }}"
+
+            - name: IDM_ADMIN_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.secretRefs.adminUserSecretRef }}
+                  key: password
+            - name: IDM_ADMIN_USER_ID
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.secretRefs.adminUserSecretRef }}
+                  key: user-id
+
+            - name: IDM_SVC_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.secretRefs.ldapSecretRef }}
+                  key: graph-ldap-bind-password
+
+            - name: IDM_REVASVC_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.secretRefs.ldapSecretRef }}
+                  key: reva-ldap-bind-password
+
+            - name: IDM_IDPSVC_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.secretRefs.ldapSecretRef }}
+                  key: idp-ldap-bind-password
+
+            - name: IDM_LDAPS_CERT
+              value: /etc/ocis/ldap-cert/ldap.crt
+
+            - name: IDM_LDAPS_KEY
+              value: /etc/ocis/ldap-cert/ldap.key
+
+          livenessProbe:
+            # TODO: IDM does not currently provide a debug port, re-enable this once that is implemented
+            # httpGet:
+            #   path: /healthz
+            #   port: metrics-debug
+            # until then we're just doing a TCP check on the main port
+            tcpSocket:
+              port: ldaps
+            timeoutSeconds: 10
+            initialDelaySeconds: 60
+            periodSeconds: 20
+            failureThreshold: 3
+
+          resources: {{ toYaml .resources | nindent 12 }}
+          ports:
+            - name: ldaps
+              containerPort: 9235
+            # TODO: IDM does not currently provide a debug port, re-enable this once that is implemented
+            # - name: metrics-debug
+            #   containerPort: 9239
+          volumeMounts:
+            - name: ocis-config-tmp
+              mountPath: /etc/ocis # we mount that volume only to apply fsGroup to that path
+            - name: ldap-cert
+              mountPath: /etc/ocis/ldap-cert
+              readOnly: true
+            - name: idm-data
+              mountPath: /var/lib/ocis
+      volumes:
+        - name: ocis-config-tmp
+          emptyDir:
+            medium: Memory
+            sizeLimit: 6Mi
+        - name: ldap-cert
+          secret:
+            secretName: {{ .Values.secretRefs.ldapCertRef }}
+      {{ if .Values.services.idm.persistence.enabled }}
+        - name: idm-data
+          persistentVolumeClaim:
+            claimName: idm-data
+      {{ else }}
+        - name: idm-data
+          emptyDir: {}
+      {{ end }}
+{{- end }}

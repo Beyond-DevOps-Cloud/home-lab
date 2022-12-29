@@ -1,0 +1,42 @@
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  name: home-lab-pipeline
+spec:
+  description: | 
+    This pipeline clones a git repo, then echoes the README file to the stdout.
+  params:
+  - name: repo-url
+    type: string
+    description: The git repo URL to clone from.
+  - name: pathInRepo
+    type: string
+    description: The git repo URL to clone from.
+
+
+  workspaces:
+    - name: shared-data
+
+  tasks:
+    - name: fetch-source
+      taskRef:
+        name: git-clone
+        resolver: git
+        params:
+        - name: url
+          value: https://github.com/Beyond-DevOps-Cloud/home-lab.git
+        - name: pathInRepo
+          value: pipeline/simple/0.1/simple.yaml
+      workspaces:
+      - name: output
+        workspace: shared-data
+      params:
+      - name: url
+        value: $(params.repo-url)
+    - name: install-charts
+      workspaces:
+        - name: shared-data # <- mapping workspace name
+      taskSpec:
+        steps:
+        - image: praqma/helmsman
+          script: ./install.sh

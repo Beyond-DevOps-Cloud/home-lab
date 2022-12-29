@@ -1,0 +1,14 @@
+apiVersion: cert-manager.io/v1
+kind: Issuer
+metadata:
+  name: authentik
+spec:
+  acme:
+    server: https://acme-v02.api.letsencrypt.org/directory
+    email: dorkmeisterx69@gmail.com
+    privateKeySecretRef:
+      name: authentik.andrewpjackson.com-private-key
+    solvers:
+    - http01:
+        ingress:
+          class: nginx

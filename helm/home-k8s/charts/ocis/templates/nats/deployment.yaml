@@ -1,0 +1,104 @@
+{{- $_ := set . "appName" "nats" -}}
+{{- $_ := set . "resources" (default (default (dict) .Values.resources) .Values.services.nats.resources) -}}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .appName }}
+  namespace: {{ template "ocis.namespace" . }}
+  labels:
+    {{- include "ocis.labels" . | nindent 4 }}
+spec:
+  selector:
+    matchLabels:
+      app: {{ .appName }}
+  replicas: 1 #TODO: https://github.com/owncloud/ocis-charts/issues/12
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: {{ .appName }}
+        {{- include "ocis.labels" . | nindent 8 }}
+    spec:
+      securityContext:
+          fsGroup: {{ .Values.securityContext.fsGroup }}
+          fsGroupChangePolicy: {{ .Values.securityContext.fsGroupChangePolicy }}
+      {{- if and $.Values.services.nats.persistence.enabled $.Values.services.nats.persistence.chownInitContainer }}
+      initContainers:
+        - name: init-chown-data
+          image: busybox
+          securityContext:
+            runAsNonRoot: false
+            runAsUser: 0
+          command: ["chown", "-R", "{{ .Values.securityContext.runAsUser }}:{{ .Values.securityContext.runAsGroup }}", "/var/lib/ocis"]
+          volumeMounts:
+          - name: nats-data
+            mountPath: /var/lib/ocis
+      {{ end }}
+      {{- with .Values.topologySpreadConstraints }}
+      topologySpreadConstraints:
+        {{- tpl . $ | nindent 8 }}
+      {{- end }}
+      containers:
+        - name: {{ .appName }}
+          image: {{ template "ocis.image" $ }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command: ["ocis"]
+          args: ["nats", "server"]
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: {{ .Values.securityContext.runAsUser }}
+            runAsGroup: {{ .Values.securityContext.runAsGroup }}
+            readOnlyRootFilesystem: true
+          env:
+            - name: NATS_LOG_COLOR
+              value: "{{ .Values.logging.color }}"
+            - name: NATS_LOG_LEVEL
+              value: "{{ .Values.logging.level }}"
+            - name: NATS_LOG_PRETTY
+              value: "{{ .Values.logging.pretty }}"
+
+            # - name: NATS_DEBUG_PPROF
+            #   value: "{{ .Values.debug.profiling }}"
+
+            - name: NATS_NATS_HOST
+              value: "0.0.0.0"
+            - name: NATS_NATS_PORT
+              value: "9233"
+
+            # - name: NATS_DEBUG_ADDR
+            #   value: 0.0.0.0:9234
+
+          livenessProbe:
+            # TODO: NATS does not currently provide a debug port, re-enable this once that is implemented
+            # See: https://github.com/owncloud/ocis-charts/issues/111
+            # httpGet:
+            #   path: /healthz
+            #   port: metrics-debug
+            # until then we're just doing a TCP check on the main port
+            tcpSocket:
+              port: 9233
+            timeoutSeconds: 10
+            initialDelaySeconds: 60
+            periodSeconds: 20
+            failureThreshold: 3
+
+          resources: {{ toYaml .resources | nindent 12 }}
+          ports:
+            - name: nats
+              containerPort: 9233
+            # TODO: NATS does not currently provide a debug port, re-enable this once that is implemented
+            # - name: metrics-debug
+            #   containerPort: 9234
+          volumeMounts:
+            - name: nats-data
+              mountPath: /var/lib/ocis
+      volumes:
+      {{- if .Values.services.nats.persistence.enabled }}
+        - name: nats-data
+          persistentVolumeClaim:
+            claimName: nats-data
+      {{ else }}
+        - name: nats-data
+          emptyDir: {}
+      {{ end }}

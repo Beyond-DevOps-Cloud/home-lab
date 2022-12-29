@@ -1,0 +1,42 @@
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: wildcard-le-prod
+spec:
+  acme:
+    email: dorkmeisterx69@gmail.com
+    server: https://acme-v02.api.letsencrypt.org/directory
+    privateKeySecretRef:
+      name: wildcard-le-prod
+    solvers:
+    - selector:
+        dnsZones:
+          - "andrewpjackson.com"
+      dns01:
+        route53:
+          region: us-east-1
+          hostedZoneID: Z02810593VHHVZMM6XK6N
+          accessKeyID: AKIAVOVK2GSNHIK3LPLS
+          secretAccessKeySecretRef:
+            name: route53-secret
+            key: secret-access-key
+          role: arn:aws:iam::375094129818:role/route53-cert-manager-andrewpjackson.com-role
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: andrewpjackson.com
+spec:
+  secretName: andrewpjackson.com-tls
+  issuerRef: 
+    kind: ClusterIssuer
+    name: wildcard-le-prod
+  commonName: "*.andrewpjackson.com"
+  dnsNames:
+    - "*.andrewpjackson.com"
+  secretTemplate:
+    annotations:
+      reflector.v1.k8s.emberstack.com/reflection-allowed: "true"
+      reflector.v1.k8s.emberstack.com/reflection-allowed-namespaces: "argo,heimdall,bitwarden,portainer,searxng,dendrite,ocis,onedev,authentik,default"  # Control destination namespaces
+      reflector.v1.k8s.emberstack.com/reflection-auto-enabled: "true" # Auto create reflection for matching namespaces
+      reflector.v1.k8s.emberstack.com/reflection-auto-namespaces: "argo,heimdall,bitwarden,portainer,searxng,dendrite,ocis,onedev,authentik,default" # Control auto-reflection namespaces
