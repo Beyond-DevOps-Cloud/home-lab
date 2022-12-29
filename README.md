@@ -36,3 +36,15 @@ pulumi plugin install resource proxmoxve v2.1.0 -f ./pulumi-resource-proxmoxve-v
 
 
 docker run -it --rm --entrypoint /bin/sh -v "$(pwd):/app" -v "/home/lordmuffin/.kube/config:/home/root/.kube/config" -e KUBECONFIG=/home/root/.kube/config -w "/app" praqma/helmsman -c "./install.sh"
+
+
+
+
+## Argo Things:
+### Install ArgoCD:
+?? Still need to figure this out.
+### Init Argo:
+Run this after ArgoCD is up and running
+```
+docker run -it --rm --entrypoint=/bin/sh -v "$(pwd):/work" -v "/home/lordmuffin/.kube/config:/home/root/.kube/config" -e KUBECONFIG=/home/root/.kube/config -w "/work" kubectl-kustomize-helm -c "helm template helm/home-k8s/apps | kubectl apply -f -"
+```
