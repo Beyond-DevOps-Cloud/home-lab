@@ -205,34 +205,34 @@ apps:
     test: false
     protected: false
     priority: -9
-  argo-workflows:
-    namespace: "argo" # maps to the namespace as defined in namespaces above
-    enabled: false # change to false if you want to delete this app release empty: false:
-    chart: "argo/argo-workflows" # changing the chart name means delete and recreate this chart
-    version: "0.22.4" # chart version
-    ### Optional values below
-    valuesFile: "values/argo-workflows.yaml" # leaving it empty uses the default chart values
-    test: false
-    protected: false
-    priority: -8
-    hooks:
-      preInstall: "files/argo-secrets.yaml"
-      preUpgrade: "files/argo-secrets.yaml"
-      preDelete: "files/argo-secrets.yaml"
-  argo-cd:
-    namespace: "argo" # maps to the namespace as defined in namespaces above
-    enabled: false # change to false if you want to delete this app release empty: false:
-    chart: "argo/argo-cd" # changing the chart name means delete and recreate this chart
-    version: "5.16.11" # chart version
-    ### Optional values below
-    valuesFile: "values/argo-cd.yaml" # leaving it empty uses the default chart values
-    test: false
-    protected: false
-    priority: -8
-    hooks:
-      preInstall: "files/argo-secrets.yaml"
-      preUpgrade: "files/argo-secrets.yaml"
-      preDelete: "files/argo-secrets.yaml"
+  # argo-workflows:
+  #   namespace: "argo" # maps to the namespace as defined in namespaces above
+  #   enabled: false # change to false if you want to delete this app release empty: false:
+  #   chart: "argo/argo-workflows" # changing the chart name means delete and recreate this chart
+  #   version: "0.22.4" # chart version
+  #   ### Optional values below
+  #   valuesFile: "values/argo-workflows.yaml" # leaving it empty uses the default chart values
+  #   test: false
+  #   protected: false
+  #   priority: -8
+  #   hooks:
+  #     preInstall: "files/argo-secrets.yaml"
+  #     preUpgrade: "files/argo-secrets.yaml"
+  #     preDelete: "files/argo-secrets.yaml"
+  # argo-cd:
+  #   namespace: "argo" # maps to the namespace as defined in namespaces above
+  #   enabled: false # change to false if you want to delete this app release empty: false:
+  #   chart: "argo/argo-cd" # changing the chart name means delete and recreate this chart
+  #   version: "5.16.11" # chart version
+  #   ### Optional values below
+  #   valuesFile: "values/argo-cd.yaml" # leaving it empty uses the default chart values
+  #   test: false
+  #   protected: false
+  #   priority: -8
+  #   hooks:
+  #     preInstall: "files/argo-secrets.yaml"
+  #     preUpgrade: "files/argo-secrets.yaml"
+  #     preDelete: "files/argo-secrets.yaml"
 
   bitwarden:
     namespace: "bitwarden" # maps to the namespace as defined in namespaces above

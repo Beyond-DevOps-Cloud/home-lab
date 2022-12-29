@@ -45,9 +45,9 @@ docker run -it --rm --entrypoint /bin/sh -v "$(pwd):/app" -v "/home/lordmuffin/.
 ?? Still need to figure this out.
 
 ```
-docker run -it --rm --entrypoint=/bin/sh -v "$(pwd):/work" -v "/home/lordmuffin/.kube/config:/home/root/.kube/config" -e KUBECONFIG=/home/root/.kube/config -w "/work" kubectl-kustomize-helm -c "kubectl create namespace argocd && kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml"
+docker run -it --rm --entrypoint=/bin/sh -v "$(pwd):/work" -v "/home/lordmuffin/.kube/config:/home/root/.kube/config" -e KUBECONFIG=/home/root/.kube/config -w "/work" kubectl-kustomize-helm -c "kubectl create namespace argocd
+kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml"
 ```
-
 ### Init Argo:
 Run this after ArgoCD is up and running.  Note the namespace!
 ```
