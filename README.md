@@ -43,8 +43,13 @@ docker run -it --rm --entrypoint /bin/sh -v "$(pwd):/app" -v "/home/lordmuffin/.
 ## Argo Things:
 ### Install ArgoCD:
 ?? Still need to figure this out.
-### Init Argo:
-Run this after ArgoCD is up and running
+
 ```
-docker run -it --rm --entrypoint=/bin/sh -v "$(pwd):/work" -v "/home/lordmuffin/.kube/config:/home/root/.kube/config" -e KUBECONFIG=/home/root/.kube/config -w "/work" kubectl-kustomize-helm -c "helm template helm/home-k8s/apps | kubectl apply -f -"
+docker run -it --rm --entrypoint=/bin/sh -v "$(pwd):/work" -v "/home/lordmuffin/.kube/config:/home/root/.kube/config" -e KUBECONFIG=/home/root/.kube/config -w "/work" kubectl-kustomize-helm -c "kubectl create namespace argocd && kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml"
+```
+
+### Init Argo:
+Run this after ArgoCD is up and running.  Note the namespace!
+```
+docker run -it --rm --entrypoint=/bin/sh -v "$(pwd):/work" -v "/home/lordmuffin/.kube/config:/home/root/.kube/config" -e KUBECONFIG=/home/root/.kube/config -w "/work" kubectl-kustomize-helm -c "helm template helm/home-k8s/apps | kubectl apply -n argocd -f -"
 ```
