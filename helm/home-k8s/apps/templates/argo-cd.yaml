@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: argo-cd
+  name: argocd
   namespace: argocd
   finalizers:
   - resources-finalizer.argocd.argoproj.io
@@ -11,12 +11,9 @@ spec:
     namespace: argocd
   project: default
   source:
-    path: ./helm/home-k8s/charts/argo-cd
+    path: ./helm/home-k8s/kustomize/argocd
     repoURL: https://github.com/Beyond-DevOps-Cloud/home-lab.git
     targetRevision: HEAD
-    helm:                                                                                                                                                                                                                                                                                 
-      valueFiles:                                                                                                                                                                                                                                                                         
-      - ../../values/argo-cd.yaml
   syncPolicy:
     automated:
       prune: true

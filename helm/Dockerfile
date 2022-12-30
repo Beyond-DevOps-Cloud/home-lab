@@ -1,4 +1,4 @@
-FROM alpine:3.14
+FROM alpine/git
 
 ENV KUBECTL_VERSION=1.22.3 \
     KUSTOMIZE_VERSION=4.4.0 \
