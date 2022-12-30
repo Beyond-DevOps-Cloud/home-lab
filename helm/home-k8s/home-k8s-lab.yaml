@@ -70,6 +70,8 @@ namespaces:
     protected: false
   heimdall:
     protected: false
+  argocd:
+    protected: false
 # define any private/public helm charts repos you would like to get charts from
 # syntax: repo_name: "repo_url"
 # only private repos hosted in s3 buckets are now supported
@@ -219,20 +221,20 @@ apps:
   #     preInstall: "files/argo-secrets.yaml"
   #     preUpgrade: "files/argo-secrets.yaml"
   #     preDelete: "files/argo-secrets.yaml"
-  # argo-cd:
-  #   namespace: "argo" # maps to the namespace as defined in namespaces above
-  #   enabled: false # change to false if you want to delete this app release empty: false:
-  #   chart: "argo/argo-cd" # changing the chart name means delete and recreate this chart
-  #   version: "5.16.11" # chart version
-  #   ### Optional values below
-  #   valuesFile: "values/argo-cd.yaml" # leaving it empty uses the default chart values
-  #   test: false
-  #   protected: false
-  #   priority: -8
-  #   hooks:
-  #     preInstall: "files/argo-secrets.yaml"
-  #     preUpgrade: "files/argo-secrets.yaml"
-  #     preDelete: "files/argo-secrets.yaml"
+  argo-cd:
+    namespace: "argocd" # maps to the namespace as defined in namespaces above
+    enabled: true # change to false if you want to delete this app release empty: false:
+    chart: "argo/argo-cd" # changing the chart name means delete and recreate this chart
+    version: "5.16.13" # chart version
+    ### Optional values below
+    valuesFile: "values/argo-cd.yaml" # leaving it empty uses the default chart values
+    test: false
+    protected: false
+    priority: -8
+    hooks:
+      preInstall: "files/argo-secrets.yaml"
+      preUpgrade: "files/argo-secrets.yaml"
+      preDelete: "files/argo-secrets.yaml"
 
   bitwarden:
     namespace: "bitwarden" # maps to the namespace as defined in namespaces above

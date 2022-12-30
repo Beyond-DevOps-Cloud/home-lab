@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: argocd
+  name: argo-cd
   namespace: argocd
   finalizers:
   - resources-finalizer.argocd.argoproj.io
@@ -16,7 +16,7 @@ spec:
     targetRevision: HEAD
     helm:                                                                                                                                                                                                                                                                                 
       valueFiles:                                                                                                                                                                                                                                                                         
-      - ./values.yaml
+      - ./helm/home-k8s/values/argo-cd.yaml
   syncPolicy:
     automated:
       prune: true
