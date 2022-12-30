@@ -16,7 +16,7 @@ spec:
     targetRevision: HEAD
     helm:                                                                                                                                                                                                                                                                                 
       valueFiles:                                                                                                                                                                                                                                                                         
-      - ./helm/home-k8s/values/argo-cd.yaml
+      - ./values.yaml
   syncPolicy:
     automated:
       prune: true
