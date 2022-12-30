@@ -3,7 +3,7 @@
 ##
 
 # -- Provide a name in place of `argocd`
-nameOverride: ""
+nameOverride: argocd
 # -- String to fully override `"argo-cd.fullname"`
 fullnameOverride: ""
 # -- Override the Kubernetes version, which is used to evaluate certain manifests
@@ -18,8 +18,6 @@ apiVersionOverrides:
   cloudgoogle: "" # cloud.google.com/v1
   # -- String to override apiVersion of autoscaling rendered by this helm chart
   autoscaling: "" # autoscaling/v2
-  # -- String to override apiVersion of ingresses rendered by this helm chart
-  ingress: "" # networking.k8s.io/v1beta1
 
 # -- Create clusterroles that extend existing clusterroles to interact with argo-cd crds
 ## Ref: https://kubernetes.io/docs/reference/access-authn-authz/rbac/#aggregated-clusterroles
@@ -109,7 +107,7 @@ configs:
     annotations: {}
 
     # -- Argo CD's externally facing base URL (optional). Required when configuring SSO
-    url: "https://argocd.andrewpjackson.com"
+    url: ""
 
     # -- The name of tracking label used by Argo CD for resource pruning
     # @default -- Defaults to app.kubernetes.io/instance
@@ -147,16 +145,22 @@ configs:
     #         - name: your-github-org
 
     # OIDC configuration as an alternative to dex (optional).
-    oidc.config: |
-      name: Authentik
-      issuer: https://authentik.andrewpjackson.com/application/o/argocd/
-      clientID: $oidc.authentik.clientId
-      clientSecret: $oidc.authentik.clientSecret
-      requestedScopes:
-        - openid
-        - profile
-        - email
-        - groups
+    # oidc.config: |
+    #   name: AzureAD
+    #   issuer: https://login.microsoftonline.com/TENANT_ID/v2.0
+    #   clientID: CLIENT_ID
+    #   clientSecret: $oidc.azuread.clientSecret
+    #   rootCA: |
+    #     -----BEGIN CERTIFICATE-----
+    #     ... encoded certificate data here ...
+    #     -----END CERTIFICATE-----
+    #   requestedIDTokenClaims:
+    #     groups:
+    #       essential: true
+    #   requestedScopes:
+    #     - openid
+    #     - profile
+    #     - email
 
   # Argo CD configuration parameters
   ## Ref: https://github.com/argoproj/argo-cd/blob/master/docs/operator-manual/argocd-cmd-params-cm.yaml
@@ -180,7 +184,7 @@ configs:
 
     ## Server properties
     # -- Run server without TLS
-    server.insecure: true
+    server.insecure: false
     # -- Value for base href in index.html. Used if Argo CD is running behind reverse proxy under subpath different from /
     server.basehref: /
     # -- Used if Argo CD is running behind reverse proxy under subpath different from /
@@ -215,13 +219,18 @@ configs:
 
     # -- File containing user-defined policies and role definitions.
     # @default -- `''` (See [values.yaml])
-    # policy.csv: ''
+    policy.csv: ''
     # Policy rules are in the form:
     #  p, subject, resource, action, object, effect
     # Role definitions and bindings are in the form:
     #  g, subject, inherited-subject
-    policy.csv: |
-      g, Argo Admins, role:admin
+    # policy.csv |
+    #   p, role:org-admin, applications, *, */*, allow
+    #   p, role:org-admin, clusters, get, *, allow
+    #   p, role:org-admin, repositories, *, *, allow
+    #   p, role:org-admin, logs, get, *, allow
+    #   p, role:org-admin, exec, create, */*, allow
+    #   g, your-github-org:your-team, role:org-admin
 
     # -- OIDC scopes to examine during rbac enforcement (in addition to `sub` scope).
     # The scope value can be a string, or a list of strings.
@@ -379,7 +388,7 @@ configs:
   # Ref: https://argo-cd.readthedocs.io/en/stable/operator-manual/user-management/#sensitive-data-and-sso-client-secrets
   secret:
     # -- Create the argocd-secret
-    createSecret: false
+    createSecret: true
     # -- Annotations to be added to argocd-secret
     annotations: {}
 
@@ -578,8 +587,7 @@ controller:
   volumes: []
 
   # -- [Node selector]
-  nodeSelector:
-    home.k8s.lab/node-type: agent
+  nodeSelector: {}
 
   # -- [Tolerations] for use with node taints
   tolerations: []
@@ -733,7 +741,7 @@ controller:
 ## Dex
 dex:
   # -- Enable dex
-  enabled: false
+  enabled: true
   # -- Dex name
   name: dex-server
 
@@ -928,8 +936,7 @@ dex:
   servicePortMetrics: 5558
 
   # -- [Node selector]
-  nodeSelector:
-    home.k8s.lab/node-type: agent
+  nodeSelector: {}
   # -- [Tolerations] for use with node taints
   tolerations: []
   # -- Assign custom [affinity] rules to the deployment
@@ -1057,8 +1064,7 @@ redis:
       - ALL
 
   # -- [Node selector]
-  nodeSelector:
-    home.k8s.lab/node-type: agent
+  nodeSelector: {}
   # -- [Tolerations] for use with node taints
   tolerations: []
   # -- Assign custom [affinity] rules to the deployment
@@ -1393,8 +1399,7 @@ server:
   volumes: []
 
   # -- [Node selector]
-  nodeSelector:
-    home.k8s.lab/node-type: agent
+  nodeSelector: {}
   # -- [Tolerations] for use with node taints
   tolerations: []
   # -- Assign custom [affinity] rules to the deployment
@@ -1571,21 +1576,20 @@ server:
 
   ingress:
     # -- Enable an ingress resource for the Argo CD server
-    enabled: true
+    enabled: false
     # -- Additional ingress annotations
     annotations: {}
     # -- Additional ingress labels
     labels: {}
     # -- Defines which ingress controller will implement the resource
-    ingressClassName: "nginx"
+    ingressClassName: ""
 
     # -- List of ingress hosts
     ## Argo Ingress.
     ## Hostnames must be provided if Ingress is enabled.
     ## Secrets must be manually created in the namespace
-    hosts:
-      - argocd.andrewpjackson.com
-
+    hosts: []
+      # - argocd.example.com
 
     # -- List of ingress paths
     paths:
@@ -1593,13 +1597,7 @@ server:
     # -- Ingress path type. One of `Exact`, `Prefix` or `ImplementationSpecific`
     pathType: Prefix
     # -- Additional ingress paths
-    extraPaths:
-      []
-      # - path: /*
-      #   backend:
-      #     serviceName: ssl-redirect
-      #     servicePort: use-annotation
-      ## for Kubernetes >=1.19 (when "networking.k8s.io/v1" is used)
+    extraPaths: []
       # - path: /*
       #   pathType: Prefix
       #   backend:
@@ -1609,10 +1607,7 @@ server:
       #         name: use-annotation
 
     # -- Ingress TLS configuration
-    tls:
-      - secretName: andrewpjackson.com-tls
-        hosts:
-          - argocd.andrewpjackson.com
+    tls: []
       # - secretName: your-certificate-name
       #   hosts:
       #     - argocd.example.com
@@ -1651,8 +1646,7 @@ server:
     ## Hostnames must be provided if Ingress is enabled.
     ## Secrets must be manually created in the namespace
     ##
-    hosts:
-      []
+    hosts: []
       # - argocd.example.com
 
     # -- List of ingress paths for dedicated [gRPC-ingress]
@@ -1661,13 +1655,7 @@ server:
     # -- Ingress path type for dedicated [gRPC-ingress]. One of `Exact`, `Prefix` or `ImplementationSpecific`
     pathType: Prefix
     # -- Additional ingress paths for dedicated [gRPC-ingress]
-    extraPaths:
-      []
-      # - path: /*
-      #   backend:
-      #     serviceName: ssl-redirect
-      #     servicePort: use-annotation
-      ## for Kubernetes >=1.19 (when "networking.k8s.io/v1" is used)
+    extraPaths: []
       # - path: /*
       #   pathType: Prefix
       #   backend:
@@ -1677,8 +1665,7 @@ server:
       #         name: use-annotation
 
     # -- Ingress TLS configuration for dedicated [gRPC-ingress]
-    tls:
-      []
+    tls: []
       # - secretName: your-certificate-name
       #   hosts:
       #     - argocd.example.com
@@ -1959,8 +1946,7 @@ repoServer:
   #    emptyDir: {}
 
   # -- [Node selector]
-  nodeSelector:
-    home.k8s.lab/node-type: agent
+  nodeSelector: {}
   # -- [Tolerations] for use with node taints
   tolerations: []
   # -- Assign custom [affinity] rules to the deployment
@@ -2308,8 +2294,7 @@ applicationSet:
     #   memory: 128Mi
 
   # -- [Node selector]
-  nodeSelector:
-    home.k8s.lab/node-type: agent
+  nodeSelector: {}
 
   # -- [Tolerations] for use with node taints
   tolerations: []
@@ -2438,8 +2423,7 @@ notifications:
   imagePullSecrets: []
 
   # -- [Node selector]
-  nodeSelector:
-    home.k8s.lab/node-type: agent
+  nodeSelector: {}
 
   # -- Define user-defined context
   ## For more information: https://argocd-notifications.readthedocs.io/en/stable/templates/#defining-user-defined-context
@@ -2954,5 +2938,4 @@ notifications:
       tolerations: []
 
       # -- [Node selector]
-      nodeSelector:
-        home.k8s.lab/node-type: agent
+      nodeSelector: {}
