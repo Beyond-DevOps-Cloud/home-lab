@@ -11,7 +11,7 @@ spec:
     namespace: cert-manager
   project: default
   source:
-    path: ./helm/home-k8s/charts/general-config
+    path: ./helm/home-k8s/kustomize/general-config
     repoURL: https://github.com/Beyond-DevOps-Cloud/home-lab.git
     targetRevision: HEAD
     # helm:                                                                                                                                                                                                                                                                                 
