@@ -12,4 +12,4 @@ resources:
 # patchesStrategicMerge:
 # - overlays/production/argo-cd-cm.yaml
 
-namespace: kube-system
+namespace: cert-manager
