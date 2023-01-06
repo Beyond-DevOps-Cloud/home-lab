@@ -22,4 +22,7 @@ EOM
 echo "$CONFIG" > /etc/netplan/00-installer-config.yaml
 netplan apply
 
+sudo sysctl fs.inotify.max_user_instances=1280
+sudo sysctl fs.inotify.max_user_watches=655360
+
 reboot

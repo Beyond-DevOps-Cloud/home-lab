@@ -1,0 +1,4 @@
+# namespace: tekton-pipelines
+resources:
+- namespace.yaml
+- deployment.yaml
