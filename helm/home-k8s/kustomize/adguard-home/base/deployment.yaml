@@ -130,5 +130,3 @@ spec:
           - name: data-vol
             mountPath: /opt/adguardhome/conf
             subPath: conf
-      nodeSelector:
-        kubernetes.io/hostname: k3s-server-001
