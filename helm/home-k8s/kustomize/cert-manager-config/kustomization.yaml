@@ -4,6 +4,7 @@ kind: Kustomization
 resources:
 
 - base/andrewpjackson.com-wildcard.yaml
+- adguard.andrewpjackson.com-wildcard.yaml
 - base/onedevclusterrole.yaml
 
 # components:
