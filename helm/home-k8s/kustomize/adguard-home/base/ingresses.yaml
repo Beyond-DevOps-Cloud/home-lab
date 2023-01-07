@@ -16,38 +16,6 @@ spec:
   ingressClassName: nginx
   tls:
     - hosts:
-        - admin-adguard.andrewpjackson.com
-      secretName: andrewpjackson.com-tls
-  rules:
-    - host: admin-adguard.andrewpjackson.com
-      http:
-        paths:
-          - path: /
-            pathType: ImplementationSpecific
-            backend:
-              service:
-                name: adguard-home-admin-panel
-                port:
-                  number: 3000
----
-# Source: adguard-home/templates/ingresses.yaml
----
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  name: adguard-home-https
-  labels:
-    helm.sh/chart: adguard-home-0.9.0
-    app.kubernetes.io/name: adguard-home
-    app.kubernetes.io/instance: release-name
-    app.kubernetes.io/version: "v0.107.19"
-    app.kubernetes.io/managed-by: Helm
-  annotations:
-    nginx.ingress.kubernetes.io/whitelist-source-range: 192.168.1.0/24
-spec:
-  ingressClassName: nginx
-  tls:
-    - hosts:
         - adguard.andrewpjackson.com
       secretName: andrewpjackson.com-tls
   rules:
@@ -58,6 +26,38 @@ spec:
             pathType: ImplementationSpecific
             backend:
               service:
-                name: adguard-home-https
+                name: adguard-home-admin-panel
                 port:
-                  number: 443
+                  number: 3000
+# ---
+# # Source: adguard-home/templates/ingresses.yaml
+# ---
+# apiVersion: networking.k8s.io/v1
+# kind: Ingress
+# metadata:
+#   name: adguard-home-https
+#   labels:
+#     helm.sh/chart: adguard-home-0.9.0
+#     app.kubernetes.io/name: adguard-home
+#     app.kubernetes.io/instance: release-name
+#     app.kubernetes.io/version: "v0.107.19"
+#     app.kubernetes.io/managed-by: Helm
+#   annotations:
+#     nginx.ingress.kubernetes.io/whitelist-source-range: 192.168.1.0/24
+# spec:
+#   ingressClassName: nginx
+#   tls:
+#     - hosts:
+#         - adguard.andrewpjackson.com
+#       secretName: andrewpjackson.com-tls
+#   rules:
+#     - host: adguard.andrewpjackson.com
+#       http:
+#         paths:
+#           - path: /
+#             pathType: ImplementationSpecific
+#             backend:
+#               service:
+#                 name: adguard-home-https
+#                 port:
+#                   number: 443
