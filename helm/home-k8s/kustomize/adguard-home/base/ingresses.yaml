@@ -40,6 +40,8 @@ metadata:
     app.kubernetes.io/instance: release-name
     app.kubernetes.io/version: "v0.107.19"
     app.kubernetes.io/managed-by: Helm
+  annotations:
+    nginx.ingress.kubernetes.io/whitelist-source-range: 192.168.1.0/24
 spec:
   ingressClassName: nginx
   tls:
