@@ -74,7 +74,7 @@ spec:
               drop:
               - ALL
             privileged: true
-          image: "adguard/adguardhome:v0.107.19"
+          image: "adguard/adguardhome:v0.107.21"
           imagePullPolicy: IfNotPresent
           ports:
           - name: dns-tcp
