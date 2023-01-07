@@ -1,0 +1,21 @@
+---
+# Source: adguard-home/templates/tests/test-connection.yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "release-name-adguard-home-test-connection"
+  labels:
+    helm.sh/chart: adguard-home-0.9.0
+    app.kubernetes.io/name: adguard-home
+    app.kubernetes.io/instance: release-name
+    app.kubernetes.io/version: "v0.107.19"
+    app.kubernetes.io/managed-by: Helm
+  annotations:
+    "helm.sh/hook": test
+spec:
+  containers:
+    - name: wget
+      image: busybox
+      command: ['wget']
+      args: ['release-name-adguard-home-http:80']
+  restartPolicy: Never
