@@ -14,10 +14,10 @@ spec:
   ingressClassName: nginx
   tls:
     - hosts:
-        - admin.adguard.andrewpjackson.com
+        - admin-adguard.andrewpjackson.com
       secretName: adguard.andrewpjackson.com-tls
   rules:
-    - host: admin.adguard.andrewpjackson.com
+    - host: admin-adguard.andrewpjackson.com
       http:
         paths:
           - path: /
