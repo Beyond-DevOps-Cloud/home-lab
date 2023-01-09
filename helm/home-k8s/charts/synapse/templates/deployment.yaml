@@ -14,7 +14,7 @@ spec:
         app: synapse
     spec:
       containers:
-      - image: matrixdotorg/synapse:v1.25.0
+      - image: matrixdotorg/synapse:v1.74.0
         name: synapse
         args: ["generate"]
         env:

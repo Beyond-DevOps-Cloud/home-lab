@@ -297,7 +297,7 @@ apps:
       postDelete: "files/ocis-config.yaml"
       postDelete: "files/ocis-external-user-mgmt-secrets.yaml"
   synapse:
-    enabled: true
+    enabled: false
     chart: "./charts/synapse"
     namespace: synapse
     version: "0.0.1"

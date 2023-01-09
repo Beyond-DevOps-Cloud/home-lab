@@ -1,0 +1,22 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: matrix
+resources:
+- namespace.yaml
+- postgresql/base/pvc.yaml
+- postgresql/base/secret.yaml
+- postgresql/base/service.yaml
+- postgresql/base/statefulset.yaml
+- redis/base/pvc.yaml
+- redis/base/service.yaml
+- redis/base/statefulset.yaml
+- element/base/configmap.yaml
+- element/base/deployment.yaml
+- element/base/ingress.yaml
+- element/base/service.yaml
+- synapse/base/configmap.yaml
+- synapse/base/deployment.yaml
+- synapse/base/ingress.yaml
+- synapse/base/pvc.yaml
+- synapse/base/services.yaml
+- synapse/base/statefulset.yaml
