@@ -4,7 +4,7 @@ kind: PersistentVolumeClaim
 metadata:
   name: synapse
 spec:
-  storageClass: "nfs-csi"
+  storageClassName: "nfs-csi"
   resources:
     requests:
       storage: 5Gi

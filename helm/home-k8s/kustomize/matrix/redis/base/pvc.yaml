@@ -4,7 +4,7 @@ kind: PersistentVolumeClaim
 metadata:
   name: redis
 spec:
-  storageClass: "nfs-csi"
+  storageClassName: "nfs-csi"
   resources:
     requests:
       storage: 5Gi
