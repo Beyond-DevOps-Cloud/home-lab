@@ -3,6 +3,7 @@ kind: Kustomization
 namespace: matrix
 resources:
 - namespace.yaml
+
 - postgresql/base/pvc.yaml
 - postgresql/base/secret.yaml
 - postgresql/base/service.yaml
@@ -14,6 +15,7 @@ resources:
 - element/base/deployment.yaml
 - element/base/ingress.yaml
 - element/base/service.yaml
+- synapse/secrets/generated-secrets.yaml
 - synapse/base/configmap.yaml
 - synapse/base/deployment.yaml
 - synapse/base/ingress.yaml

@@ -7,10 +7,11 @@ metadata:
     nginx.ingress.kubernetes.io/enable-cors: "true"
     nginx.ingress.kubernetes.io/use-regex: "true"
 spec:
+  ingressClassName: nginx
   tls:
     - hosts:
         - matrix.andrewpjackson.com
-      secretName: synapse-certificate
+      secretName: andrewpjackson.com-tls
 
   rules:
     - host: matrix.andrewpjackson.com
