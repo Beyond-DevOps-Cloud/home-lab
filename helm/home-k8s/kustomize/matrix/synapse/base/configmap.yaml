@@ -7,7 +7,7 @@ data:
   worker.yaml: |
       worker_app: synapse.app.generic_worker
       worker_name: WORKER_NAME
-      worker_replication_host: synapse-main
+      worker_replication_host: synapse-main.matrix.svc.cluster.local
       worker_replication_http_port: 9093
 
       worker_listeners:

@@ -24,6 +24,13 @@ spec:
               name: synapse-main
               port:
                 number: 80
+        - path: "/.well-known/matrix"
+          pathType: ImplementationSpecific
+          backend:
+            service:
+              name: synapse-worker
+              port:
+                number: 80
         - path: "/_matrix/client/(v2_alpha|r0)/sync"
           pathType: ImplementationSpecific
           backend:
