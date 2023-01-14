@@ -28,6 +28,13 @@ spec:
               name: synapse-main
               port:
                 number: 80
+        - pathType: Prefix
+          path: "^(/_matrix|/_synapse/client)"
+          backend:
+            service:
+              name: synapse-main
+              port:
+                number: 80
         - path: "/.well-known/matrix"
           pathType: ImplementationSpecific
           backend:
