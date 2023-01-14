@@ -32,14 +32,14 @@ spec:
           path: "/_matrix"
           backend:
             service:
-              name: synapse-main
+              name: synapse-worker
               port:
                 number: 80
         - pathType: Prefix
           path: "/_synapse/client"
           backend:
             service:
-              name: synapse-main
+              name: synapse-worker
               port:
                 number: 80
         - path: "/.well-known/matrix"
