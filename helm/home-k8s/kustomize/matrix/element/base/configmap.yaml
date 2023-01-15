@@ -8,11 +8,11 @@ data:
       {
           "default_server_config": {
               "m.homeserver": {
-                  "base_url": "http://synapse-main:80",
+                  "base_url": "https://matrix.andrewpjackson.com",
                   "server_name": "andrewpjackson.com"
               },
               "m.identity_server": {
-                  "base_url": "http://synapse-main:80"
+                  "base_url": "https://matrix.andrewpjackson.com"
               }
           },
           "disable_custom_urls": false,
