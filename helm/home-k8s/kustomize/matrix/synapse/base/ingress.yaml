@@ -3,7 +3,9 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: synapse-main
-  # annotations:
+  annotations:
+    traefik.ingress.kubernetes.io/router.entrypoints: websecure
+    traefik.ingress.kubernetes.io/router.tls: "true"
   #   nginx.ingress.kubernetes.io/enable-cors: "true"
   #   nginx.ingress.kubernetes.io/use-regex: "true"
   #   # nginx.ingress.kubernetes.io/configuration-snippet: |
