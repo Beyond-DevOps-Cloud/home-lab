@@ -3,15 +3,15 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: synapse-main
-  annotations:
-    nginx.ingress.kubernetes.io/enable-cors: "true"
-    nginx.ingress.kubernetes.io/use-regex: "true"
-    # nginx.ingress.kubernetes.io/configuration-snippet: |
-    #   more_set_headers "X-Forwarded-Proto: $scheme";
-    #   more_set_headers "X-Forwarded-For: $remote_addr";
-    #   more_set_headers "Host: $host";
+  # annotations:
+  #   nginx.ingress.kubernetes.io/enable-cors: "true"
+  #   nginx.ingress.kubernetes.io/use-regex: "true"
+  #   # nginx.ingress.kubernetes.io/configuration-snippet: |
+  #   #   more_set_headers "X-Forwarded-Proto: $scheme";
+  #   #   more_set_headers "X-Forwarded-For: $remote_addr";
+  #   #   more_set_headers "Host: $host";
 spec:
-  ingressClassName: nginx
+  ingressClassName: traefik
   tls:
     - hosts:
         - matrix.andrewpjackson.com

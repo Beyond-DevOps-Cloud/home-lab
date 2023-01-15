@@ -4,7 +4,7 @@ kind: Ingress
 metadata:
   name: element
 spec:
-  ingressClassName: nginx
+  ingressClassName: traefik
   rules:
     - host: chat.andrewpjackson.com
       http:

@@ -48,6 +48,8 @@ namespaces:
     protected: false
   ingress-nginx:
     protected: false
+  traefik:
+    protected: false
   authentik:
     protected: false
   bitwarden:
@@ -81,6 +83,7 @@ helmRepos:
   metallb: "https://metallb.github.io/metallb"
   jetstack: "https://charts.jetstack.io"
   ingress-nginx: "https://kubernetes.github.io/ingress-nginx"
+  traefik: "https://traefik.github.io/charts"
   kedacore: "https://kedacore.github.io/charts"
   argo: "https://argoproj.github.io/argo-helm"
 
@@ -158,6 +161,19 @@ apps:
     version: "4.4.0" # chart version
     ### Optional values below
     valuesFile: "values/nginx.yaml" # leaving it empty uses the default chart values
+      # "controller.nginxDebug": "true"
+    # setFile: "./files/nginx-setfile.yaml"
+    test: false
+    protected: false
+    wait: true
+    priority: -9
+  traefik:
+    enabled: true # change to false if you want to delete this app release empty: false:
+    namespace: traefik # maps to the namespace as defined in namespaces above
+    chart: "traefik/traefik" # changing the chart name means delete and recreate this chart
+    version: "20.8.0" # chart version
+    ### Optional values below
+    valuesFile: "values/traefik.yaml" # leaving it empty uses the default chart values
       # "controller.nginxDebug": "true"
     # setFile: "./files/nginx-setfile.yaml"
     test: false
