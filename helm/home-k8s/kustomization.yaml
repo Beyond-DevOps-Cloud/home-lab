@@ -4,6 +4,7 @@ resources:
   - kustomize/argocd
   - kustomize/cert-manager-config
   - kustomize/adguard-home
+  - kustomize/code-server
   # - kustomize/matrix
   # - kustomize/homepage
 # - kustomize/tekton-install

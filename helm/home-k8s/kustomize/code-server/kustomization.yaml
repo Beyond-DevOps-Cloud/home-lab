@@ -3,10 +3,10 @@ kind: Kustomization
 
 resources:
 
-- base/andrewpjackson.com-cluster-issuer.yaml
-- base/andrewpjackson.com-wildcard.yaml
-- base/adguard.andrewpjackson.com-wildcard.yaml
-- base/onedevclusterrole.yaml
+- base/namespace.yaml
+- base/deployment.yaml
+- base/ingress.yaml
+- base/service.yaml
 
 # components:
 # - https://github.com/argoproj-labs/argocd-extensions/manifests
