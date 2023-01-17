@@ -14,4 +14,4 @@ resources:
 # patchesStrategicMerge:
 # - overlays/production/argo-cd-cm.yaml
 
-namespace: cert-manager
+namespace: code-server
