@@ -1,0 +1,24 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: code-server
+  namespace: code-server
+  annotations:
+    nginx.ingress.kubernetes.io/whitelist-source-range: 192.168.1.0/24
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: code.andrewpjackson.com
+    http:
+      paths:
+      - pathType: Prefix
+        path: "/"
+        backend:
+          service:
+            name: code-server
+            port:
+              number: 80
+  tls:
+    - hosts:
+        - code.andrewpjackson.com
+      secretName: andrewpjackson.com-tls

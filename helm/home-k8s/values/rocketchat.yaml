@@ -9,7 +9,7 @@ imagePullSecrets: []
 
 ## Host for the application
 ## set it to a domain pointing to your loadbalancer
-# host:
+host: chat.andrewpjackson.com
 
 replicaCount: 1
 minAvailable: 1
@@ -98,9 +98,9 @@ mongodb:
   initdbScriptsConfigMap: rocketchat-mongodb-fix-clustermonitor-role-configmap
 
   auth:
-    # rootPassword:
+    rootPassword: rocketchat
     username: rocketchat
-    # password:
+    password: rocketchat
     database: rocketchat
 
   architecture: replicaset
