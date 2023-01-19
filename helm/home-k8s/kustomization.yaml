@@ -5,6 +5,7 @@ resources:
   - kustomize/cert-manager-config
   - kustomize/adguard-home
   - kustomize/code-server
+  - kustomize/nextcloud
   # - kustomize/matrix
   # - kustomize/homepage
 # - kustomize/tekton-install
