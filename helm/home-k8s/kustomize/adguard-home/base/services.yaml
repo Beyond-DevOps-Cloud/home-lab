@@ -60,7 +60,7 @@ spec:
   selector:
     app.kubernetes.io/name: adguard-home
     app.kubernetes.io/instance: release-name
-  type: NodePort
+  type: LoadBalancer
   ports:
   - port: 53
     name: dns-tcp
