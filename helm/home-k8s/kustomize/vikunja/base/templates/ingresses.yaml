@@ -1,0 +1,30 @@
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: vikunja
+  labels:
+    helm.sh/chart: vikunja-6.1.2
+    app.kubernetes.io/name: vikunja
+    app.kubernetes.io/instance: release-name
+    app.kubernetes.io/version: "v0.107.19"
+    app.kubernetes.io/managed-by: Helm
+  annotations:
+    nginx.ingress.kubernetes.io/whitelist-source-range: 192.168.1.0/24
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - vikunja.andrewpjackson.com
+      secretName: andrewpjackson.com-tls
+  rules:
+    - host: vikunja.andrewpjackson.com
+      http:
+        paths:
+          - path: /
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: vikunja
+                port:
+                  number: 8080

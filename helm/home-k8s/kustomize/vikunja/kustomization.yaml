@@ -10,6 +10,7 @@ resources:
 - base/postgres/svc.yaml
 - base/templates/common.yaml
 - base/templates/configmap.yaml
+- base/templates/ingress.yaml
 
 # components:
 # - https://github.com/argoproj-labs/argocd-extensions/manifests
