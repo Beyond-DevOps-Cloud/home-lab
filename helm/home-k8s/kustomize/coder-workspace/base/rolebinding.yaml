@@ -21,4 +21,4 @@ roleRef:
 subjects:
 - kind: ServiceAccount
   name: coder
-  namespace: coder-workspace
+  namespace: coder
