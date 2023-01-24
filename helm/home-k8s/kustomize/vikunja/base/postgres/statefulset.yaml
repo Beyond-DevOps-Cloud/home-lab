@@ -3,7 +3,7 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: release-name-postgresql
+  name: postgresql
   namespace: "default"
   labels:
     app.kubernetes.io/name: postgresql
@@ -14,7 +14,7 @@ metadata:
   annotations:
 spec:
   replicas: 1
-  serviceName: release-name-postgresql-hl
+  serviceName: postgresql-hl
   updateStrategy:
     rollingUpdate: {}
     type: RollingUpdate
@@ -25,7 +25,7 @@ spec:
       app.kubernetes.io/component: primary
   template:
     metadata:
-      name: release-name-postgresql
+      name: postgresql
       labels:
         app.kubernetes.io/name: postgresql
         helm.sh/chart: postgresql-11.6.12
@@ -77,7 +77,7 @@ spec:
             - name: POSTGRES_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: release-name-postgresql
+                  name: postgresql
                   key: postgres-password
             # Replication
             # Initdb

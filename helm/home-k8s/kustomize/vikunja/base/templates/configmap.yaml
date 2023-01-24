@@ -3,7 +3,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: release-name-vikunja-config
+  name: vikunja-config
   labels:
     helm.sh/chart: vikunja-6.1.2
     app.kubernetes.io/name: vikunja
