@@ -68,6 +68,7 @@ data:
           # The name of the provider as it will appear in the frontend.
           - name: "authentik Login"
             # The auth url to send users to if they want to authenticate using OpenID Connect.
+            redirecturl: https://vikunja.andrewpjackson.com/auth/openid/
             authurl: https://authentik.andrewpjackson.com/application/o/vikunja/
             # The client ID used to authenticate Vikunja at the OpenID Connect provider.
             clientid: ffc44987206f0dab24563ed530fb3a4f22a19f0e
