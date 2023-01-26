@@ -44,6 +44,7 @@ data:
     }
   Vikunja.yaml: |-
     service:
+      frontendurl: "https://vikunja.andrewpjackson.com"
       jwtsecret: "myVeryComplexJWTSecret"
     auth:
       # Local authentication will let users log in and register (if enabled) through the db.
