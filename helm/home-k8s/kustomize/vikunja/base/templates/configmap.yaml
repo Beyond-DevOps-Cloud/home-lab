@@ -59,7 +59,7 @@ data:
       # to <frontend-url>/auth/openid/<auth key>. Please make sure to configure the redirect url with your third party
       # auth service accordingly if you're using the default Vikunja frontend.
       # Take a look at the [default config file](https://github.com/go-vikunja/api/blob/main/config.yml.sample) for more information about how to configure openid authentication.
-      redirecturl: https://vikunja.andrewpjackson.com/auth/openid/authentiklogin
+      redirecturl: https://vikunja.andrewpjackson.com/
       openid:
         # Enable or disable OpenID Connect authentication
         enabled: true
