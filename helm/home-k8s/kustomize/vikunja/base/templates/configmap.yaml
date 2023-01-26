@@ -65,7 +65,7 @@ data:
         # A list of enabled providers
         providers:
           # The name of the provider as it will appear in the frontend.
-          - name: "authentik Login"
+          - name: "authentik"
             # The auth url to send users to if they want to authenticate using OpenID Connect.
             redirecturl: https://vikunja.andrewpjackson.com/auth/openid/
             authurl: https://authentik.andrewpjackson.com/application/o/vikunja/
