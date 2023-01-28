@@ -1,6 +1,5 @@
 # This is due to secrets
-authentik.yaml
-
 .helmsman-tmp
 .kube
 node_modules
+helm/home-k8s/values/authentik.yaml
