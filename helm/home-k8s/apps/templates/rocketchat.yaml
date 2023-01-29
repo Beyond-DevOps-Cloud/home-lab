@@ -1,0 +1,23 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: rocketchat
+  namespace: argocd
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: rocketchat
+  project: default
+  source:
+    path: ./helm/home-k8s/kustomize/rocketchat
+    repoURL: https://github.com/Beyond-DevOps-Cloud/home-lab.git
+    targetRevision: HEAD
+    # helm:                                                                                                                                                                                                                                                                                 
+    #   valueFiles:                                                                                                                                                                                                                                                                         
+    #   - ./values.yaml
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
