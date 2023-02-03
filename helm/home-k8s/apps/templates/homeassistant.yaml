@@ -1,25 +1,19 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: rocketchat
+  name: homeassistant
   namespace: argocd
   finalizers:
   - resources-finalizer.argocd.argoproj.io
 spec:
   destination:
     server: https://kubernetes.default.svc
-    namespace: rocketchat
+    namespace: homeassistant
   project: default
   source:
-    path: ./helm/home-k8s/kustomize/rocketchat
+    path: ./helm/home-k8s/kustomize/homeassistant
     repoURL: https://github.com/Beyond-DevOps-Cloud/home-lab.git
     targetRevision: HEAD
-    plugin:
-      name: kustomized-helm
-      env:
-        - name: ARGOCD_ENV_HELM_VALUES
-          value: |
-            image.repository: {{ .Values.spec.source.targetRevision }}
   syncPolicy:
     automated:
       prune: true

@@ -1,0 +1,36 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: homeassistant
+  name: homeassistant
+  namespace: homeassistant
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: homeassistant
+  template:
+    metadata:
+      labels:
+        app: homeassistant
+    spec:
+      volumes:
+        - name: ha-storage
+          nfs:
+            server: mnemosyne.arkane-systems.lan
+            path: "/swarm/harmony/homeassistant/ha"
+      containers:
+        - image: homeassistant/home-assistant:2021.2.3
+          name: home-assistant
+          # volumeMounts:
+          #   - mountPath: "/config"
+          #     name: ha-storage
+          volumeMounts:
+            - mountPath: /var/www/html
+              name: app-persistent-storage
+      volumes:
+        - name: app-persistent-storage
+          persistentVolumeClaim:
+            claimName: homeassistant-pvc
