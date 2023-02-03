@@ -19,7 +19,7 @@ spec:
       env:
         - name: helm_args
       env:
-        - name: ARGOCD_ENV_HELM_VALUES
+        - name: VALUES_FILE_PATH
           value: ./helm/home-k8s/values/rocketchat.yaml
         # - name: ARGOCD_ENV_HELM_VALUES
         #   value: |
