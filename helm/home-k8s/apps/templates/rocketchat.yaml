@@ -19,7 +19,34 @@ spec:
       env:
         - name: ARGOCD_ENV_HELM_VALUES
           value: |
-            image.repository: {{ .Values.spec.source.targetRevision }}
+            image.repository: registry.rocket.chat/rocketchat/rocket.chat
+            host: chat.andrewpjackson.com
+            mongodb.enabled: true
+            mongodb.initdbScriptsConfigMap: rocketchat-mongodb-fix-clustermonitor-role-configmap
+            mongodb.auth.rootPassword: rocketchat
+            mongodb.auth.username: rocketchat
+            mongodb.auth.password: rocketchat
+            mongodb.auth.database: rocketchat
+            mongodb.architecture: replicaset
+            mongodb.replicaCount: 1
+            mongodb.arbiter.enabled: false
+            mongodb.arbiter.pdb.minAvailable: 0
+            mongodb.pdb.minAvailable: 0
+            mongodb.persistance.enabled: true
+            mongodb.persistance.storageClass: "nfs-csi"
+            mongodb.persistence.accessMode: ReadWriteOnce
+            mongodb.persistence.size: 8Gi
+            mongodb.volumePermissions: { enable: true }
+            persistence.enabled: true
+            persistence.storageClass: "nfs-csi"
+            persistence.accessMode: ReadWriteOnce
+            persistence.size: 8Gi
+            ingress.enabled: true
+            ingress.pathType: Prefix
+            ingress.ingressClassName: "nginx"
+            ingress.path: /
+            ingress.tls[0].secretName: andrewpjackson.com-tls
+            ingress.tls[0].hosts[0]: chat.andrewpjackson.com
   syncPolicy:
     automated:
       prune: true
