@@ -18,9 +18,10 @@ spec:
       name: kustomized-helm
       env:
         - name: helm_args
-      env:
-        - name: VALUES_FILE_PATH
-          value: ./helm/home-k8s/values/rocketchat.yaml
+          value: -f ./helm/home-k8s/values/rocketchat.yaml
+      # env:
+      #   - name: VALUES_FILE_PATH
+      #     value: ./helm/home-k8s/values/rocketchat.yaml
         # - name: ARGOCD_ENV_HELM_VALUES
         #   value: |
         #     image.repository: registry.rocket.chat/rocketchat/rocket.chat
