@@ -26,23 +26,9 @@ spec:
           # mitigate path traversal attacks.
           - mountPath: /tmp
             name: cmp-tmp
-      - name: argocd-repo-server
-        volumeMounts:
-        - mountPath: /usr/local/bin/argocd-flux-plugin
-          name: custom-tools
-          subPath: argocd-flux-plugin
       volumes:
         - configMap:
             name: cmp-plugin
           name: cmp-plugin
         - emptyDir: {}
           name: cmp-tmp
-      initContainers:
-      - name: download-tools
-        image: alexmt/argocd-flux:latest
-        command: [sh, -c]
-        args:
-        - cp /usr/local/bin/argocd-flux-plugin /custom-tools/argocd-flux-plugin
-        volumeMounts:
-        - mountPath: /custom-tools
-          name: custom-tools
