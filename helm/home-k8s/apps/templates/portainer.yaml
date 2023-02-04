@@ -16,6 +16,9 @@ spec:
     targetRevision: HEAD
     plugin:
       name: kustomized-helm
+      env:
+        - name: helm_args
+          value: -f ../../values/portainer.yaml
   syncPolicy:
     automated:
       prune: true
