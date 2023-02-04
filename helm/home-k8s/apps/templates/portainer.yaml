@@ -18,7 +18,7 @@ spec:
       name: kustomized-helm
       env:
         - name: HELM_ARGS
-          value: -f ./values.yaml
+          value: -f values.yaml
   syncPolicy:
     automated:
       prune: true
