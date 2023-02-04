@@ -20,7 +20,7 @@ data:
         args: ["helm dependency build || true"]
       generate:
         command: ["/bin/sh", "-c"]
-        args: ["helm template $ARGOCD_APP_NAME -n $ARGOCD_APP_NAMESPACE ${ARGOCD_ENV_helm_args} . --include-crds > all.yaml && kustomize build"]
+        args: ["helm template ${ARGOCD_ENV_REL_HELM_PATH:-../../kustomized_helm} --name-template $ARGOCD_APP_NAME --namespace $ARGOCD_APP_NAMESPACE ${ARGOCD_ENV_HELM_ARGS} --include-crds > ${ARGOCD_ENV_REL_HELM_PATH:-../../kustomized_helm}/all.yml && kustomize build"]
   # dex.config: |
   #   connectors:
   #   - type: github
