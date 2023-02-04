@@ -7,12 +7,11 @@ resources:
 # - base/argo-cd-certificate.yaml
 - base/argo-cd-ui-ingress.yaml
 - https://raw.githubusercontent.com/argoproj/argo-cd/master/manifests/install.yaml
+- overlays/production/cmp-plugin.yaml
 
 components:
 - https://github.com/argoproj-labs/argocd-extensions/manifests
 
-patches: 
-- overlays/production/cmp-plugin.yaml
 
 patchesStrategicMerge:
 - overlays/production/argo-cd-cm.yaml
