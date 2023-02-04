@@ -11,6 +11,9 @@ resources:
 components:
 - https://github.com/argoproj-labs/argocd-extensions/manifests
 
+patches: 
+- overlays/production/cmp-plugin.yaml
+
 patchesStrategicMerge:
 - overlays/production/argo-cd-cm.yaml
 - overlays/production/argocd-server-service.yaml
@@ -20,7 +23,7 @@ patchesStrategicMerge:
 - https://raw.githubusercontent.com/argoproj/argo-cd/master/notifications_catalog/install.yaml
 - secrets/argo-secrets.yaml
 - overlays/production/argo-cd-rbac-cm.yaml
-- overlays/production/cmp-plugin.yaml
+
 
 patchesJson6902:
 - path: overlays/production/argocd-server-deploy-command.yaml
