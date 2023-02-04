@@ -18,7 +18,7 @@ spec:
       name: kustomized-helm
       env:
         - name: helm_args
-          value: -f ./helm/home-k8s/values/rocketchat.yaml
+          value: -f ../../values/rocketchat.yaml
   syncPolicy:
     automated:
       prune: true
