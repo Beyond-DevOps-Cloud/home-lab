@@ -18,7 +18,7 @@ spec:
       name: kustomized-helm
       env:
         - name: helm_args
-          value: -f ../../values/portainer.yaml
+          value: -f ./portainer.yaml
   syncPolicy:
     automated:
       prune: true
