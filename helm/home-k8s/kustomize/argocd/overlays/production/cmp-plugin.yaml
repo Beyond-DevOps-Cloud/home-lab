@@ -13,6 +13,7 @@ data:
       init:
         command: [sh, -c, 'echo "Initializing..."']
       generate:
-        command: [sh, -c, 'echo "{\"kind\": \"ConfigMap\", \"apiVersion\": \"v1\", \"metadata\": { \"name\": \"$ARGOCD_APP_NAME\", \"namespace\": \"$ARGOCD_APP_NAMESPACE\", \"annotations\": {\"Foo\": \"$ARGOCD_ENV_FOO\", \"KubeVersion\": \"$KUBE_VERSION\", \"KubeApiVersion\": \"$KUBE_API_VERSIONS\",\"Bar\": \"baz\"}}}"']
+        command: ["sh", "-c"]
+        args: ["helm template $ARGOCD_APP_NAME -n $ARGOCD_APP_NAMESPACE ${ARGOCD_ENV_helm_args} . --include-crds | argocd-vault-plugin generate -"]
       discover:
         fileName: "./plugin-run"
