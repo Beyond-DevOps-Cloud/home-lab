@@ -14,6 +14,6 @@ data:
         command: [sh, -c, 'echo "Initializing..."']
       generate:
         command: ["sh", "-c"]
-        args: ["helm template $ARGOCD_APP_NAME -n $ARGOCD_APP_NAMESPACE ${ARGOCD_ENV_helm_args} . --include-crds > all.yaml | kustomize build"]
+        args: ["helm template $ARGOCD_APP_NAME -n $ARGOCD_APP_NAMESPACE ${ARGOCD_ENV_helm_args} . --include-crds > all.yaml && kustomize build"]
       discover:
         fileName: "./plugin-run"
