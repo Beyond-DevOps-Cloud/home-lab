@@ -26,6 +26,8 @@ spec:
           imagePullPolicy: IfNotPresent
           command: [/var/run/argocd/argocd-cmp-server]
           volumeMounts:
+            - mountPath: /helm-working-dir
+              name: helm-working-dir
             - mountPath: /var/run/argocd
               name: var-files
             - mountPath: /home/argocd/cmp-server/plugins
@@ -35,6 +37,13 @@ spec:
               name: cmp-plugin
             - mountPath: /tmp
               name: cmp-tmp
+          env:
+          - name: HELM_CACHE_HOME
+            value: /helm-working-dir
+          - name: HELM_CONFIG_HOME
+            value: /helm-working-dir
+          - name: HELM_DATA_HOME
+            value: /helm-working-dir
       volumes:
         - name: cmp-plugin
           configMap:
