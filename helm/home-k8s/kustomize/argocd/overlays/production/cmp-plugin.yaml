@@ -11,7 +11,8 @@ data:
     spec:
       version: v1.0
       init:
-        command: [sh, -c, 'echo "Initializing..."']
+        command: ["/bin/sh", "-c"]
+        args: ["helm dependency build"]
       generate:
         command: ["sh", "-c"]
         args: ["helm template $ARGOCD_APP_NAME -n $ARGOCD_APP_NAMESPACE ${ARGOCD_ENV_helm_args} . --include-crds > all.yaml && kustomize build"]
