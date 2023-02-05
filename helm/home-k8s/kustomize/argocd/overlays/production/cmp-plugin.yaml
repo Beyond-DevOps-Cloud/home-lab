@@ -12,7 +12,7 @@ data:
       version: v1.0
       init:
         command: ["/bin/sh", "-c"]
-        args: ["helm dependency build"]
+        args: ["helm repo add ${helm_dependency_name} ${helm_dependency_repo} --debug && helm dependency build"]
       generate:
         command: ["sh", "-c"]
         args: ["helm template $ARGOCD_APP_NAME -n $ARGOCD_APP_NAMESPACE ${ARGOCD_ENV_helm_args} . --include-crds > all.yaml && kustomize build"]
