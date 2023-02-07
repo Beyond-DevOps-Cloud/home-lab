@@ -15,13 +15,14 @@ spec:
     repoURL: https://github.com/Beyond-DevOps-Cloud/home-lab.git
     targetRevision: HEAD
     plugin:
-      env:
-        - name: helm_args
-          value: -f values.yaml
-        - name: helm_dependency_name
-          value: portainer
-        - name: helm_dependency_repo
-          value: 'https://portainer.github.io/k8s/'
+      name: argocd-lovely-plugin
+      # env:
+      #   - name: helm_args
+      #     value: -f values.yaml
+      #   - name: helm_dependency_name
+      #     value: portainer
+      #   - name: helm_dependency_repo
+      #     value: 'https://portainer.github.io/k8s/'
   syncPolicy:
     automated:
       prune: true
