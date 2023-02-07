@@ -14,7 +14,7 @@ components:
 
 
 patchesStrategicMerge:
-# - overlays/production/argo-cd-cm.yaml
+# - overlays/production/argocd-cm.yaml
 - overlays/production/argocd-server-service.yaml
 - overlays/production/argocd-repo-server-deploy.yaml
 # - overlays/production/argocd-notifications-controller-deploy.yaml
@@ -34,15 +34,15 @@ patchesJson6902:
     version: v1
 
 patches:
-- path: argo-cd-cm.yaml
+- path: overlays/production/argocd-cm.yaml
   target:
     kind: ConfigMap
     name: argocd-cm
-- path: argocd-lovely-plugin.yaml
+- path: overlays/production/argocd-lovely-plugin.yaml
   target:
     kind: Deployment
     name: argocd-repo-server
-- path: argocd-vault-replacer.yaml
+- path: overlays/production/argocd-vault-replacer.yaml
   target:
       kind: Deployment
       name: argocd-repo-server
