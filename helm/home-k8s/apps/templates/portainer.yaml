@@ -29,8 +29,8 @@ spec:
 
       - name: "ingress.enabled"
         value: "true"
-      - name: "ingress.annotations.nginx.ingress.kubernetes.io/whitelist-source-range"
-        value: "192.168.1.0/24"
+      - name: "ingress.annotations"
+        value: "nginx.ingress.kubernetes.io/whitelist-source-range: 192.168.1.0/24"
       - name: "ingress.ingressClassName"
         value: "nginx"
       # - name: "ingress.tls[0].hosts[0]"
