@@ -21,11 +21,11 @@ spec:
       - name: "service.httpPort"
         value: "9000"
       - name: "service.httpNodePort"
-        value: 
+        value: ""
       - name: "service.edgePort"
         value: "8000"
       - name: "service.edgeNodePort"
-        value: 
+        value: ""
 
       - name: "ingress.enabled"
         value: true
