@@ -39,9 +39,7 @@ spec:
           # For Cloud Providers, set the type to be LoadBalancer
           type: ClusterIP
           httpPort: 9000
-          httpNodePort:
           edgePort: 8000
-          edgeNodePort:
 
         ingress:
           enabled: true
