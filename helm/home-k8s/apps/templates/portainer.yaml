@@ -19,11 +19,11 @@ spec:
       - name: "service.type"
         value: ClusterIP
       - name: "service.httpPort"
-        value: 9000
+        value: "9000"
       - name: "service.httpNodePort"
         value: 
       - name: "service.edgePort"
-        value: 8000
+        value: "8000"
       - name: "service.edgeNodePort"
         value: 
 
