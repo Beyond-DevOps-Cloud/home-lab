@@ -17,7 +17,7 @@ spec:
     helm:
       parameters:
       - name: "service.type"
-        value: ClusterIP
+        value: "ClusterIP"
       - name: "service.httpPort"
         value: "9000"
       - name: "service.httpNodePort"
@@ -28,21 +28,21 @@ spec:
         value: ""
 
       - name: "ingress.enabled"
-        value: true
+        value: "true"
       - name: "ingress.annotations.nginx.ingress.kubernetes.io/whitelist-source-range"
-        value: 192.168.1.0/24
+        value: "192.168.1.0/24"
       - name: "ingress.ingressClassName"
-        value: nginx
-      - name: "ingress.tls[0].hosts[0]"
-        value: portainer.andrewpjackson.com
+        value: "nginx"
+      - name: ""ingress".tls[0].hosts[0]"
+        value: "portainer.andrewpjackson.com"
       - name: "ingress.tls[0].secretName"
-        value:  andrewpjackson.com-tls
+        value: "andrewpjackson.com-tls"
       - name: "ingress.hosts[0].host"
-        value: portainer.andrewpjackson.com
+        value: "portainer.andrewpjackson.com"
       - name: "ingress.hosts[0].host.paths[0].path"
         value: "/"
       - name: "ingress.hosts[0].host.paths[0].pathType"
-        value: Prefix
+        value: "Prefix"
 
   syncPolicy:
     automated:
