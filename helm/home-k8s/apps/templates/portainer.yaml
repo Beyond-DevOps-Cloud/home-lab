@@ -33,7 +33,7 @@ spec:
         value: "192.168.1.0/24"
       - name: "ingress.ingressClassName"
         value: "nginx"
-      - name: ""ingress".tls[0].hosts[0]"
+      - name: "ingress.tls[0].hosts[0]"
         value: "portainer.andrewpjackson.com"
       - name: "ingress.tls[0].secretName"
         value: "andrewpjackson.com-tls"
