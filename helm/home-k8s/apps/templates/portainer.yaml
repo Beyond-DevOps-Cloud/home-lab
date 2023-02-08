@@ -14,15 +14,36 @@ spec:
     path: ./helm/home-k8s/kustomize/portainer
     repoURL: https://github.com/Beyond-DevOps-Cloud/home-lab.git
     targetRevision: HEAD
-    plugin:
-      name: argocd-lovely-plugin
-      # env:
-      #   - name: helm_args
-      #     value: -f values.yaml
-      #   - name: helm_dependency_name
-      #     value: portainer
-      #   - name: helm_dependency_repo
-      #     value: 'https://portainer.github.io/k8s/'
+    helm:
+      parameters:
+      - name: "service.type"
+        value: ClusterIP
+      - name: "service.httpPort"
+        value: 9000
+      - name: "service.httpNodePort"
+        value: 
+      - name: "service.edgePort"
+        value: 8000
+      - name: "service.edgeNodePort"
+        value: 
+
+      - name: "ingress.enabled"
+        value: true
+      - name: "ingress.annotations.nginx.ingress.kubernetes.io/whitelist-source-range"
+        value: 192.168.1.0/24
+      - name: "ingress.ingressClassName"
+        value: nginx
+      - name: "ingress.tls[0].hosts[0]"
+        value: portainer.andrewpjackson.com
+      - name: "ingress.tls[0].secretName"
+        value:  andrewpjackson.com-tls
+      - name: "ingress.hosts[0].host"
+        value: portainer.andrewpjackson.com
+      - name: "ingress.hosts[0].host.paths[0].path"
+        value: "/"
+      - name: "ingress.hosts[0].host.paths[0].pathType"
+        value: Prefix
+
   syncPolicy:
     automated:
       prune: true
