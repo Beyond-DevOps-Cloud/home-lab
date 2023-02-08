@@ -15,34 +15,84 @@ spec:
     repoURL: https://github.com/Beyond-DevOps-Cloud/home-lab.git
     targetRevision: HEAD
     helm:
-      parameters:
-      - name: "service.type"
-        value: "ClusterIP"
-      - name: "service.httpPort"
-        value: "9000"
-      - name: "service.httpNodePort"
-        value: ""
-      - name: "service.edgePort"
-        value: "8000"
-      - name: "service.edgeNodePort"
-        value: ""
+      values: | 
+        # Default values for portainer.
+        # This is a YAML-formatted file.
+        # Declare variables to be passed into your templates.
 
-      - name: "ingress.enabled"
-        value: "true"
-      - name: "ingress.annotations"
-        value: "nginx.ingress.kubernetes.io/whitelist-source-range: 192.168.1.0/24"
-      - name: "ingress.ingressClassName"
-        value: "nginx"
-      # - name: "ingress.tls[0].hosts[0]"
-      #   value: "portainer.andrewpjackson.com"
-      # - name: "ingress.tls[0].secretName"
-      #   value: "andrewpjackson.com-tls"
-      # - name: "ingress.hosts[0].host"
-      #   value: "portainer.andrewpjackson.com"
-      # - name: "ingress.hosts[0].host.paths[0].path"
-      #   value: "/"
-      # - name: "ingress.hosts[0].host.paths[0].pathType"
-      #   value: "Prefix"
+        replicaCount: 1
+
+        image:
+          repository: portainer/portainer-ce
+          tag: latest
+          pullPolicy: IfNotPresent
+
+        imagePullSecrets: []
+
+        serviceAccount:
+          annotations: {}
+          name: portainer-sa-clusteradmin
+
+        service:
+          # Set the httpNodePort and edgeNodePort only if the type is NodePort
+          # For Ingress, set the type to be ClusterIP and set ingress.enabled to true
+          # For Cloud Providers, set the type to be LoadBalancer
+          type: ClusterIP
+          httpPort: 9000
+          httpNodePort:
+          edgePort: 8000
+          edgeNodePort:
+
+        ingress:
+          enabled: true
+          annotations:
+            # nginx.ingress.kubernetes.io/backend-protocol: HTTPS
+            nginx.ingress.kubernetes.io/whitelist-source-range: "192.168.1.0/24"
+          ingressClassName: nginx
+          tls:
+            - hosts: 
+                - portainer.andrewpjackson.com
+              secretName: andrewpjackson.com-tls
+          hosts:
+            - host: portainer.andrewpjackson.com
+              paths:
+                - path: "/"
+                  pathType: Prefix
+
+        resources: {}
+
+        persistence:
+          storageClass: "nfs-csi"
+          size: "10Gi"
+          annotations: {}
+      # parameters:
+      # - name: "service.type"
+      #   value: "ClusterIP"
+      # - name: "service.httpPort"
+      #   value: "9000"
+      # - name: "service.httpNodePort"
+      #   value: ""
+      # - name: "service.edgePort"
+      #   value: "8000"
+      # - name: "service.edgeNodePort"
+      #   value: ""
+
+      # - name: "ingress.enabled"
+      #   value: "true"
+      # - name: "ingress.annotations"
+      #   value: "nginx.ingress.kubernetes.io/whitelist-source-range: 192.168.1.0/24"
+      # - name: "ingress.ingressClassName"
+      #   value: "nginx"
+      # # - name: "ingress.tls[0].hosts[0]"
+      # #   value: "portainer.andrewpjackson.com"
+      # # - name: "ingress.tls[0].secretName"
+      # #   value: "andrewpjackson.com-tls"
+      # # - name: "ingress.hosts[0].host"
+      # #   value: "portainer.andrewpjackson.com"
+      # # - name: "ingress.hosts[0].host.paths[0].path"
+      # #   value: "/"
+      # # - name: "ingress.hosts[0].host.paths[0].pathType"
+      # #   value: "Prefix"
 
   syncPolicy:
     automated:
