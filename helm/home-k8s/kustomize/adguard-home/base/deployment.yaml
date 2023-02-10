@@ -10,7 +10,7 @@ metadata:
     app.kubernetes.io/version: "v0.107.19"
     app.kubernetes.io/managed-by: Helm
 spec:
-  replicas: 4
+  replicas: 1
   selector:
     matchLabels:
       app.kubernetes.io/name: adguard-home
@@ -27,16 +27,16 @@ spec:
         prometheus.io/port: api
         prometheus.io/scrape: "true"
     spec:
-      affinity:
-        podAntiAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-          - labelSelector:
-              matchExpressions:
-              - key: app.kubernetes.io/name
-                operator: In
-                values:
-                - adguard-home
-            topologyKey: "kubernetes.io/hostname"
+      # affinity:
+      #   podAntiAffinity:
+      #     requiredDuringSchedulingIgnoredDuringExecution:
+      #     - labelSelector:
+      #         matchExpressions:
+      #         - key: app.kubernetes.io/name
+      #           operator: In
+      #           values:
+      #           - adguard-home
+      #       topologyKey: "kubernetes.io/hostname"
       serviceAccountName: adguard-home
       securityContext:
         {}
