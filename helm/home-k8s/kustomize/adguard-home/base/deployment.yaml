@@ -10,7 +10,7 @@ metadata:
     app.kubernetes.io/version: "v0.107.19"
     app.kubernetes.io/managed-by: Helm
 spec:
-  replicas: 1
+  replicas: 4
   selector:
     matchLabels:
       app.kubernetes.io/name: adguard-home
