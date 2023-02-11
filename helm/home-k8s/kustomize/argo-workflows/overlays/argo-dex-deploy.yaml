@@ -6,11 +6,11 @@ metadata:
 spec:
   selector:
     matchLabels:
-      app: dex-server
+      app.kubernetes.io/name: argocd-dex-server
   template:
     metadata:
       labels:
-        app: dex-server
+        app.kubernetes.io/name: argocd-dex-server
   template:
     spec:
       containers:
