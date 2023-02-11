@@ -39,12 +39,6 @@ patches:
     kind: Deployment
     name: argocd-dex-server
 
-patches:
-- path: overlays/production/argo-dex-cm.yaml
-  target:
-    kind: ConfigMap
-    name: argocd-dex-cm
-
 - path: overlays/production/argocd-cm.yaml
   target:
     kind: ConfigMap

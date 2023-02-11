@@ -28,6 +28,12 @@ data:
         command: [sh, -c]
         args: ["helm template -n $ARGOCD_APP_NAMESPACE $ARGOCD_APP_NAME . | argocd-vault-replacer"]
   dex.config: |
+      staticClients:
+        - id: argo-workflows-sso
+          name: Argo Workflow
+          redirectURIs:
+            - https://workflows.andrewpjackson.com/oauth2/callback
+          secretEnv: ARGO_WORKFLOWS_SSO_CLIENT_SECRET
       connectors:
       - config:
           issuer: https://authentik.andrewpjackson.com/application/o/argocd/
