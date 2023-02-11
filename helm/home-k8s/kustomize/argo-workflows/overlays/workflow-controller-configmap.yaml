@@ -28,13 +28,6 @@ data:
       - groups
     rbac:
       enabled: true
-  workflowDefaults:
-    spec:
-      activeDeadlineSeconds: 600
-  retentionPolicy:
-    completed: 20
-    failed: 3
-    errored: 3
 kind: ConfigMap
 metadata:
   name: workflow-controller-configmap
