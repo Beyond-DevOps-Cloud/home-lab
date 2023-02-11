@@ -10,3 +10,4 @@ patches:
 - overlays/argo-server-sa.yaml
 - overlays/workflow-controller-configmap.yaml
 - overlays/argo-cd-rbac-cm.yaml
+- overlays/argo-dex-deploy.yaml
