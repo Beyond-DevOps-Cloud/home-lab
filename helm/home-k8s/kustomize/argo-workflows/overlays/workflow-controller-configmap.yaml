@@ -11,8 +11,8 @@ apiVersion: v1
   #     - email
   #     - groups
   # # https://github.com/settings/applications/1416526
-data: |
-  sso:
+data:
+  sso: |
     issuer: https://authentik.andrewpjackson.com/application/o/argocd/
     clientId:
       name: argo-workflows-secret
