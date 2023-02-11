@@ -38,3 +38,5 @@ patchesStrategicMerge:
   - overlays/argo-server-role.yaml
   - overlays/argo-server-sa.yaml
   - overlays/argo-server-deploy.yaml
+
+namespace: argo-workflows
