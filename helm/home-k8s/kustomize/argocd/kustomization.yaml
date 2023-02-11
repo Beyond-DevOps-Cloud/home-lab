@@ -34,6 +34,11 @@ patchesJson6902:
     version: v1
 
 patches:
+- path: overlays/argo-dex-deploy.yaml
+  target:
+    kind: Deployment
+    name: argocd-dex-server
+
 - path: overlays/production/argocd-cm.yaml
   target:
     kind: ConfigMap
