@@ -11,10 +11,10 @@ metadata:
 spec:
   tls:
   - hosts:
-    - workflows.apps.argoproj.io
-    secretName: argo-workflows-secret
+    - workflows.andrewpjackson.com
+    secretName: andrewpjackson.com-tls
   rules:
-  - host: workflows.apps.argoproj.io
+  - host: workflows.andrewpjackson.com
     http:
       paths:
       - path: /
