@@ -24,8 +24,8 @@ spec:
                 - ALL
           args:
             - server
-            - --auth-mode sso
-            - --auth-mode client
+            - --auth-mode=sso
+            - --auth-mode=client
           env: []
           ports:
             - name: web
