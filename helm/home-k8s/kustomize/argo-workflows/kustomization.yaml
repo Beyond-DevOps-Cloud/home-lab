@@ -5,11 +5,9 @@ kind: Kustomization
 resources:
 - resources/argo-workflows-v3.4.5.yaml
 - resources/argo-server-ingress.yaml
+- overlays/argo-cd-rbac-cm.yaml
 
 patches:
 - overlays/argo-server-sa.yaml
 - overlays/workflow-controller-configmap.yaml
 - overlays/argo-dex-deploy.yaml
-
-patchesStrategicMerge:
-- overlays/argo-cd-rbac-cm.yaml
