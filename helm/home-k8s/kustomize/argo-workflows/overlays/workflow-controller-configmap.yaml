@@ -5,10 +5,10 @@ data:
     sso:
       issuer: https://authentik.andrewpjackson.com/application/o/argocd/
       clientId:
-        name: argocd-secret
+        name: argo-workflows-secret
         key: oidc.authentik.clientId
       clientSecret:
-        name: argocd-secret
+        name: argo-workflows-secret
         key: oidc.authentik.clientSecret
       redirectUrl: https://workflows.andrewpjackson.com/oauth2/callback
       scopes:
