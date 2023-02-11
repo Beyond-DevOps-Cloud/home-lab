@@ -4,5 +4,7 @@ kind: Kustomization
 
 resources:
 - resources/argo-workflows-v3.4.5.yaml
+
+patch:
 - overlays/argo-server-sa.yaml
 - workflow-controller-configmap.yaml
