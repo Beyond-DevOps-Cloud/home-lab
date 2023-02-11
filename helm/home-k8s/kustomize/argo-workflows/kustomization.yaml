@@ -33,6 +33,7 @@ resources:
   - resources/ci-cronworkflow.yaml
 
 patchesStrategicMerge:
+  - secrets/argo-secrets.yaml
   - overlays/workflow-controller-configmap.yaml
   - overlays/argo-server-role.yaml
   - overlays/argo-server-sa.yaml
