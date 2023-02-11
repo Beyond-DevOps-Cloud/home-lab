@@ -1,41 +1,40 @@
 apiVersion: v1
-data:
-  oidc.config: |
-    name: Authentik
+# data:
+  # oidc.config: |
+  #   name: Authentik
+  #   issuer: https://authentik.andrewpjackson.com/application/o/argocd/
+  #   clientID: $oidc.authentik.clientId
+  #   clientSecret: $oidc.authentik.clientSecret
+  #   requestedScopes:
+  #     - openid
+  #     - profile
+  #     - email
+  #     - groups
+  # # https://github.com/settings/applications/1416526
+data: |
+  sso:
     issuer: https://authentik.andrewpjackson.com/application/o/argocd/
-    clientID: $oidc.authentik.clientId
-    clientSecret: $oidc.authentik.clientSecret
-    requestedScopes:
+    clientId:
+      name: argo-workflows-secret
+      key: oidc.authentik.clientId
+    clientSecret:
+      name: argo-workflows-secret
+      key: oidc.authentik.clientSecret
+    redirectUrl: https://workflows.andrewpjackson.com/oauth2/callback
+    scopes:
       - openid
       - profile
       - email
       - groups
-  # https://github.com/settings/applications/1416526
-
-  # data: |
-  #   sso:
-  #     issuer: https://authentik.andrewpjackson.com/application/o/argocd/
-  #     clientId:
-  #       name: argo-workflows-secret
-  #       key: oidc.authentik.clientId
-  #     clientSecret:
-  #       name: argo-workflows-secret
-  #       key: oidc.authentik.clientSecret
-  #     redirectUrl: https://workflows.andrewpjackson.com/oauth2/callback
-  #     scopes:
-  #       - openid
-  #       - profile
-  #       - email
-  #       - groups
-  #     rbac:
-  #       enabled: true
-  #   workflowDefaults:
-  #     spec:
-  #       activeDeadlineSeconds: 600
-  #   retentionPolicy:
-  #     completed: 20
-  #     failed: 3
-  #     errored: 3
+    rbac:
+      enabled: true
+  workflowDefaults:
+    spec:
+      activeDeadlineSeconds: 600
+  retentionPolicy:
+    completed: 20
+    failed: 3
+    errored: 3
 kind: ConfigMap
 metadata:
   name: workflow-controller-configmap
