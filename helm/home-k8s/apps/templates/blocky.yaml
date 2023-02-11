@@ -48,12 +48,12 @@ spec:
         # @default -- See values.yaml
         service:
           main:
-            enabled: false
+            enabled: true
             ports:
               http:
                 port: 4000
           dns-tcp:
-            enabled: false
+            enabled: true
             type: ClusterIP
             externalTrafficPolicy: Local
             ports:
@@ -63,7 +63,7 @@ spec:
                 protocol: TCP
                 targetPort: 53
           dns-udp:
-            enabled: false
+            enabled: true
             type: ClusterIP
             externalTrafficPolicy: Local
             ports:
