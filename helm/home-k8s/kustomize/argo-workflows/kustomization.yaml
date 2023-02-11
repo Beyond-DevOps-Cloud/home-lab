@@ -31,10 +31,9 @@ resources:
   - resources/artifacts-cronworkflow.yaml
   - https://raw.githubusercontent.com/argoproj/argo-workflows/master/examples/ci-workflowtemplate.yaml
   - resources/ci-cronworkflow.yaml
-  - resources/argo-secrets.yaml
+  - secrets/argo-secrets.yaml
 
 patchesStrategicMerge:
-  - secrets/argo-secrets.yaml
   - overlays/workflow-controller-configmap.yaml
   - overlays/argo-server-role.yaml
   - overlays/argo-server-sa.yaml
