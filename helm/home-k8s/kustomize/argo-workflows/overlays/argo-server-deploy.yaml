@@ -4,6 +4,9 @@ metadata:
   name: argo-server
 spec:
   replicas: 2
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: argo-server
   template:
     spec:
       serviceAccountName: argo-server
