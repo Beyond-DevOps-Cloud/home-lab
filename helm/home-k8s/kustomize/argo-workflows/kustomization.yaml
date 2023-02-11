@@ -6,6 +6,7 @@ resources:
 - resources/argo-workflows-v3.4.5.yaml
 - resources/argo-server-ingress.yaml
 - overlays/argo-cd-rbac-cm.yaml
+- secrets/argo-secrets.yaml
 
 patches:
 - overlays/argo-server-sa.yaml
