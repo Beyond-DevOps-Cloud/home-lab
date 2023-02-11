@@ -4,6 +4,9 @@ kind: Deployment
 metadata:
   name: argocd-dex-server
 spec:
+  selector:
+    matchLabels:
+      app: dex-server
   template:
     spec:
       containers:
