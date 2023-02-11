@@ -64,6 +64,8 @@ spec:
           size: "10Gi"
           annotations: {}
   syncPolicy:
+    syncOptions:
+      - CreateNamespace=true
     automated:
       prune: true
       selfHeal: true

@@ -330,6 +330,8 @@ spec:
             #connectionAttempts: 10
             #connectionCooldown: 3s
   syncPolicy:
+    syncOptions:
+      - CreateNamespace=true
     automated:
       prune: true
       selfHeal: true
