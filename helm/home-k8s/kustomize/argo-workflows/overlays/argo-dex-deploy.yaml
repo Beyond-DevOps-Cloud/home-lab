@@ -8,6 +8,10 @@ spec:
     matchLabels:
       app: dex-server
   template:
+    metadata:
+      labels:
+        app: dex-server
+  template:
     spec:
       containers:
         - name: dex
