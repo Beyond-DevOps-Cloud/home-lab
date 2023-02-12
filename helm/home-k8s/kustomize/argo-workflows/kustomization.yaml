@@ -8,9 +8,8 @@ resources:
 - overlays/argo-cd-rbac-cm.yaml
 - secrets/argo-secrets.yaml
 
-- overlays/argo-server-rolebinding.yaml
-- overlays/workflow-controller-role.yaml
-- overlays/workflow-controller-rolebinding.yaml
+
+
 
 
 patches:
@@ -18,3 +17,6 @@ patches:
 - overlays/workflow-controller-configmap.yaml
 - overlays/argo-server-deploy.yaml
 - overlays/argo-server-role.yaml
+- overlays/argo-server-rolebinding.yaml
+- overlays/workflow-controller-role.yaml
+- overlays/workflow-controller-rolebinding.yaml
