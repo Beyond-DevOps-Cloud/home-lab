@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: argo-server
+  name: admin-user
   annotations:
     workflows.argoproj.io/rbac-rule: "'ArgoCD Admins' in groups"
     workflows.argoproj.io/rbac-rule-precedence: "1"
