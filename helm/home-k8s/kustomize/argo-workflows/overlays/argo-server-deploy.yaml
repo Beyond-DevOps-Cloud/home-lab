@@ -27,6 +27,7 @@ spec:
             - --namespaced
             - --auth-mode=sso
             - --auth-mode=client
+            - --auth-mode=server
           env: []
           ports:
             - name: web
