@@ -13,7 +13,8 @@ resources:
 
 
 patches:
-- overlays/argo-server-sa.yaml
+- overlays/argo-server-sa-admin.yaml
+- overlays/argo-server-sa-readonly.yaml
 - overlays/workflow-controller-configmap.yaml
 - overlays/argo-server-deploy.yaml
 - overlays/argo-server-role.yaml
