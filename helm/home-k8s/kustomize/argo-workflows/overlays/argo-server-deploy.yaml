@@ -24,6 +24,7 @@ spec:
                 - ALL
           args:
             - server
+            - --namespaced
             - --auth-mode=sso
             - --auth-mode=client
           env: []
