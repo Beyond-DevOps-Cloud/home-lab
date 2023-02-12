@@ -7,6 +7,11 @@ resources:
 - resources/argo-server-ingress.yaml
 - overlays/argo-cd-rbac-cm.yaml
 - secrets/argo-secrets.yaml
+- overlays/argo-server-role.yaml
+- overlays/argo-server-rolebinding.yaml
+- overlays/workflow-controller-role.yaml
+- overlays/workflow-controller-rolebinding.yaml
+
 
 patches:
 - overlays/argo-server-sa.yaml
