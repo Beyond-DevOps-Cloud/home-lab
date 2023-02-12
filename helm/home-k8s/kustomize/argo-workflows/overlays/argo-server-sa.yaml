@@ -4,4 +4,4 @@ metadata:
   name: argo-server
   annotations:
     workflows.argoproj.io/rbac-rule: "'ArgoCD Admins' in groups"
-    workflows.argoproj.io/rbac-rule-precedence: "0a"
+    workflows.argoproj.io/rbac-rule-precedence: "0"
