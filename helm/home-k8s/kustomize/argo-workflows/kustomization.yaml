@@ -7,14 +7,14 @@ resources:
 - resources/argo-server-ingress.yaml
 - overlays/argo-cd-rbac-cm.yaml
 - secrets/argo-secrets.yaml
-
+- overlays/argo-server-sa-readonly.yaml
 
 
 
 
 patches:
 - overlays/argo-server-sa-admin.yaml
-- overlays/argo-server-sa-readonly.yaml
+
 - overlays/workflow-controller-configmap.yaml
 - overlays/argo-server-deploy.yaml
 - overlays/argo-server-role.yaml
