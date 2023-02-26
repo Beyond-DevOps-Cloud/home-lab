@@ -30,6 +30,7 @@ spec:
         command:
           - /bin/sh 
           - -c 
+          - ls -la
           - pulumi plugin install resource proxmoxve v2.0.0 -f ./files/pulumi-resource-proxmoxve-v2.0.0-linux-arm64.tar.gz && pulumi plugin install resource proxmoxve v2.1.0 -f ./files/pulumi-resource-proxmoxve-v2.1.0-linux-arm64.tar.gz && npm install && npm ci && pulumi up --stack dev --non-interactive --skip-preview
         env:
         - name: PULUMI_ACCESS_TOKEN
@@ -48,4 +49,4 @@ spec:
       volumes:
         - name: gitdir
           hostPath:
-            path: /src # folder on your host machine
+            path: /src/homelab # folder on your host machine
