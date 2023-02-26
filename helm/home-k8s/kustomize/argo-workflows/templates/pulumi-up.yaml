@@ -3,7 +3,7 @@ kind: WorkflowTemplate
 metadata:
   name: pulumi-up
 spec:
-  entrypoint: /bin/sh
+  entrypoint: pulumiup
   arguments:
     parameters:
       - name: message
@@ -13,7 +13,7 @@ spec:
           -   two
           -   three
   templates:
-    - name: argosay
+    - name: pulumiup
       inputs:
         parameters:
           - name: message
@@ -28,6 +28,8 @@ spec:
         name: main
         image: 'pulumi/pulumi-nodejs'
         command:
+          - /bin/sh 
+          - -c 
           - pulumi plugin install resource proxmoxve v2.0.0 -f ./files/pulumi-resource-proxmoxve-v2.0.0-linux-arm64.tar.gz && pulumi plugin install resource proxmoxve v2.1.0 -f ./files/pulumi-resource-proxmoxve-v2.1.0-linux-arm64.tar.gz && npm install && npm ci && pulumi up --stack dev --non-interactive --skip-preview
         env:
         - name: PULUMI_ACCESS_TOKEN

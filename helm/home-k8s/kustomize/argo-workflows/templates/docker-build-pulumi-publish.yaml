@@ -1,0 +1,36 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Workflow
+metadata:
+  generateName: buildkit-
+spec:
+  entrypoint: build-push
+  templates:
+  - name: build-push
+    inputs:
+      parameters:
+      - name: image-name
+      - name: image-tag
+    volumes:
+    - name: docker-socket-volume
+      emptyDir: {}
+    sidecars:
+    - name: buildkit-daemon
+      image: moby/buildkit:v0.8.3-rootless # change this as needed
+      volumeMounts:
+      - mountPath: /tmp/buildkitd.sock # must match BUILDKIT_HOST below
+        name: docker-socket-volume 
+    container:
+      image: gcr.io/kaniko-project/executor:v1.6.0-debug # change this as needed
+      env:
+        - name: DOCKER_CONFIG # configure kaniko with your registry credentials 
+          value: /kaniko/.docker/
+        - name: BUILDKIT_HOST # tell kaniko where to find buildkit daemon 
+          value: unix:///tmp/buildkitd.sock 
+      command:
+        - /busybox/sh 
+        - -c 
+        - |
+          /kaniko/executor \
+            --context https://github.com/argoproj/argo-workflows.git#master \
+            --dockerfile examples/Dockerfile \
+            --destination { {inputs.parameters.image-name}}:{ {inputs.parameters.image-tag}}
