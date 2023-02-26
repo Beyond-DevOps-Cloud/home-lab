@@ -44,7 +44,7 @@ const provider = new proxmox.Provider('proxmoxve', {
   }
 });
 
-let node_names: string[] = ["pve", "pve-router"];
+let node_names: string[] = ["pve", "pve-router", "pve2"];
 
 const clone_node_name = "pve";
 const pve_clone_vm_id = 102;
@@ -64,6 +64,12 @@ const k3s_server_list = [
         hostname: "k3s-server-002",
         node: node_names[1],
         ip: "192.168.1.21",
+        memory: 4096
+    },
+    {
+        hostname: "k3s-server-003",
+        node: node_names[2],
+        ip: "192.168.1.22",
         memory: 4096
     },
 ]

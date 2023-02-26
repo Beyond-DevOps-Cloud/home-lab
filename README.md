@@ -4,6 +4,10 @@
 ```
 docker run -it --rm --entrypoint /bin/sh -v "$(pwd):/app" -v "/home/lordmuffin/.kube/config:/home/root/.kube/config" -e KUBECONFIG=/home/root/.kube/config -w "/app" praqma/helmsman -c "helmsman --apply -f ./helm/home-k8s/home-k8s-lab.yaml"
 ```
+```
+docker run -it --rm --entrypoint /bin/sh -v "$(pwd):/app" -v "/home/lordmuffin/.kube/config:/home/root/.kube/config" -e KUBECONFIG=/home/root/.kube/config -w "/app" praqma/helmsman -c "./install.sh"
+```
+
 
 ## Pulumi
 docker run -it \
@@ -33,11 +37,6 @@ docker run -it \
 wget https://github.com/muhlba91/pulumi-proxmoxve/releases/download/v2.1.0/pulumi-resource-proxmoxve-v2.1.0-linux-arm64.tar.gz
 
 pulumi plugin install resource proxmoxve v2.1.0 -f ./pulumi-resource-proxmoxve-v2.1.0-linux-arm64.tar.gz
-
-
-docker run -it --rm --entrypoint /bin/sh -v "$(pwd):/app" -v "/home/lordmuffin/.kube/config:/home/root/.kube/config" -e KUBECONFIG=/home/root/.kube/config -w "/app" praqma/helmsman -c "./install.sh"
-
-
 
 
 ## Argo Things:

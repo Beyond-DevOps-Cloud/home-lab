@@ -1,0 +1,49 @@
+apiVersion: argoproj.io/v1alpha1
+kind: WorkflowTemplate
+metadata:
+  name: pulumi-up
+spec:
+  entrypoint: argosay
+  arguments:
+    parameters:
+      - name: message
+        value: one
+        enum:
+          -   one
+          -   two
+          -   three
+  templates:
+    - name: argosay
+      inputs:
+        parameters:
+          - name: message
+            value: '{{workflow.parameters.message}}'
+        artifacts:
+        - name: source
+          path: /src
+          git:
+            repo: https://github.com/Beyond-DevOps-Cloud/home-lab.git
+            revision: main
+      container:
+        name: main
+        image: 'pulumi/pulumi-nodejs'
+        command:
+          - pulumi plugin install resource proxmoxve v2.0.0 -f ./files/pulumi-resource-proxmoxve-v2.0.0-linux-arm64.tar.gz && pulumi plugin install resource proxmoxve v2.1.0 -f ./files/pulumi-resource-proxmoxve-v2.1.0-linux-arm64.tar.gz && npm install && npm ci && pulumi up --stack dev --non-interactive --skip-preview
+        env:
+        - name: PULUMI_ACCESS_TOKEN
+          value: "access-token"
+        - name: PROXMOX_VE_ENDPOINT
+          value: "https://192.168.1.11:8006/"
+        - name: PROXMOX_VE_INSECURE
+          value: true
+        - name: PROXMOX_VE_USERNAME
+          value: "pulumi@pve"
+        - name: PROXMOX_VE_PASSWORD
+          value: "pulumi"
+        volumeMounts:
+          - name: gitdir
+            mountPath: /git
+      volumes:
+        - name: gitdir
+          hostPath:
+            path: /src # folder on your host machine
