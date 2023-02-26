@@ -9,9 +9,11 @@ resources:
 - secrets/argo-secrets.yaml
 # - overlays/argo-server-sa-readonly.yaml
 # - overlays/argo-server-sa-admin.yaml
+- templates/test-template.yaml
+- templates/pulumi-up.yaml
 
-bases:
-- templates
+# bases:
+# - templates
 
 patches:
 - overlays/argo-server-sa.yaml
