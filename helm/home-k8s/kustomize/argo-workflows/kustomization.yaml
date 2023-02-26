@@ -9,7 +9,9 @@ resources:
 - secrets/argo-secrets.yaml
 # - overlays/argo-server-sa-readonly.yaml
 # - overlays/argo-server-sa-admin.yaml
-- templates/test-template.yaml
+
+bases:
+- templates/
 
 patches:
 - overlays/argo-server-sa.yaml
