@@ -11,7 +11,7 @@ resources:
 # - overlays/argo-server-sa-admin.yaml
 
 bases:
-- templates/
+- templates
 
 patches:
 - overlays/argo-server-sa.yaml
