@@ -3,7 +3,7 @@ kind: WorkflowTemplate
 metadata:
   name: pulumi-up
 spec:
-  entrypoint: argosay
+  entrypoint: /bin/sh
   arguments:
     parameters:
       - name: message
