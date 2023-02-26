@@ -31,8 +31,8 @@ spec:
           - /bin/sh 
           - -c
           - pwd
-          - ls /src
-          - cd /src/homelab
+          - ls /git
+          - cd /git
           - pulumi plugin install resource proxmoxve v2.0.0 -f ./files/pulumi-resource-proxmoxve-v2.0.0-linux-arm64.tar.gz && pulumi plugin install resource proxmoxve v2.1.0 -f ./files/pulumi-resource-proxmoxve-v2.1.0-linux-arm64.tar.gz && npm install && npm ci && pulumi up --stack dev --non-interactive --skip-preview
         env:
         - name: PULUMI_ACCESS_TOKEN
@@ -45,3 +45,10 @@ spec:
           value: "pulumi@pve"
         - name: PROXMOX_VE_PASSWORD
           value: "pulumi"
+        volumeMounts:
+          - name: gitdir
+            mountPath: /git
+      volumes:
+        - name: gitdir
+          hostPath:
+            path: /src/home-lab # folder on your host machine
