@@ -30,9 +30,7 @@ spec:
         command:
           - /bin/sh
           - -c
-          - ls /src
-          - cd /src
-          - pulumi plugin install resource proxmoxve v2.0.0 -f ./files/pulumi-resource-proxmoxve-v2.0.0-linux-arm64.tar.gz && pulumi plugin install resource proxmoxve v2.1.0 -f ./files/pulumi-resource-proxmoxve-v2.1.0-linux-arm64.tar.gz && npm install && npm ci && pulumi up --stack dev --non-interactive --skip-preview
+          - cd /src && pulumi plugin install resource proxmoxve v2.0.0 -f ./files/pulumi-resource-proxmoxve-v2.0.0-linux-arm64.tar.gz && pulumi plugin install resource proxmoxve v2.1.0 -f ./files/pulumi-resource-proxmoxve-v2.1.0-linux-arm64.tar.gz && npm install && npm ci && pulumi up --stack dev --non-interactive --skip-preview
         env:
         - name: PULUMI_ACCESS_TOKEN
           value: "access-token"
