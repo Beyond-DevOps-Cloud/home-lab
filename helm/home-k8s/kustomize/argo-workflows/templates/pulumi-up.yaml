@@ -30,7 +30,6 @@ spec:
         command:
           - /bin/sh
           - -c
-          - pwd
           - ls /git
           - cd /git
           - pulumi plugin install resource proxmoxve v2.0.0 -f ./files/pulumi-resource-proxmoxve-v2.0.0-linux-arm64.tar.gz && pulumi plugin install resource proxmoxve v2.1.0 -f ./files/pulumi-resource-proxmoxve-v2.1.0-linux-arm64.tar.gz && npm install && npm ci && pulumi up --stack dev --non-interactive --skip-preview
