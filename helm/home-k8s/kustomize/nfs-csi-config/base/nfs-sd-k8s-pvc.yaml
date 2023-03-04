@@ -8,7 +8,7 @@ parameters:
   server: 192.168.1.10
   share: /mnt/SpinningDisks/Kubernetes-PVC
 reclaimPolicy: Delete
-volumeBindingMode: Immediatea
+volumeBindingMode: Immediate
 mountOptions:
   - hard
   - nfsvers=4.1
