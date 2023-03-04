@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: csi-driver-nfs
+  name: nfs-csi-config
   namespace: argocd
   finalizers:
   - resources-finalizer.argocd.argoproj.io
@@ -11,11 +11,9 @@ spec:
     namespace: kube-system
   project: default
   source:
-    path: ./helm/home-k8s/kustomize/csi-driver-nfs
+    path: ./helm/home-k8s/kustomize/nfs-csi-config
     repoURL: https://github.com/Beyond-DevOps-Cloud/home-lab.git
     targetRevision: HEAD
-    plugin:
-      name: kustomized-helm
   syncPolicy:
     automated:
       prune: true
