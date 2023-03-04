@@ -1,6 +1,0 @@
-
-resources:
-- ./all.yaml
-
-patches:
-# - overlays/guestbook-deployment.yaml
