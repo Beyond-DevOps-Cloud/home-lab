@@ -525,6 +525,8 @@ spec:
         ## End of additional Velero resource settings.
         ##
   syncPolicy:
+    syncOptions:
+      - CreateNamespace=true
     automated:
       prune: true
       selfHeal: true
