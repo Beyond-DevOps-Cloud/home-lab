@@ -251,7 +251,7 @@ spec:
             name: default
             # provider is the name for the backup storage location provider. If omitted
             # `configuration.provider` will be used instead.
-            provider: aws
+            provider:
             # bucket is the name of the bucket to store backups in. Required.
             bucket: velero
             # caCert defines a base64 encoded CA bundle to use when verifying TLS connections to the provider. Optional.
@@ -289,7 +289,7 @@ spec:
             name:
             # provider is the name for the volume snapshot provider. If omitted
             # `configuration.provider` will be used instead.
-            provider: aws
+            provider:
             # Additional provider-specific configuration. See link above
             # for details of required/optional fields for your provider.
             config: {}
