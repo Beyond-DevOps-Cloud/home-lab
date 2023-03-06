@@ -76,12 +76,12 @@ spec:
           #   volumeMounts:
           #     - mountPath: /target
           #       name: plugins
-          - name: velero-plugin-for-aws
-            image: velero/velero-plugin-for-aws:v1.5.2
-            imagePullPolicy: IfNotPresent
-            volumeMounts:
-              - mountPath: /target
-                name: plugins
+          # - name: velero-plugin-for-aws
+          #   image: velero/velero-plugin-for-aws:v1.5.2
+          #   imagePullPolicy: IfNotPresent
+          #   volumeMounts:
+          #     - mountPath: /target
+          #       name: plugins
 
         # SecurityContext to use for the Velero deployment. Optional.
         # Set fsGroup for `AWS IAM Roles for Service Accounts`
@@ -190,7 +190,7 @@ spec:
             spec: []
             # - alert: VeleroBackupPartialFailures
             #   annotations:
-            #     message: Velero backup partialy failed backups.
+            #     message: Velero backup {{ $labels.schedule }} has {{ $value | humanizePercentage }} partialy failed backups.
             #   expr: |-
             #     velero_backup_partial_failure_total{schedule!=""} / velero_backup_attempt_total{schedule!=""} > 0.25
             #   for: 15m
@@ -198,7 +198,7 @@ spec:
             #     severity: warning
             # - alert: VeleroBackupFailures
             #   annotations:
-            #     message: Velero backup failed backups.
+            #     message: Velero backup {{ $labels.schedule }} has {{ $value | humanizePercentage }} failed backups.
             #   expr: |-
             #     velero_backup_failure_total{schedule!=""} / velero_backup_attempt_total{schedule!=""} > 0.25
             #   for: 15m
@@ -241,19 +241,19 @@ spec:
         ##
         configuration:
           # Cloud provider being used (e.g. aws, azure, gcp).
-          provider: aws
+          provider:
 
           # Parameters for the `default` BackupStorageLocation. See
           # https://velero.io/docs/v1.6/api-types/backupstoragelocation/
           backupStorageLocation:
             # name is the name of the backup storage location where backups should be stored. If a name is not provided,
             # a backup storage location will be created with the name "default". Optional.
-            name: default
+            name:
             # provider is the name for the backup storage location provider. If omitted
             # `configuration.provider` will be used instead.
-            provider: aws
+            provider:
             # bucket is the name of the bucket to store backups in. Required.
-            bucket: velero
+            bucket:
             # caCert defines a base64 encoded CA bundle to use when verifying TLS connections to the provider. Optional.
             caCert:
             # prefix is the directory under which all Velero data should be stored within the bucket. Optional.
@@ -265,10 +265,10 @@ spec:
             accessMode: ReadWrite
             # Additional provider-specific configuration. See link above
             # for details of required/optional fields for your provider.
-            config:
-             region: minio
-             s3ForcePathStyle: true
-             s3Url: http://192.168.1.10:9000
+            config: {}
+            #  region:
+            #  s3ForcePathStyle:
+            #  s3Url:
             #  kmsKeyId:
             #  resourceGroup:
             #  The ID of the subscription containing the storage account, if different from the cluster’s subscription. (Azure only)
@@ -286,10 +286,10 @@ spec:
           # https://velero.io/docs/v1.6/api-types/volumesnapshotlocation/
           volumeSnapshotLocation:
             # name is the name of the volume snapshot location where snapshots are being taken. Required.
-            name: default
+            name:
             # provider is the name for the volume snapshot provider. If omitted
             # `configuration.provider` will be used instead.
-            provider: aws
+            provider:
             # Additional provider-specific configuration. See link above
             # for details of required/optional fields for your provider.
             config: {}
@@ -408,11 +408,11 @@ spec:
           # [AWS] https://github.com/vmware-tanzu/velero-plugin-for-aws/blob/main/README.md
           # [GCP] https://github.com/vmware-tanzu/velero-plugin-for-gcp/blob/main/README.md
           # [Azure] https://github.com/vmware-tanzu/velero-plugin-for-microsoft-azure/blob/main/README.md
-          secretContents: 
-            cloud: |
-              [default]
-              aws_access_key_id=minio
-              aws_secret_access_key=minio123
+          secretContents: {}
+          #  cloud: |
+          #    [default]
+          #    aws_access_key_id=<REDACTED>
+          #    aws_secret_access_key=<REDACTED>
           # additional key/value pairs to be used as environment variables such as "DIGITALOCEAN_TOKEN: <your-key>". Values will be stored in the secret.
           extraEnvVars: {}
           # Name of a pre-existing secret (if any) in the Velero namespace
@@ -423,7 +423,7 @@ spec:
         # Whether to create backupstoragelocation crd, if false => do not create a default backup location
         backupsEnabled: true
         # Whether to create volumesnapshotlocation crd, if false => disable snapshot feature
-        snapshotsEnabled: false
+        snapshotsEnabled: true
 
         # Whether to deploy the node-agent daemonset.
         deployNodeAgent: false
