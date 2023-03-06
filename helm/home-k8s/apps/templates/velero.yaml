@@ -28,8 +28,6 @@ spec:
           volumeSnapshotLocation:
             name: default
             provider: aws
-            config:
-              region: us-west-1
 
 # Whether or not to clean up CustomResourceDefintions when deleting a release.
 # Cleaning up CRDs will delete the BackupStorageLocation and VolumeSnapshotLocation instances, which would have to be reconfigured.
