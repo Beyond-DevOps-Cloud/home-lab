@@ -25,12 +25,10 @@ spec:
             default: true
             config:
               region: us-west-1
-              profile: test
           volumeSnapshotLocation:
             name: default
             provider: aws
             config:
-              bucket: velero
               region: us-west-1
 
 # Whether or not to clean up CustomResourceDefintions when deleting a release.
