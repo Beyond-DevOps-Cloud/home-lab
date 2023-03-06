@@ -20,13 +20,14 @@ spec:
         configuration:
           provider: aws
           backupStorageLocation:
-            name: primary
+            name: default
             bucket: velero
             default: true
             config:
               region: us-west-1
               profile: test
           volumeSnapshotLocation:
+            name: default
             provider: aws
             config:
               bucket: velero
