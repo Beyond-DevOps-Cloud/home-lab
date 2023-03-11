@@ -24,8 +24,8 @@ spec:
           value: "velero"
         - name: configuration.backupStorageLocation.default
           value: "true"
-        - name: configuration.backupStorageLocation.config.region
-          value: "us-east-1"
+        # - name: configuration.backupStorageLocation.config.region
+        #   value: "us-east-1"
         - name: configuration.volumeSnapshotLocation.name
           value: "default"
         - name: configuration.volumeSnapshotLocation.provider
