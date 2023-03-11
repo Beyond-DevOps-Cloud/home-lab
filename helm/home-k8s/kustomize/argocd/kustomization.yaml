@@ -9,10 +9,6 @@ resources:
 - https://raw.githubusercontent.com/argoproj/argo-cd/master/manifests/install.yaml
 - base/cmp-plugin.yaml
 
-components:
-- https://github.com/argoproj-labs/argocd-extensions/manifests
-
-
 patchesStrategicMerge:
 # - overlays/production/argocd-cm.yaml
 - overlays/production/argocd-server-service.yaml
@@ -23,15 +19,6 @@ patchesStrategicMerge:
 - secrets/argo-secrets.yaml
 - overlays/production/argo-cd-rbac-cm.yaml
 - overlays/production/cmp-plugin.yaml
-
-
-patchesJson6902:
-- path: overlays/production/argocd-server-deploy-command.yaml
-  target:
-    group: apps
-    kind: Deployment
-    name: argocd-server
-    version: v1
 
 patches:
 - path: overlays/production/argo-dex-deploy.yaml

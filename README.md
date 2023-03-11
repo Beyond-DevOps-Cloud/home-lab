@@ -44,7 +44,7 @@ pulumi plugin install resource proxmoxve v2.1.0 -f ./pulumi-resource-proxmoxve-v
 ?? Still need to figure this out.
 
 ```
-docker run -it --rm --entrypoint=/bin/sh -v "$(pwd):/work" -v "/home/lordmuffin/.kube/config:/home/root/.kube/config" -e KUBECONFIG=/home/root/.kube/config -w "/work" kubectl-kustomize-helm -c "kustomize build ./helm/home-k8s | kubectl apply --prune --overwrite --all --wait -f -"
+docker run -it --rm --entrypoint=/bin/sh -v "$(pwd):/work" -v "/home/lordmuffin/.kube/config:/home/root/.kube/config" -e KUBECONFIG=/home/root/.kube/config -w "/work" gatsinski/kubectl-kustomize-helm:latest -c "kustomize build ./helm/home-k8s | kubectl apply --prune --overwrite --all --wait -f -"
 ```
 ### Init Argo:
 Run this after ArgoCD is up and running.  Note the namespace!
