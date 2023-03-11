@@ -15,19 +15,35 @@ spec:
     repoURL: https://github.com/Beyond-DevOps-Cloud/home-lab.git
     targetRevision: HEAD
     helm:
-      values: | 
-        # Set provider name and backup storage location bucket name
-        configuration:
-          provider: aws
-          backupStorageLocation:
-            name: default
-            bucket: velero
-            default: true
-            config:
-              region: us-west-1
-          volumeSnapshotLocation:
-            name: default
-            provider: aws
+      parameters:
+       - name: configuration.provider
+          value: "aws"
+        - name: configuration.backupStorageLocation.name
+          value: "default"
+        - name: configuration.backupStorageLocation.bucket
+          value: "velero"
+        - name: configuration.backupStorageLocation.default
+          value: "true"
+        - name: configuration.backupStorageLocation.config.region
+          value: "us-east-1"
+        - name: configuration.volumeSnapshotLocation.name
+          value: "default"
+        - name: configuration.volumeSnapshotLocation.provider
+          value: "aws"
+    # helm:
+    #   values: | 
+    #     # Set provider name and backup storage location bucket name
+    #     configuration:
+    #       provider: aws
+    #       backupStorageLocation:
+    #         name: default
+    #         bucket: velero
+    #         default: true
+    #         config:
+    #           region: us-west-1
+    #       volumeSnapshotLocation:
+    #         name: default
+    #         provider: aws
 
 # Whether or not to clean up CustomResourceDefintions when deleting a release.
 # Cleaning up CRDs will delete the BackupStorageLocation and VolumeSnapshotLocation instances, which would have to be reconfigured.
