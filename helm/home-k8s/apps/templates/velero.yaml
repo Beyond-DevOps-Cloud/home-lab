@@ -16,7 +16,7 @@ spec:
     targetRevision: HEAD
     helm:
       parameters:
-       - name: configuration.provider
+        - name: configuration.provider
           value: "aws"
         - name: configuration.backupStorageLocation.name
           value: "default"
