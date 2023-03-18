@@ -20,6 +20,7 @@ patchesStrategicMerge:
 - secrets/argo-secrets.yaml
 - overlays/production/argo-cd-rbac-cm.yaml
 - overlays/production/cmp-plugin.yaml
+- overlays/production/argocd-server-deploy-command.yaml
 
 patches:
 - path: overlays/production/argo-dex-deploy.yaml
