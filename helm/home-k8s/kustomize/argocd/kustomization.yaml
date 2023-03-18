@@ -43,7 +43,7 @@ patches:
 - path: overlays/production/argocd-server-deploy-command.yaml
   target:
     kind: Deployment
-    name: argocd-server-deploy-command
+    name: argocd-server
 
 namespace: argocd
 
