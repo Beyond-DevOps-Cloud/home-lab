@@ -5,6 +5,7 @@ kind: Kustomization
 resources:
 # - base/argo-cd-issuer.yaml
 # - base/argo-cd-certificate.yaml
+- ./base
 - base/argo-cd-ui-ingress.yaml
 - https://raw.githubusercontent.com/argoproj/argo-cd/master/manifests/install.yaml
 - base/cmp-plugin.yaml
