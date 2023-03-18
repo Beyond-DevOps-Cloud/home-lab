@@ -40,12 +40,10 @@ patches:
   target:
       kind: Deployment
       name: argocd-repo-server
-      
-patchesJson6902:
-  - path: overlays/production/argocd-server-deploy-command.yaml
-    target:
-      kind: Deployment
-      name: argocd-server-deploy-command
+- path: overlays/production/argocd-server-deploy-command.yaml
+  target:
+    kind: Deployment
+    name: argocd-server-deploy-command
 
 namespace: argocd
 
