@@ -2,7 +2,15 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: argocd-cm
+  
 data:
+  resource.exclusions: |
+    - apiGroups:
+      - "velero.io"
+      kinds:
+      - Backup
+      clusters:
+      - "*"
   application.resourceTrackingMethod: annotation
   admin.enabled: 'false'
   statusbadge.enabled: 'true'
