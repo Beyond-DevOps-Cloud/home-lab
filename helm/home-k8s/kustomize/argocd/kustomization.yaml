@@ -20,7 +20,7 @@ patchesStrategicMerge:
 - secrets/argo-secrets.yaml
 - overlays/production/argo-cd-rbac-cm.yaml
 - overlays/production/cmp-plugin.yaml
-- overlays/production/argocd-server-deploy-command.yaml
+
 
 patches:
 - path: overlays/production/argo-dex-deploy.yaml
@@ -40,6 +40,12 @@ patches:
   target:
       kind: Deployment
       name: argocd-repo-server
+      
+patchesJson6902:
+  - path: overlays/production/argocd-server-deploy-command.yaml
+    target:
+      kind: Deployment
+      name: argocd-server-deploy-command
 
 namespace: argocd
 
