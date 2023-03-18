@@ -12,8 +12,8 @@ spec:
     - name: pulumiup
       inputs:
         parameters:
-          - name: message
-            value: '{{workflow.parameters.message}}'
+          - name: PULUMI_ACCESS_TOKEN
+            value: '{{workflow.parameters.PULUMI_ACCESS_TOKEN}}'
         artifacts:
         - name: source
           path: /src
