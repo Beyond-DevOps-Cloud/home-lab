@@ -6,12 +6,8 @@ spec:
   entrypoint: pulumiup
   arguments:
     parameters:
-      - name: message
-        value: one
-        enum:
-          -   one
-          -   two
-          -   three
+      - name: PULUMI_ACCESS_TOKEN
+        value: none
   templates:
     - name: pulumiup
       inputs:
@@ -33,7 +29,7 @@ spec:
           - cd /src/pulumi/proxmox/files && pulumi plugin install resource proxmoxve v2.0.0 -f ./pulumi-resource-proxmoxve-v2.0.0-linux-arm64.tar.gz && pulumi plugin install resource proxmoxve v2.1.0 -f ./pulumi-resource-proxmoxve-v2.1.0-linux-arm64.tar.gz && npm install && npm ci && pulumi up --stack dev --non-interactive --skip-preview
         env:
         - name: PULUMI_ACCESS_TOKEN
-          value: "access-token"
+          value: "{{inputs.parameters.PULUMI_ACCESS_TOKEN}}"
         - name: PROXMOX_VE_ENDPOINT
           value: "https://192.168.1.11:8006/"
         - name: PROXMOX_VE_INSECURE
