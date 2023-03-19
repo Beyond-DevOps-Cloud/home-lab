@@ -276,7 +276,7 @@ apps:
     priority: 0
   searxng:
     namespace: "searxng" # maps to the namespace as defined in namespaces above
-    enabled: true # change to false if you want to delete this app release empty: false:
+    enabled: false # change to false if you want to delete this app release empty: false:
     chart: "searxng/searxng" # changing the chart name means delete and recreate this chart
     version: "1.0.0" # chart version
     ### Optional values below
