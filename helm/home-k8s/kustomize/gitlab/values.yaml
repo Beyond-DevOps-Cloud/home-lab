@@ -70,9 +70,9 @@ global:
     # class:
     annotations: {}
     enabled: true
-    tls: {}
-    #   enabled: true
-    #   secretName:
+    tls:
+      enabled: true
+      secretName: andrewpjackson.com-tls
     path: /
     pathType: Prefix
 
@@ -837,7 +837,7 @@ certmanager:
 ## https://docs.gitlab.com/charts/architecture/decisions#nginx-ingress
 ## Installation & configuration of charts/ingress-nginx:
 nginx-ingress:
-  enabled: true
+  enabled: false
   tcpExternalConfig: "true"
   controller:
     addHeaders:
