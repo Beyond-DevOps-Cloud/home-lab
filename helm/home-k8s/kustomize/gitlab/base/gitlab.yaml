@@ -4,7 +4,7 @@ metadata:
   name: gitlab
 spec:
   chart:
-    version: "15.10.0" # https://gitlab.com/gitlab-org/cloud-native/gitlab-operator/-/blob/0.8.1/CHART_VERSIONS
+    version: "6.10.0" # https://gitlab.com/gitlab-org/cloud-native/gitlab-operator/-/blob/0.8.1/CHART_VERSIONS
     values:
       global:
         hosts:
@@ -13,7 +13,5 @@ spec:
           enabled: true
           class: nginx
           configureCertmanager: false
-        nginx-ingress:
-          enabled: true
       certmanager-issuer:
         email: dorkmeisterx69@gmail.com # use your real email address here
