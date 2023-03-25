@@ -20,6 +20,8 @@ spec:
       parameters:
         - name: global.edition
           value: ce
+        - name: upgradeCheck.enabled
+          value: false
   syncPolicy:
     syncOptions:
       - CreateNamespace=true
