@@ -8,20 +8,20 @@ metadata:
 spec:
   destination:
     server: https://kubernetes.default.svc
-    namespace: gitlab
+    namespace: gitlab-system
   project: default
   source:
     path: ./helm/home-k8s/kustomize/gitlab
     repoURL: https://github.com/Beyond-DevOps-Cloud/home-lab.git
     targetRevision: HEAD
-    helm:
-      # valueFiles:
-      # - ./values.yaml
-      parameters:
-        - name: global.edition
-          value: ce
-        - name: upgradeCheck.enabled
-          value: "false"
+    # helm:
+    #   # valueFiles:
+    #   # - ./values.yaml
+    #   parameters:
+    #     - name: global.edition
+    #       value: ce
+    #     - name: upgradeCheck.enabled
+    #       value: "false"
   syncPolicy:
     syncOptions:
       - CreateNamespace=true
