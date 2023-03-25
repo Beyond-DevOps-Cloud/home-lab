@@ -8,7 +8,7 @@ spec:
     values:
       global:
         hosts:
-          domain: gitlab.andrewpjackson.com # use a real domain here
+          domain: andrewpjackson.com # use a real domain here
         ingress:
           enabled: true
           class: nginx
