@@ -12,6 +12,6 @@ spec:
         ingress:
           configureCertmanager: false
         nginx-ingress:
-          enabled: false
+          enabled: true
       certmanager-issuer:
         email: dorkmeisterx69@gmail.com # use your real email address here
