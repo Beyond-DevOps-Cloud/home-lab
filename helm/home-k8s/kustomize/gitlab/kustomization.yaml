@@ -14,6 +14,6 @@ patches:
         template:
           spec:
             nodeSelector:
-              key: kubernetes.io/hostname=k3s-agent-001
+              key: "kubernetes.io/hostname=k3s-agent-001"
     target:
       kind: (StatefulSet|Deployment|Job|Pods)
