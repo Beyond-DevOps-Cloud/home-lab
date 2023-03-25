@@ -21,7 +21,7 @@ spec:
         - name: global.edition
           value: ce
         - name: upgradeCheck.enabled
-          value: false
+          value: "false"
   syncPolicy:
     syncOptions:
       - CreateNamespace=true
