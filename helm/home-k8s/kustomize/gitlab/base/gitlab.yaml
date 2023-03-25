@@ -10,6 +10,8 @@ spec:
         hosts:
           domain: gitlab.andrewpjackson.com # use a real domain here
         ingress:
+          enabled: true
+          class: nginx
           configureCertmanager: false
         nginx-ingress:
           enabled: true
