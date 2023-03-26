@@ -22,7 +22,7 @@ spec:
         appConfig:
           omniauth:
             enabled: true
-            autoSignInWithProvider: ['oidc']
+            # autoSignInWithProvider: ['oidc']
             syncProfileFromProvider: ['oidc']
             syncProfileAttributes: ['email']
             allowSingleSignOn: ['oidc']
