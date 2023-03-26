@@ -22,14 +22,14 @@ spec:
         appConfig:
           omniauth:
             enabled: true
-            # autoSignInWithProvider: ['oidc']
-            syncProfileFromProvider: ['oidc']
+            # autoSignInWithProvider: ['openid_connect']
+            syncProfileFromProvider: ['openid_connect']
             syncProfileAttributes: ['email']
-            allowSingleSignOn: ['oidc']
+            allowSingleSignOn: ['openid_connect']
             blockAutoCreatedUsers: false
             autoLinkLdapUser: false
             autoLinkoidcUser: true
-            autoLinkUser: ['oidc']
+            autoLinkUser: ['openid_connect']
             externalProviders: []
             allowBypassTwoFactor: []
             providers:
