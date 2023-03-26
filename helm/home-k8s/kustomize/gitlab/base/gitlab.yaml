@@ -19,18 +19,19 @@ spec:
             secretName: andrewpjackson.com-tls
         certmanager-issuer:
           email: dorkmeisterx69@gmail.com # use your real email address here
-        omniauth:
-          enabled: true
-          autoSignInWithProvider:
-          syncProfileFromProvider: ['saml']
-          syncProfileAttributes: ['email']
-          allowSingleSignOn: ['saml']
-          blockAutoCreatedUsers: false
-          autoLinkLdapUser: false
-          autoLinkSamlUser: true
-          autoLinkUser: ['saml']
-          externalProviders: []
-          allowBypassTwoFactor: []
-          providers:
-            - secret: gitlab-authentik-saml
-              key: provider
+        appConfig:
+          omniauth:
+            enabled: true
+            autoSignInWithProvider:
+            syncProfileFromProvider: ['saml']
+            syncProfileAttributes: ['email']
+            allowSingleSignOn: ['saml']
+            blockAutoCreatedUsers: false
+            autoLinkLdapUser: false
+            autoLinkSamlUser: true
+            autoLinkUser: ['saml']
+            externalProviders: []
+            allowBypassTwoFactor: []
+            providers:
+              - secret: gitlab-authentik-saml
+                key: provider
