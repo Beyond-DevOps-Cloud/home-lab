@@ -33,3 +33,4 @@ spec:
           allowBypassTwoFactor: []
           providers:
             - secret: gitlab-authentik-saml
+              key: provider
