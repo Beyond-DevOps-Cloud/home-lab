@@ -2,8 +2,8 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
 resources:
-- https://github.com/operator-framework/operator-lifecycle-manager/releases/download/v0.24.0/crds.yaml
-- https://github.com/operator-framework/operator-lifecycle-manager/releases/download/v0.24.0/olm.yaml
+- https://raw.githubusercontent.com/operator-framework/operator-lifecycle-manager/master/deploy/upstream/quickstart/crds.yaml
+- https://raw.githubusercontent.com/operator-framework/operator-lifecycle-manager/master/deploy/upstream/quickstart/olm.yaml
 - https://operatorhub.io/install/gitlab-runner-operator.yaml
-- secrets/gitlab-runner-secret.yaml
 - base/gitlab-runner.yaml
+- secrets/gitlab-runner-secret.yaml
