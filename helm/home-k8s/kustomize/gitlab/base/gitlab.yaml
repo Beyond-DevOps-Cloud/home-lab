@@ -22,16 +22,17 @@ spec:
         appConfig:
           omniauth:
             enabled: true
-            autoSignInWithProvider:
-            syncProfileFromProvider: ['saml']
+            allowSingleSignOn: ['oidc']
+            autoSignInWithProvider: ['oidc']
+            syncProfileFromProvider: ['oidc']
             syncProfileAttributes: ['email']
-            allowSingleSignOn: ['saml']
+            allowSingleSignOn: ['oidc']
             blockAutoCreatedUsers: false
             autoLinkLdapUser: false
-            autoLinkSamlUser: true
-            autoLinkUser: ['saml']
+            autoLinkoidcUser: true
+            autoLinkUser: ['oidc']
             externalProviders: []
             allowBypassTwoFactor: []
             providers:
-              - secret: gitlab-authentik-saml
+              - secret: gitlab-authentik-oidc
                 key: provider
