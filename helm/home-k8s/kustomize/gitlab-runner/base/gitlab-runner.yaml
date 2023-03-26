@@ -3,6 +3,6 @@ kind: Runner
 metadata:
   name: gitlab-runner
 spec:
-  gitlabUrl: https://gitlab.anderwpjackson.com
+  gitlabUrl: https://gitlab.andrewpjackson.com
   buildImage: alpine
   token: gitlab-runner-secret
