@@ -28,8 +28,8 @@ spec:
             allowSingleSignOn: ['openid_connect']
             blockAutoCreatedUsers: false
             autoLinkLdapUser: false
-            autoLinkoidcUser: true
-            autoLinkUser: ['openid_connect']
+            autoLinkoidcUser: false
+            autoLinkUser: false
             externalProviders: []
             allowBypassTwoFactor: []
             providers:
