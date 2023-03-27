@@ -22,6 +22,21 @@ spec:
             enabled: true
             raft: 
               enabled: true
+            replicas: 3
+        ingress:
+          enabled: true
+          ingressClassName: nginx
+          hosts:
+            host: vault.andrewpjackson.com
+          tls:
+            - hosts:
+                - vault.andrewpjackson.com
+              secretName: andrewpjackson.com-tls
+        ui:
+          enabled: true
+          annotations:
+            "sample/annotation1": "foo"
+            "sample/annotation2": "bar"
   syncPolicy:
     syncOptions:
       - CreateNamespace=true
