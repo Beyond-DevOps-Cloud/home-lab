@@ -17,7 +17,6 @@ spec:
     helm:
       values: |
         server:
-          affinity: ""
           ha:
             enabled: true
             raft: 
