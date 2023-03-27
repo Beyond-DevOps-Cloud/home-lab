@@ -15,7 +15,7 @@ spec:
     repoURL: https://github.com/Beyond-DevOps-Cloud/home-lab.git
     targetRevision: HEAD
     helm:
-      values:
+      values: |
         # Vault Helm Chart Value Overrides
         global:
           enabled: true
