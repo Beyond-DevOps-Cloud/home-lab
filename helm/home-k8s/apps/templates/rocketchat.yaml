@@ -102,7 +102,7 @@ spec:
         existingMongodbSecret: ""
 
         ## MongoDB URL if using an externally provisioned MongoDB
-        externalMongodbUrl: mongodb://rocketchat:procketchatassword@localhost:27017/rocketchat
+        externalMongodbUrl: # mongodb://rocketchat:rocketchat@localhost:27017/rocketchat
         externalMongodbOplogUrl: # mongodb://user:password@localhost:27017/local?replicaSet=rs0&authSource=admin
 
         ##
@@ -116,13 +116,16 @@ spec:
           initdbScriptsConfigMap: rocketchat-mongodb-fix-clustermonitor-role-configmap
 
           auth:
-            rootPassword: rocketchatroot
-            usernames:
-              - rocketchat
             passwords:
               - rocketchat
-            databases:
-              - rocketchat
+            rootPassword: rocketchatroot
+            # rootPassword: rocketchatroot
+            # usernames:
+            #   - rocketchat
+            # passwords:
+            #   - rocketchat
+            # databases:
+            #   - rocketchat
 
           architecture: replicaset
           replicaCount: 1
