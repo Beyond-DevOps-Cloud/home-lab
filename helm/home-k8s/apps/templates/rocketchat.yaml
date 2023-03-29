@@ -102,7 +102,7 @@ spec:
         existingMongodbSecret: ""
 
         ## MongoDB URL if using an externally provisioned MongoDB
-        externalMongodbUrl: # mongodb://user:password@localhost:27017/rocketchat
+        externalMongodbUrl: mongodb://rocketchat:procketchatassword@localhost:27017/rocketchat
         externalMongodbOplogUrl: # mongodb://user:password@localhost:27017/local?replicaSet=rs0&authSource=admin
 
         ##
