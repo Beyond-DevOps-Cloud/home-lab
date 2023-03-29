@@ -4,3 +4,6 @@ kind: Kustomization
 resources:
 - https://raw.githubusercontent.com/operator-framework/operator-lifecycle-manager/master/deploy/upstream/quickstart/crds.yaml
 - https://raw.githubusercontent.com/operator-framework/operator-lifecycle-manager/master/deploy/upstream/quickstart/olm.yaml
+
+# Synapse Operator
+- https://operatorhub.io/install/synapse-operator.yaml

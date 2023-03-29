@@ -1,0 +1,158 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: configmap-homeserver
+data:
+  homeserver.yaml: |
+    # Configuration file for Synapse.
+    #
+    # This is a YAML file: see [1] for a quick introduction. Note in particular
+    # that *indentation is important*: all the elements of a list or dictionary
+    # should have the same indentation.
+    #
+    # [1] https://docs.ansible.com/ansible/latest/reference_appendices/YAMLSyntax.html
+    #
+    # For more information on how to configure Synapse, including a complete accounting of
+    # each option, go to docs/usage/configuration/config_documentation.md or
+    # https://matrix-org.github.io/synapse/latest/usage/configuration/config_documentation.html
+    server_name: "andrewpjackson.com"
+    public_baseurl: "https://matrix.andrewpjackson.com"
+    pid_file: /tmp/homeserver.pid
+    listeners:
+      - port: 8008
+        tls: false
+        type: http
+        x_forwarded: true
+        resources:
+          - names: [client, federation]
+            compress: false
+      - port: 9093
+        type: http
+        resources:
+          - names: [replication]
+    # database:
+    #   name: sqlite3
+    #   args:
+    #     database: /data/homeserver.db
+    database:
+      name: psycopg2
+      txn_limit: 10000
+      args:
+        user: synapse_user
+        password: synapse
+        database: synapse
+        host: postgresql
+        port: 5432
+        cp_min: 5
+        cp_max: 10
+    redis:
+      # Uncomment the below to enable Redis support.
+      #
+      enabled: true
+    
+      # Optional host and port to use to connect to redis. Defaults to
+      # localhost and 6379
+      #
+      host: redis
+      port: 6379
+
+    # oidc_providers:
+    #   - idp_id: authentik
+    #     idp_name: authentik
+    #     discover: true
+    #     issuer: "https://authentik.andrewpjackson.com/application/o/matrix/" # TO BE FILLED: domain and slug
+    #     client_id: "3c81f53bc52aa62c0cdf9926ad46e5230ce9f75b" # TO BE FILLED
+    #     client_secret: "5de735934ddfc6c38fe9089b47ebeae6df561e8a4c92a99ecbcfce9d67efd9af53cce9ec07231d114d21185fb46cf3888429f3ce27384bcc2de11db0b8b15044" # TO BE FILLED
+    #     scopes:
+    #       - "openid"
+    #       - "profile"
+    #       - "email"
+    #     user_mapping_provider:
+    #       config:
+    #         localpart_template: "{% raw %}{{ user.preferred_username }}{% endraw %}"
+    #         display_name_template: "{% raw %}{{ user.preferred_username|capitalize }}{% endraw %}" # TO BE FILLED: If your users have names in Authentik and you want those in Synapse, this should be replaced with user.name|capitalize.
+    #         email_template: "{% raw %}{{ user.email }}{% endraw %}"
+
+    saml2_config:
+      sp_config:
+        metadata:
+          # local: ["saml2/idp.xml"]
+          remote:
+            - url: https://authentik.andrewpjackson.com/api/v3/providers/saml/13/metadata/?download
+        accepted_time_diff: 3
+
+        service:
+          sp:
+            allow_unsolicited: true
+
+        # The examples below are just used to generate our metadata xml, and you
+        # may well not need them, depending on your setup. Alternatively you
+        # may need a whole lot more detail - see the pysaml2 docs!
+        description: ["Authentik SAML", "en"]
+        name: ["Authentik SAML", "en"]
+
+        ui_info:
+          display_name:
+            - lang: en
+              text: "Display Name is the descriptive name of your service."
+          description:
+            - lang: en
+              text: "Description should be a short paragraph explaining the purpose of the service."
+          information_url:
+            - lang: en
+              text: "https://example.com/terms-of-service"
+          privacy_statement_url:
+            - lang: en
+              text: "https://example.com/privacy-policy"
+          keywords:
+            - lang: en
+              text: ["Matrix", "Element"]
+          logo:
+            - lang: en
+              text: "https://example.com/logo.svg"
+              width: "200"
+              height: "80"
+
+        organization:
+          name: andrewpjackson.com
+          display_name:
+            - ["andrewpjackson", "en"]
+          url: "http://andrewpjackson.com"
+
+        contact_person:
+          - given_name: Andrew
+            sur_name: "lordmuffin"
+            email_address": ["andrew@andrewpjackson.com"]
+            contact_type": technical
+
+      saml_session_lifetime: 5m
+
+      user_mapping_provider:
+        # Below options are intended for the built-in provider, they should be
+        # changed if using a custom module.
+        config:
+          mxid_source_attribute: displayName
+          mxid_mapping: dotreplace
+
+      grandfathered_mxid_source_attribute: upn
+
+      # attribute_requirements:
+      #   - attribute: userGroup
+      #     value: "staff"
+      #   - attribute: department
+      #     value: "sales"
+
+      # idp_entityid: 'https://our_idp/entityid'
+
+    log_config: "/data/matrix.andrewpjackson.com.log.config"
+    media_store_path: /data/media_store
+    registration_shared_secret: "rB=9TzhvR-4Wb@UXRYjG@7kzqiNA1OacMsMa4A=6:TozpAuyJ6"
+    report_stats: true
+    macaroon_secret_key: "3DS3q2s.4s8^oNku+M_-#K+RRgr&vt5*WrlPB;+s_ZGv:DXFxQ"
+    form_secret: "ewd=5zS_=,HK7I2K@Ws=nfLW;*4tye9m4_:LxNBA1jR6AqRxM5"
+    signing_key_path: "/data/matrix.andrewpjackson.com.signing.key"
+    trusted_key_servers:
+      - server_name: "matrix.org"
+
+
+    # vim:ft=yaml
