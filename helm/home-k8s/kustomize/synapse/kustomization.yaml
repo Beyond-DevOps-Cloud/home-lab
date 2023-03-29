@@ -4,3 +4,4 @@ kind: Kustomization
 resources:
 - https://operatorhub.io/install/synapse-operator.yaml
 - base/configmap-homeserver.yaml
+- base/synapse.yaml
