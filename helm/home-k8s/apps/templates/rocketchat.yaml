@@ -116,10 +116,12 @@ spec:
           initdbScriptsConfigMap: rocketchat-mongodb-fix-clustermonitor-role-configmap
 
           auth:
-            # rootPassword:
+            rootPassword:
+              - rocketchatroot
             usernames:
               - rocketchat
-            # passwords:
+            passwords:
+              - rocketchat
             databases:
               - rocketchat
 
