@@ -2,7 +2,12 @@ apiVersion: synapse.opdev.io/v1alpha1
 kind: Synapse
 metadata:
   name: synapse
+# spec:
+#   homeserver:
+#     configMap:
+#       name: configmap-homeserver
 spec:
   homeserver:
-    configMap:
-      name: configmap-homeserver
+    values:
+      serverName: example.com
+      reportStats: true
