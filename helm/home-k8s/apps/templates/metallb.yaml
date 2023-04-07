@@ -8,7 +8,7 @@ metadata:
 spec:
   destination:
     server: https://kubernetes.default.svc
-    namespace: kube-system
+    namespace: metallb-system
   project: default
   source:
     path: ./helm/home-k8s/kustomize/metallb
