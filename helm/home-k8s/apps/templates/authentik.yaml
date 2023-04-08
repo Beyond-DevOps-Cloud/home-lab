@@ -14,8 +14,6 @@ spec:
     path: ./helm/home-k8s/kustomize/authentik
     repoURL: https://github.com/Beyond-DevOps-Cloud/home-lab.git
     targetRevision: HEAD
-    plugin:
-      name: kustomized-helm
   syncPolicy:
     automated:
       prune: true
