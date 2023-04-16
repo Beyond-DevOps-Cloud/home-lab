@@ -8,7 +8,7 @@ metadata:
 spec:
   destination:
     server: https://kubernetes.default.svc
-    namespace: postgres
+    namespace: postgres-operator
   project: default
   source:
     path: ./helm/home-k8s/kustomize/postgres
