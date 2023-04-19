@@ -2,8 +2,8 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
 resources:
-- https://raw.githubusercontent.com/operator-framework/operator-lifecycle-manager/master/deploy/upstream/quickstart/crds.yaml
-- https://raw.githubusercontent.com/operator-framework/operator-lifecycle-manager/master/deploy/upstream/quickstart/olm.yaml
-- https://operatorhub.io/install/synapse-operator.yaml
-- https://operatorhub.io/install/v5/postgresql.yaml
-- https://operatorhub.io/install/keycloak-operator.yaml
+# - https://raw.githubusercontent.com/operator-framework/operator-lifecycle-manager/master/deploy/upstream/quickstart/crds.yaml
+# - https://raw.githubusercontent.com/operator-framework/operator-lifecycle-manager/master/deploy/upstream/quickstart/olm.yaml
+# - https://operatorhub.io/install/synapse-operator.yaml
+# - https://operatorhub.io/install/v5/postgresql.yaml
+# - https://operatorhub.io/install/keycloak-operator.yaml
