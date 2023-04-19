@@ -2,9 +2,18 @@ apiVersion: k8s.keycloak.org/v2alpha1
 kind: Keycloak
 metadata:
   name: keycloak
-  labels:
-    app: sso
 spec:
   instances: 1
-  hostname: keycloak.andrewpjackson.com
-  tlsSecret: andrewpjackson.com-tls
+  db:
+    vendor: postgres
+    host: keycloakdb-primary.keycloak.svc:5432/keycloakdb
+    usernameSecret:
+      name: keycloakdb-pguser-keycloakdb
+      key: username
+    passwordSecret:
+      name: keycloakdb-pguser-keycloakdb
+      key: password
+  http:
+    tlsSecret: andrewpjackson.com-tls
+  hostname:
+    hostname: keycloak.andrewpjackson.com
