@@ -12,7 +12,7 @@ data:
       clusters:
       - "*"
   application.resourceTrackingMethod: annotation
-  admin.enabled: 'false'
+  admin.enabled: 'true'
   statusbadge.enabled: 'true'
   users.anonymous.enabled: 'false'
   ga.trackingid: 'UA-105170809-6'
