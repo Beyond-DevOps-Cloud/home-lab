@@ -14,15 +14,15 @@ spec:
           requests:
             storage: 1Gi
         storageClassName: nfs-sd-k8s-pvc
-        podAntiAffinity:
-          preferredDuringSchedulingIgnoredDuringExecution:
-          - weight: 1
-            podAffinityTerm:
-              topologyKey: kubernetes.io/hostname
-              labelSelector:
-                matchLabels:
-                  postgres-operator.crunchydata.com/cluster: keycloakdb
-                  postgres-operator.crunchydata.com/instance-set: "00"
+        # podAntiAffinity:
+        #   preferredDuringSchedulingIgnoredDuringExecution:
+        #   - weight: 1
+        #     podAffinityTerm:
+        #       topologyKey: kubernetes.io/hostname
+        #       labelSelector:
+        #         matchLabels:
+        #           postgres-operator.crunchydata.com/cluster: keycloakdb
+        #           postgres-operator.crunchydata.com/instance-set: "00"
   backups:
     pgbackrest:
       image: registry.developers.crunchydata.com/crunchydata/crunchy-pgbackrest:ubi8-2.41-4
