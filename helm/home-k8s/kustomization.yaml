@@ -2,11 +2,11 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
   - kustomize/argocd
-  - kustomize/cert-manager-config
-  - kustomize/adguard-home
-  - kustomize/code-server
-  - kustomize/coder-workspace
-  - kustomize/nextcloud
+  # - kustomize/cert-manager-config
+  # - kustomize/adguard-home
+  # - kustomize/code-server
+  # - kustomize/coder-workspace
+  # - kustomize/nextcloud
   # - kustomize/matrix
   # - kustomize/homepage
 # - kustomize/tekton-install

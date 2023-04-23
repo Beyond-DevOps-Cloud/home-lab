@@ -4,5 +4,6 @@ metadata:
   name: adguard-home
   labels:
     app.kubernetes.io/instance: default
+    pod-security.kubernetes.io/enforce: privileged
   #   app.kubernetes.io/part-of: tekton-pipelines
   #   pod-security.kubernetes.io/enforce: baseline
