@@ -18,4 +18,4 @@ spec:
   hostname:
     hostname: keycloak.andrewpjackson.com
   ingress:
-    enabled: true
+    enabled: false
