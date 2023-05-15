@@ -8,10 +8,10 @@ spec:
     vendor: postgres
     host: keycloak-postgresql-db-ha.my-keycloak-operator.svc.cluster.local
     usernameSecret:
-      name: keycloak-postgresql-db-pguser-keycloak-postgresql-db
+      name: keycloak-postgresql-db-pguser-keycloak
       key: user
     passwordSecret:
-      name: keycloak-postgresql-db-pguser-keycloak-postgresql-db
+      name: keycloak-postgresql-db-pguser-keycloak
       key: password
   http:
     tlsSecret: andrewpjackson.com-tls
