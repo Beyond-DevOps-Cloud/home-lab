@@ -11,7 +11,7 @@ spec:
     namespace: my-keycloak-operator
   project: default
   source:
-    path: ./helm/home-k8s/kustomize/keycloak-db
+    path: ./helm/home-k8s/kustomize/keycloak
     repoURL: https://github.com/Beyond-DevOps-Cloud/home-lab.git
     targetRevision: HEAD
   syncPolicy:
