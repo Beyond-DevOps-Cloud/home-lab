@@ -1,3 +1,2 @@
 resources:
-- postgres.yaml
 - keycloak.yaml

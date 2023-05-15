@@ -8,10 +8,10 @@ metadata:
 spec:
   destination:
     server: https://kubernetes.default.svc
-    namespace: my-keycloak-operator
+    namespace: keycloak
   project: default
   source:
-    path: ./helm/home-k8s/kustomize/keycloak-db
+    path: ./helm/home-k8s/kustomize/keycloak
     repoURL: https://github.com/Beyond-DevOps-Cloud/home-lab.git
     targetRevision: HEAD
   syncPolicy:
