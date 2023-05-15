@@ -6,12 +6,12 @@ spec:
   instances: 1
   db:
     vendor: postgres
-    host: keycloakdb-primary.keycloak.svc:5432/keycloakdb
+    host: postgresql-db
     usernameSecret:
-      name: keycloakdb-pguser-keycloakdb
+      name: postgresql-db-pguser-postgresql-db
       key: username
     passwordSecret:
-      name: keycloakdb-pguser-keycloakdb
+      name: postgresql-db-pguser-postgresql-db
       key: password
   http:
     tlsSecret: andrewpjackson.com-tls
