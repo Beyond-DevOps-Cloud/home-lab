@@ -9,7 +9,7 @@ spec:
     host: keycloak-postgresql-db
     usernameSecret:
       name: keycloak-postgresql-db-pguser-keycloak-postgresql-db
-      key: username
+      key: user
     passwordSecret:
       name: keycloak-postgresql-db-pguser-keycloak-postgresql-db
       key: password
