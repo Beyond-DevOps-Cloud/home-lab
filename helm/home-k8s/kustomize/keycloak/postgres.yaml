@@ -3,6 +3,10 @@ kind: PostgresCluster
 metadata:
   name: keycloak-postgresql-db
 spec:
+  users:
+    - name: keycloak
+      databases:
+        - keycloak
   image: registry.developers.crunchydata.com/crunchydata/crunchy-postgres:ubi8-15.2-0
   postgresVersion: 15
   instances:
@@ -44,7 +48,7 @@ metadata:
 spec:
   selector:
     app: keycloak-postgresql-db
-  type: LoadBalancer
+  type: ClusterIP
   ports:
   - port: 5432
     targetPort: 5432
