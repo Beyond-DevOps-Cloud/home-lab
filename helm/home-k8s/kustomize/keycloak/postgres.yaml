@@ -30,7 +30,9 @@ spec:
         #           postgres-operator.crunchydata.com/instance-set: "00"
   backups:
     pgbackrest:
-      image: registry.developers.crunchydata.com/crunchydata/crunchy-pgbackrest:ubi8-2.41-4
+      global:
+        repo1-retention-full: "14"
+        repo1-retention-full-type: time
       repos:
       - name: repo1
         volume:
@@ -40,6 +42,10 @@ spec:
             resources:
               requests:
                 storage: 1Gi
+        schedules:
+          full: "0 1 * * 0"
+          differential: "0 1 * * 1-6"
+
 
 ---
 apiVersion: v1
