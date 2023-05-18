@@ -16,6 +16,8 @@ spec:
   http:
     httpEnabled: true
   hostname:
+    hostname: keycloak.andrewpjackson.com
+    admin: keycloak-admin.andrewpjackson.com
     strict: false
     strictBackchannel: false
   ingress:
