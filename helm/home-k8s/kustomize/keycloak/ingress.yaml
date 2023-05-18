@@ -3,8 +3,8 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: keycloak-ingress
-  annotations:
-    nginx.ingress.kubernetes.io/whitelist-source-range: 192.168.1.0/24
+  # annotations:
+  #   nginx.ingress.kubernetes.io/whitelist-source-range: 192.168.1.0/24
 spec:
   ingressClassName: nginx
   tls:
@@ -13,6 +13,30 @@ spec:
       secretName: andrewpjackson.com-tls
   rules:
     - host: keycloak.andrewpjackson.com
+      http:
+        paths:
+          - pathType: Prefix
+            path: /
+            backend:
+              service:
+                name: keycloak-service
+                port:
+                  number: 8080
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: keycloak-admin-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/whitelist-source-range: 192.168.1.0/24
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - keycloak-admin.andrewpjackson.com
+      secretName: andrewpjackson.com-tls
+  rules:
+    - host: keycloak-admin.andrewpjackson.com
       http:
         paths:
           - pathType: Prefix
