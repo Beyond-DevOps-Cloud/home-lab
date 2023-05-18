@@ -14,9 +14,8 @@ spec:
       name: keycloak-postgresql-db-pguser-keycloak
       key: password
   http:
-    tlsSecret: andrewpjackson.com-tls
+    httpEnabled: true
   hostname:
-    # hostname: keycloak.andrewpjackson.com
     strict: false
     strictBackchannel: false
   ingress:
