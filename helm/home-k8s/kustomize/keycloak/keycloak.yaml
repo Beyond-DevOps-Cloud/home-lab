@@ -17,6 +17,6 @@ spec:
     tlsSecret: andrewpjackson.com-tls
   hostname:
     hostname: keycloak.andrewpjackson.com
-    hostname-strict-backchannel: true
+    strictBackchannel: true
   ingress:
     enabled: false
