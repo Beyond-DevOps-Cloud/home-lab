@@ -5,5 +5,5 @@ metadata:
 data:
   policy.default: role:readonly
   policy.csv: |
-      g, ArgoCD Admins, role:admin
+      g, ArgoCDAdmins, role:admin
   policy.scopes: "[groups]"
