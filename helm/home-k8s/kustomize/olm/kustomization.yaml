@@ -7,3 +7,4 @@ resources:
 # - https://operatorhub.io/install/synapse-operator.yaml
 - https://operatorhub.io/install/postgresql.yaml
 - https://operatorhub.io/install/keycloak-operator.yaml
+- https://operatorhub.io/install/vault.yaml
