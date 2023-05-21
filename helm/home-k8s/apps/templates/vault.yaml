@@ -14,28 +14,6 @@ spec:
     path: ./helm/home-k8s/kustomize/vault
     repoURL: https://github.com/Beyond-DevOps-Cloud/home-lab.git
     targetRevision: HEAD
-    helm:
-      values: |
-        server:
-          ha:
-            enabled: true
-            raft: 
-              enabled: true
-            replicas: 3
-        ingress:
-          enabled: true
-          ingressClassName: nginx
-          hosts:
-            host: vault.andrewpjackson.com
-          tls:
-            - hosts:
-                - vault.andrewpjackson.com
-              secretName: andrewpjackson.com-tls
-        ui:
-          enabled: true
-          annotations:
-            "sample/annotation1": "foo"
-            "sample/annotation2": "bar"
   syncPolicy:
     syncOptions:
       - CreateNamespace=true
