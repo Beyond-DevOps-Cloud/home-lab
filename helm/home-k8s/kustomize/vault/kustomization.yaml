@@ -11,4 +11,4 @@ resources:
 # patchesStrategicMerge:
 # - overlays/production/argo-cd-cm.yaml
 
-namespace: vault
+namespace: my-vault
