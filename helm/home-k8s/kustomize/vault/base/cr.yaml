@@ -107,7 +107,7 @@ spec:
       # This is true by default
       storeRootToken: true
     kubernetes:
-      secretNamespace: default
+      secretNamespace: vault
 
   # A YAML representation of a final vault config file.
   # See https://www.vaultproject.io/docs/configuration/ for more information.
@@ -165,7 +165,7 @@ spec:
           # Allow every pod in the default namespace to use the secret kv store
           - name: default
             bound_service_account_names: ["default", "vault-secrets-webhook", "vault"]
-            bound_service_account_namespaces: ["default", "vswh"]
+            bound_service_account_namespaces: ["vault", "vswh"]
             policies: ["allow_secrets", "allow_pki"]
             ttl: 1h
 
