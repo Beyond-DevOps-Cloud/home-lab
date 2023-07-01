@@ -33,5 +33,5 @@ spec:
             externalProviders: []
             allowBypassTwoFactor: []
             providers:
-              - secret: gitlab-authentik-oidc
+              - secret: keycloak-authentik-oidc
                 key: provider
