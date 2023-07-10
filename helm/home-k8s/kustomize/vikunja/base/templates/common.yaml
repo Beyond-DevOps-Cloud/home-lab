@@ -90,14 +90,14 @@ spec:
             timeoutSeconds: 1
             periodSeconds: 5
         - env: []
-          image: vikunja/api:0.20.2
+          image: vikunja/api:0.21.0
           imagePullPolicy: IfNotPresent
           name: api
           volumeMounts:
           - mountPath: /etc/vikunja/config.yml
             name: vikunja-config
             subPath: Vikunja.yaml
-        - image: vikunja/frontend:0.20.3
+        - image: vikunja/frontend:0.21.0
           imagePullPolicy: IfNotPresent
           name: frontend
       volumes:
