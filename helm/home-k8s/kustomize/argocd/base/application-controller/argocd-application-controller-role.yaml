@@ -8,31 +8,8 @@ metadata:
   name: argocd-application-controller
 rules:
 - apiGroups:
-  - ""
+  - "*"
   resources:
-  - secrets
-  - configmaps
+  - "*"
   verbs:
-  - get
-  - list
-  - watch
-- apiGroups:
-  - argoproj.io
-  resources:
-  - applications
-  - appprojects
-  verbs:
-  - create
-  - get
-  - list
-  - watch
-  - update
-  - patch
-  - delete
-- apiGroups:
-  - ""
-  resources:
-  - events
-  verbs:
-  - create
-  - list
+  - "*"

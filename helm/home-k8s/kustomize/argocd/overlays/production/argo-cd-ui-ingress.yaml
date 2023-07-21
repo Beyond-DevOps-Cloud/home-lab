@@ -1,0 +1,30 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: argo-cd-ui
+  annotations:
+    ingress.kubernetes.io/proxy-body-size: 100M
+    ingress.kubernetes.io/app-root: "/"
+    homepagesc.neutrino.io/enable: true
+    homepagesc.neutrino.io/appName: ArgoCD
+    homepagesc.neutrino.io/group: CI/CD
+    homepagesc.neutrino.io/healthCheck: http://argocd-server.svc.cluster.local:8080/healthz
+    homepagesc.neutrino.io/icon: https://github.com/walkxcode/dashboard-icons/blob/c186e1486577c5fba7cf5a440767f792bd465a75/png/argocd.png
+  namespace: argocd
+spec:
+  ingressClassName: "nginx"
+  tls:
+  - hosts:
+    - argocd.andrewpjackson.com
+    secretName: andrewpjackson.com-tls
+  rules:
+  - host: argocd.andrewpjackson.com
+    http:
+      paths:
+      - path: /
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: argocd-server
+            port:
+              name: http

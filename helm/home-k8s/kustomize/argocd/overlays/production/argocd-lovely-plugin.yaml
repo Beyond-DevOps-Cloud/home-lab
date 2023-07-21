@@ -3,6 +3,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: argocd-lovely-plugin
+  namespace: argocd
 spec:
   template:
     spec:

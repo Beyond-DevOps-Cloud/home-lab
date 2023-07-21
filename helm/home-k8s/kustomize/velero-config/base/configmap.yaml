@@ -19,4 +19,4 @@ data:
   # add 1+ key-value pairs here, where the key is the old
   # storage class name and the value is the new storage
   # class name.
-  nfs-csi: nfs-sd-k8s-pvc
+  nfs-csi: nfs-csi

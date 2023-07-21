@@ -6,7 +6,7 @@ metadata:
 provisioner: nfs.csi.k8s.io
 parameters:
   server: 192.168.1.10
-  share: /mnt/SSD/k3s-pvc
+  share: /mnt/NAS-Share/NFS
 reclaimPolicy: Delete
 volumeBindingMode: Immediate
 mountOptions:
