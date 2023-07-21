@@ -4,7 +4,7 @@ kind: Kustomization
 resources:
 
 - base/nfs-csi.yaml
-- base/nfs-sd-k8s-pvc.yaml
+# - base/nfs-sd-k8s-pvc.yaml
 
 # components:
 # - https://github.com/argoproj-labs/argocd-extensions/manifests
